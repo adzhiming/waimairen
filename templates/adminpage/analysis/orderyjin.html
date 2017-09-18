@@ -1,0 +1,102 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.PrintArea.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<{/block}>
+<{block name=controlname}>商家结算<{/block}>
+<{block name=bodylist}>
+<div class="search">
+    <div class="search_content">
+        <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/analysis/module/orderyjin"}>">
+        <label>所属区域管理：</label>
+        <select name="admin_id" class="form-control mar-right">
+            <option value="0">选择区域管理</option>
+            <{foreach from=$quyuguanli item=items}>
+            <option value="<{$items['uid']}>" <{if $admin_id == $items['uid']}>selected<{/if}>><{$items['username']}></option>
+            <{/foreach}>
+        </select>
+        <label>商家店铺名：</label>
+        <input type="text" name="searchvalue" value="<{$searchvalue}>" class="form-control mar-right">
+        <input class="Wdate datefmt form-control" type="text" name="starttime" id="starttime" value="<{$starttime|date_format:"%Y-%m-%d"}>"  onFocus="WdatePicker({isShowClear:false,readOnly:true});" />
+        到
+        <input class="Wdate datefmt form-control" type="text" name="endtime" id="endtime" value="<{$endtime|date_format:"%Y-%m-%d"}>"  onFocus="WdatePicker({isShowClear:false,readOnly:true});" />
+        <input type="submit" value="提交查询" class="button btn-prim">
+        </form>
+    </div>
+</div>
+<div class="tags">
+    <div id="tagscontent">
+        <div id="con_one_1">
+            <div class="table_td mart15">
+                <form method="post" action="" onsubmit="return remind();" id="delform">
+                    <{if empty($list)}>
+                    暂无数据
+                    <{else}>
+                    <table  class="list table table-bordered" name="table" id="table">
+                        <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+                            <th>商家列表</th>
+                            <th>配送方式</th>
+                            <th>订单数量</th>
+                            <th>在线付款</th>
+                            <th>线下支付</th>
+                            <th>使用优惠券</th>
+                            <th>店铺优惠</th>
+                            <th>使用积分</th>
+                            <th>打包费</th>
+                            <th>配送费</th>
+                            <th>商品总价</th>
+                            <th>佣金</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <{foreach from=$list item=items}>
+                        <tr class="s_out">
+                            <td><input type="checkbox" name="id[]" value="<{$items['id']}>"></td>
+                            <td><{$items['shopname']}></td>
+                            <td> <{$items['sendtype']|default:0}>  </td>
+                            <td> <{$items['orderNum']|default:0}>  </td>
+                            <td> <{$items['online']|default:0}>  </td>
+                            <td> <{$items['unline']|default:0}>  </td>
+                            <td> <{$items['yhjcost']|default:0}>  </td>
+                            <td> <{$items['cxcost']|default:0}>  </td>
+                            <td> <{$items['score']|default:0}>  </td>
+                            <td> <{$items['bagcost']|default:0}>  </td>
+                            <td> <{$items['pscost']|default:0}>  </td>
+                            <td> <{$items['goodscost']|default:0}>  </td>
+                            <td> <{$items['yje']|default:0}>  </td>
+                            <td><a href="<{$items['outdetail']}>" target="_blank">导出</a></td>
+                        </tr>
+                        <{/foreach}>
+                        </tbody>
+                    </table>
+                    <{/if}>
+                </form>
+                <div class="page_newc marT20">
+                    <div class="select_page">
+                        <a href="#" onclick="checkword(true);" class="color-f">全选</a> / <a href="#" onclick="checkword(false);" class="color-f">取消</a>
+                        <a  onclick="outchoice(this);" href="#"  data="<{$outlinkch}>" class="button btn-prim">导出选择项</a>
+                        <a  href="<{$outlink}>" target="_blank" class="button btn-prim">导出查询结果</a>
+                    </div>
+                </div>
+                <div class="show_page"><ul><{$pagecontent}></ul></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="print_area" style="display:none;"></div>
+
+<script type="text/javascript">
+
+    function colorred(obj){
+        $(obj).css('background','#eee');
+    }
+    function tcolorred(obj){
+        $(obj).css('background','');
+    }
+
+</script>
+
+<{/block}>

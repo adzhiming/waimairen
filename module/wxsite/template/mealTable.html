@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>餐台点餐</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/pertty/swiper.min.css" />
+    <style>
+        html,body{height: 100%; } 
+       .btn_p { color: #fff;padding: 6px 10px;border: none;outline: none; border-radius: 5px; font-family: 'Microsoft YaHei',Arial,Helvetica,sans-serif;
+        }
+        .table_btn{width: 100%;background-color: #FB5F39;display: block;font-size: 14px;}
+        .zuoBox{position: relative;overflow: hidden;}
+        .zuoBox img{width: 100%;height: 160px;}
+        .zuoPos{position: absolute;border-radius: 5px;left:35%;bottom:22px;width:30%;background-color: #fff;font-size: 16px;text-align: center;padding: 10px 0;}
+ 
+    </style>
+    <script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<div class="cssBox vertical">
+    <ul class="mui-table-view top-vie">
+        <li class="mui-table-view-cell">
+            <a href="<{ofunc type=url link="/wxsite/order"}>" class="mui-navigate-right font14 mui-ellipsis">
+                <i class="fa fa-wpforms red font20 mui-pull-left marl5"></i>我的订单
+            </a>
+        </li>
+    </ul>
+    <div class="flex bg_while">
+        <ul class="mui-table-view top-vie">
+            <li class="mui-table-view-cell">
+                <a href="#" class="font14 mui-ellipsis">
+                    <i class="fa fa-map-marker red font20 mui-pull-left marl5"></i><{$shopinfo['shopname']}>（<{$shopinfo['address']}>）
+                </a>
+            </li>
+            <li class="mui-table-view-cell">
+                <div class="zuoBox">
+                    <img src="/upload/user/tangshi_default.png" />
+                    <div class="zuoPos">
+                        <b><{$name}></b>
+                        <div class="font14">桌台</div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="mui-table-view-cell mui-row mui-text-center">
+                <div class="cssBox justify">
+                    <div class="flex">
+                    <!--<{if $sn == ''}>-->
+                       <button type="button" class="table_btn" style="background-color:#bdc3c3">呼叫服务员</button>
+                    <!--<{else}>-->
+                       <button type="button" class="table_btn callwater" >呼叫服务员</button>
+                    <!--<{/if}>-->
+                    </div>
+                    <div class="flex"  style="margin-left: 15px;">
+                        <a href="<{ofunc type=url link="/wxsite/shopshow/typelx/yd/id/<{$storeid}>"}>/tableid/<{$tableid}>><button type="button" class="table_btn">我要点餐<tton></a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!--<{if $shopinfo['is_wifi'] == 1}>-->
+        <ul class="mui-table-view function " >
+            <li class="mui-table-view-cell ">
+                  <div class="cssBox justify">
+                        <div class="color_block left_pet mui-h6">
+                         <span class="color_a">
+                            <i class="fa fa-wifi color_z"></i>WIFI<span class="wifi_lr">|</span>
+                         </span>
+                         <span><{$wifi[0]}></span>：
+                         <span id="mm"><{$wifi[1]}></span>
+                        </div>
+                        <span  id="fzmm"  class="them">复制密码</span>
+                  </div>
+            </li>
+        </ul>
+        <!--<{/if}>-->
+        <!--<{if $shopinfo['is_ad'] == 1}>-->
+        <div id="ad_extend_show">
+            <div class="color_block shop_title" >
+              <h3>广告推广</h3>
+            </div>
+            <div class="swiper-container swiper_box">
+                <ul class="swiper-wrapper banner_box">
+                     <{if $ad1 != ''}>
+                    <li class="swiper-slide">
+                        <a href="<{$ad1['linkurl']}>">
+                            <img src="<{$ad1['img']}>" />
+                        </a>
+                    </li>
+                    <{/if}>
+                    <{if $ad2 != ''}>
+                    <li class="swiper-slide">
+                        <a href="<{$ad2['linkurl']}>">
+                            <img src="<{$ad2['img']}>" />
+                        </a>
+                    </li>
+                     <{/if}>
+                    <{if $ad3 != ''}>
+                    <li class="swiper-slide">
+                        <a href="<{$ad3['linkurl']}>">
+                            <img src="<{$ad3['img']}>" />
+                        </a>
+                    </li>
+                    <{/if}>
+                </ul>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination swiper_page"></div>
+            </div>
+        </div>
+        <!--<{/if}>-->
+
+            <!--会员推广-->
+            <!--<{if $shopinfo['is_member'] == 1}>-->
+            <{if $is_member == 1}>
+            <div class="color_block padd4 cssBox justify">
+            <div >恭喜您，您已是会员</div>
+              <a href="<{ofunc type=url link="/wxsite/shopmemcardlist/shopid/"}><{$shopid}>">查看会员卡</a>
+            </div>
+
+
+        	 <{else if $activie_member_card}>
+        	    <div class="color_block shop_title cssBox justify">
+        	    <h3 >会员卡</h3>
+        	</div>
+        	<ul class="clearfix">
+        	    <li class="pos_r">
+        	        <img src="<{$activie_member_card['bgpath']}>" class="center-block cirle_radius" height="120" width="100%"/>
+        	        <a data-id="<{$activie_member_card['id']}>" class="couponitem">
+        	        <div class="card_box">
+        	            <div class="mui-pull-left card_logo">
+        	                <img src="<{$activie_member_card['logopath']}>"/>
+        	            </div>
+        	            <div class="mui-pull-left card_name">
+        	                <p><{$activie_member_card['name']}></p>
+        	                <p class="font14"></p>
+        	            </div>
+        	        </div>
+        	        <div class="card_boxa">
+        	            <div class="mui-pull-right"><{$activie_member_card['end_timestamp']}></div>
+        	        </div>
+        	        </a>
+        	    </li>
+        	</ul>
+            <{/if}>
+            <!--<{/if}>-->
+        
+            	<!--热门活动-->
+        <div id="hot_activity_show" <{if $shopinfo['is_act'] == 0}>  style="display:none"  <{/if}>>
+            <div class="color_block shop_title" ><h3>热门活动</h3></div>
+            <ul class="hot clearfix">
+               <{if $ad4 != ''}>
+              <li style="display: block;">
+                  <a href="<{$ad4['linkurl']}>">
+                      <img src="<{$ad4['img']}>" />
+                  </a>
+              </li>
+              <{/if}>
+              <{if $ad5 != ''}>
+              <li style="display: block;">
+                  <a href="<{$ad5['linkurl']}>">
+                      <img src="<{$ad5['img']}>" />
+                  </a>
+              </li>
+              <{/if}>
+              <{if $ad6 != ''}>
+              <li style="display: block;">
+                  <a href="<{$ad6['linkurl']}>">
+                      <img src="<{$ad6['img']}>" />
+                  </a>
+              </li>
+              <{/if}>  
+
+            </ul>
+            <!--end-->
+        </div>
+        
+        
+
+        	<!--优惠券-->
+        	<div class="color_block shop_title cssBox justify">
+        		<h3>优惠券<a class="pull-right them" href="<{ofunc type=url link="/wxsite/shopcouponlist/shopid/"}><{$shopid}>">更多优惠券</a></h3>
+        	</div>
+        	<ul class="couponList">
+        	<{foreach from=$couponlist item=coupon}>
+        	<li>
+        	<a data-id="<{$coupon['id']}>" class="couponitem">
+        	<div class="mui-row pading-l" >
+        		<div class="mui-col-xs-8">
+        			<div class="font16 mui-ellipsis"><b><{$coupon['title']}></b></div>
+        			<div class="mui-h6 datet"><{$coupon['expire']}></div>
+        		</div>
+        		<div class="mui-col-xs-4 moneyr"><{$coupon['discount']}></div>
+        	</div>
+        	</a>
+        	</li>
+            <{/foreach}>
+        		
+         
+        	</ul>
+
+    
+        	  
+       </div>
+    <br/>
+</div>
+
+<!-- 弹窗 -->
+<div class="sj_alert" id="mmz" style="display: none;">
+    <div class="mui-popup mui-popup-in" >
+    <div class="mui-popup-inner">
+    <div class="mui-popup-title font14">请长按复制wifi密码</div>
+    <div class="mui-popup-text color_b"><{$wifi[1]}></div>
+    <div class="mui-popup-text mui-h6">（WIFI帐号：<{$wifi[0]}>）</div>
+    </div>
+        <div id="copy-close" class="mui-popup-buttons"><span class="mui-popup-button font14 color_block" >返回</span></div>
+    </div>
+</div>
+<!--弹框-->
+<div class="sj_alert">
+    <div class="sj-popup">
+        <div class="sj_alert_title mui-btn-bg font20">呼叫服务</div>
+        <div class="tipList clearfix">
+            <ul class="padt20 radioList">
+                <li class="mui-input-row mui-radio">
+                    <label  for="a">下单</label>
+                    <input name="radio1" value="下单" type="radio" data-stype="1" id="a">
+                </li>
+                <li class="mui-input-row mui-radio">
+                    <label  for="b">加菜</label>
+                    <input name="radio1" value="加菜" type="radio" data-stype="2" id="b">
+                </li>
+                <li class="mui-input-row mui-radio">
+                    <label  for="c">结单</label>
+                    <input name="radio1" value="结单" type="radio" data-stype="3" id="c">
+                </li>
+                <li class="mui-input-row mui-radio">
+                    <label  for="d">其它</label>
+                    <input name="radio1" value="其它" type="radio" data-stype="99" id="d">
+                </li>
+            </ul>
+        </div>
+        <!--btn-->
+        <div class="sj_btn font16">
+            <span class="sj_btn_t color_z suer">确定</span>
+            <span class="sj_btn_t close_s">取消</span>
+        </div>
+    </div>
+</div>
+ 
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/pertty/swiper.min.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/jweixin-1.0.0.js"></script>  
+<script type="text/javascript">
+    //复制密码
+    $('#fzmm').bind('click',function(){
+        $('#mmz').attr('style','display:block;');
+    });
+
+    $('#copy-close').click(function(){
+        $('.sj_alert').attr('style','display:none;')
+    });
+    //广告轮播图
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        loop : true
+    });
+    var t = "<{$shopinfo['is_ad']}>";
+    if(t != 0){
+        setInterval("swiper.slidePrev()", 5000);
+    }
+
+	$('.callwater').on('touchstart',function(){
+	    $('.sj_alert').fadeIn();
+	});
+	
+	//    关闭弹框
+	$('.close_s').click(function(){
+	    $('.sj_alert').fadeOut();
+	});
+
+   $('.suer').click(function(){
+	   $('.sj_alert').fadeOut();
+	   var url = "<{ofunc type=url link="/wxsite/callService"}>"
+	   var tableid ="<{$tableid}>";
+	   var sid = "<{$storeid}>";
+	   var sn = "<{$sn}>"
+	   var uid = "<{$uid}>"
+	   var title = $('input:radio[name="radio1"]:checked').val();
+	   var call_type = $('input:radio[name="radio1"]:checked').data('stype');
+	   
+	   if(tableid ==""){
+		   alert("获取桌台信息失败");
+		   return false;
+	   }
+	   if(title ==''){
+		   alert("请选择呼叫服务");
+		   return false;
+	   }
+	   title ="<{$name}>"+title
+	   var tablename ="<{$name}>"
+	   $.ajax({
+		 type:'POST',
+		 async:false,
+		 url:url,
+		 data:{sn:sn,tableid:tableid,sid:sid,title:title,call_type:call_type,tablename:tablename},
+		 dataType: 'json',
+		 beforeSend: function(){
+			//$loading.show();
+		 },
+		 success: function(ret) {
+			if(ret.code =='0'){
+                alert("您的呼叫已发送，服务员正在赶来，请耐心等待!");
+				//alert(ret.message);
+			}
+			else{
+				alert(ret.message);
+			}
+		 }
+	   })
+   })
+   
+ $(function(){	
+	var wxOk = false;
+		wx.config({
+		    debug: false,
+		    appId: '<{$signPackage['appId']}>',
+		    timestamp: '<{$signPackage['timestamp']}>',
+		    nonceStr: '<{$signPackage['nonceStr']}>',
+		    signature: '<{$signPackage['signature']}>',
+		    jsApiList: [
+						'addCard',
+						'openCard',
+					      'checkJsApi',
+					      'scanQRCode'
+		    ]
+		});
+		wx.ready(function(){
+			wxOk = true;
+		});
+	
+	function userGetCoupon(couponid) {
+	  url ='<{ofunc type=url link="/wxsite/userGetCoupon/random/@random@/datatype/json"}>';
+ 	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+       $.ajax({      
+             url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+             dataType: "json",
+             method:"POST",
+             async:true,
+             data:{shopid:"<{$shopid}>", couponid:couponid},
+             success:function(content) { 
+             	if(content.error ==  false){
+             		var  data = content.msg;
+             		var card_member_id = data.card_member_id;
+
+             		wx.addCard({
+    					cardList:[{
+    						cardId: data.cardid, 
+    						cardExt: data.cardExt
+    					}],
+    		        	success: function (res) {
+    		        	    var cardList = res.cardList; // 添加的卡券列表信息
+    		        	    uupdateUserGetCoupon(card_member_id);
+    			        }
+    			    });
+             	}else{
+             		alert(content.msg);
+             	}
+
+             
+             },
+             error:function(){
+            	 alert("网络异常");
+             }
+       }); 
+	}
+	function uupdateUserGetCoupon(card_member_id) {		
+		  url ='<{ofunc type=url link="/wxsite/uupdateUserGetCoupon/random/@random@/datatype/json"}>';
+	 	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+	       $.ajax({      
+	             url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+	             dataType: "json",
+	             method:"POST",
+	             async:true,
+	             data:{shopid:"<{$shopid}>", card_member_id:card_member_id},
+	             success:function(content) { 
+	             	if(content.error ==  false){
+			        	//alert("领取成功");
+	             	}else{
+	             		alert(content.msg);
+	             	}
+
+	             
+	             },
+	             error:function(){
+	            	 alert("网络异常");
+	             }
+	       }); 
+	}
+	
+   	$(".couponitem").click(function(){
+   		if (!wxOk) {
+   			alert("微信初始化失败，请重试");
+   			return false;
+   		}
+		var url = "{:U('adverTimeLog')}";
+		var id = $(this).data("id");
+		userGetCoupon(id);
+   	});
+       
+})
+</script>
+</body>
+</html>

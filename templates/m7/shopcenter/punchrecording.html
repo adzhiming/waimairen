@@ -1,0 +1,133 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+	var mynomenu='staffmanage';
+</script>
+<{/block}>
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/sweetalert.css" />
+<style>
+	.mar20{margin-top: 20px;}
+	.searchBtn {background: #27A9E3; cursor: pointer; display: inline-block;height: 28px;padding: 0 20px;border-radius: 3px;color: #fff; line-height: 28px;border: solid 1px #27A9E3; margin: 7px; font-size: 14px;float: right;}
+	a.searchBtn:link,a.searchBtn:visited {color:#fff;}
+	.dele{ cursor: pointer; position:absolute;right:-30px;top:0;font-size:18px;color:red;}
+	.data_text{position:relative;display:inline-block;}
+	.select_option{ width: 100%;}
+</style>
+<{/block}>
+
+<{block name=bodylist}>
+<!--content right start-->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">打卡记录</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/staffmenu.html"}>
+        
+       <div class="cl"></div>
+        <form action="<{ofunc type=url link="/shopcenter/punchrecording"}>" method="post">
+            <ul class="punchrecordingsearch">
+                <li>年份：
+                 <select name="year" id="year" class="form-control">
+                        <{foreach from=$yearlist item=items}>
+                              <option value="<{$items}>" <{if $items == $year}> selected="selected" <{/if}> ><{$items}></option>
+                        <{/foreach}>
+                </select>
+                </li>
+                <li>月份：
+                <select name="month" id="month" class="form-control">
+                        <{foreach from=$monthlist item=items}>
+                              <option value="<{$items}>" <{if $items==$month}> selected="selected" <{/if}> ><{$items}> </option>
+                        <{/foreach}>
+                </select>
+                </li>
+              
+                <li><input type="submit" value="提交查询" class="button" style="height:35px;">  &nbsp;&nbsp;&nbsp;&nbsp;<span class="outexcel" id="outlink"><a  href="#" >导出excel</a></span>
+                    <input type="hidden" name="isout" id="isout" value="<{$year}>">
+                </li>
+            </ul>
+        </form>
+  
+    
+    <!--列表-->
+    <div class="mart20"  id="pingjia">
+        
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="5%">  设备号 </th>
+                <th width="5%">  姓名 </th>
+                <th width="5%"> 岗位 </th>
+                <{foreach from=$dayarr key=myid item=item}>
+                <th width="5%"> 
+                
+                   
+                            
+                            <{$item}>
+                           
+           
+                    
+                </th>
+                 <{/foreach}>
+            </tr>
+            
+            </thead>
+            <tbody>
+            <{foreach from=$list key=myid item=items}> 	        
+            <tr >
+                <td><{$items['sn']}></td>
+                <td><{$items['name']}></td>
+                <td><{$items['applypost']}></td>
+                 <{foreach from=$items['dakai'] key=myid item=item}>
+                <td>
+                
+                  
+                
+                                    <{$item}>
+                                    
+                                    
+                                    
+                           
+                          
+               
+		   
+                
+                </td>
+                  <{/foreach}>
+ 
+            </tr>
+            <{/foreach}>
+            <!--<tr>-->
+                <!--<td align="right" style=" padding-right:50px;" colspan="8"> <div class="show_page"><ul><{$list['pagecontent']}></ul></div></td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+        <div style="color:#FF4E00; margin-top: 10px; font-size: 14px;">备注：红色时间为该员工未在规定时间内打卡签到</div>
+        <div class="show_page mart10" style="font-size: 14px;"><ul><{$list['pagecontent']}></ul></div>
+    </div>
+
+    </div>
+</div>
+
+<script>
+
+    
+        $('#outlink').bind('click',function(){
+        isout = $('#isout').val();
+        if(isout !=""){
+            var outlink = '<{$outlink}>';
+            window.location.href = outlink; 
+        }else{
+            alert('请先查询!');
+        }
+
+    });
+</script>
+
+<{/block}>

@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>购物车</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/cs/idangerous.swiper.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/cs/idangerous.swiper.scrollbar.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+    <script src="<{$siteurl}>/templates/adminpage/public/js/allj.js"></script>
+    <style>
+        html,body{height: 100%;overflow: hidden;position: relative;}
+    </style>
+    <script type="text/javascript">
+    var siteurl = "<{$siteurl}>";
+    var shopid = "<{$shopinfo['shopid']}>";
+    </script>
+</head>
+<body>
+
+<div class="cssBox vertical">
+    <!--头部信息-->
+    <div >
+        <div class="cart_box">
+            <img src="images/cat/bg.jpg" class="shop_Dimg"/>
+            <div class="cssBox vertical box-pack cart_po">
+                <ul class="cat_head clearfix">
+                    <li class="cssBox">
+                        <div class="marr15">
+                            <img src="images/cat/diantu.jpg" class="cart_logo"/>
+                        </div>
+                        <div class="flex mui-ellipsis vertical cssBox box-pack">
+                            <ul class="cart_list mui-row">
+                                <li>起送<span>¥<{$shopdet['limitcost']}></span></li>
+                                <li>配送<span>¥<{$shopdet['pscost']}></span></li>
+                                <li>送达<span><{$shopdet['maketime']}></span>分钟</li>
+                            </ul>
+                            <div class="mui-row mart5">
+                                <div class="mui-col-xs-12">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <span>4.6</span>分
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="cssBox">
+                        <div class="marr15">月售：37份</div>
+                        <div class="flex">营业时间：8:00 - 24:00</div>
+                    </li>
+                    <li class="cssBox">
+                        <div>优惠信息：</div>
+                        <div class="flex mui-ellipsis-2">在线支付满30元减6元；特惠套餐7.8折！</div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <!--tab切换menu-->
+        <div class="swiper-nav swiper-container">
+            <!--tab切换menu-->
+            <ul class="swiper-wrapper mui-row cart_tab">
+                <li class="swiper-slide mui-col-xs-4 active">点菜</li>
+                <li class="swiper-slide mui-col-xs-4">评价</li>
+                <li class="swiper-slide mui-col-xs-4">商家</li>
+            </ul>
+        </div>
+    </div>
+    <div class="flex m-content" >
+        <div class="swiper-pages swiper-container">
+            <div class="swiper-wrapper">
+                <!--点菜-->
+                <div class="swiper-slide po_r">
+                    <div class="mui-row">
+                        <!--菜单tab-->
+                        <div class="mui-col-xs-3 hideScroll cart_left">
+                            <ul class="sortlist" style="padding-bottom: 85px;">
+                             <{foreach from=$goodstype key=mykey item=items}>
+                                <li class="mui-ellipsis  <{if $mykey == 0  }>active<{/if}>"  cateid="<{$items['id']}>"  ><{$items['name']}></li>
+                             <{/foreach}>
+                            </ul>
+                        </div>
+                        <!--商品展示-->
+                        <div class="mui-col-xs-9 hideScroll cart_right bg_while">
+                            <!--1-->
+                            <div class="show_page" style="display: block;">
+                                <ul class="goodsList">
+                                    <li class="center box-pack">
+                                        <img src="images/cat/tu1.jpg" class="marr20">
+                                        <div class="flex mui-ellipsis">
+                                            <b class="mui-ellipsis font14">生煎先生1（4个）</b>
+                                            <div class="mui-h6 mui-ellipsis">月售1000份</div>
+                                            <div class="mui-h4 mui-ellipsis color_z"><small>¥</small>15</div>
+                                        </div>
+                                        <div class="cart_btn_box">
+                                            <div class="mui-none mui-pull-left">
+                                                <div class="cart_icon minus_m minus minus_fly">-</div>
+                                                <input type="text" value="0" maxlength="99" readonly/>
+                                            </div>
+                                            <div class="cart_icon minus_a mui-pull-left plus shop_fly plus_show">+</div>
+                                        </div>
+                                    </li>
+                                    <li class="center box-pack">
+                                        <img src="images/cat/tu2.jpg" class="marr20">
+                                        <div class="flex mui-ellipsis">
+                                            <b class="mui-ellipsis font14">生煎先生（4个）</b>
+                                            <div class="mui-h6 mui-ellipsis">月售1000份</div>
+                                            <div class="mui-h4 mui-ellipsis color_z"><small>¥</small>15</div>
+                                        </div>
+                                        <div class="cart_btn_box">
+                                            <div class="cart_icon minus_m minus">-</div>
+                                            <input type="text" value="0" maxlength="99" readonly/>
+                                            <div class="cart_icon minus_a plus shop_fly">+</div>
+                                        </div>
+                                    </li>
+                                    <li class="center box-pack">
+                                        <img src="images/cat/tu3.jpg" class="marr20">
+                                        <div class="flex mui-ellipsis">
+                                            <b class="mui-ellipsis font14">生煎先生（4个）</b>
+                                            <div class="mui-h6 mui-ellipsis">月售1000份</div>
+                                            <div class="mui-h4 mui-ellipsis color_z"><small>¥</small>15</div>
+                                        </div>
+                                        <div class="cart_btn_box">
+                                            <div class="cart_icon minus_m minus">-</div>
+                                            <input type="text" value="0" maxlength="99" readonly/>
+                                            <div class="cart_icon minus_a plus shop_fly">+</div>
+                                        </div>
+                                    </li>
+                                    <li class="center box-pack">
+                                        <img src="images/cat/tu4.jpg" class="marr20">
+                                        <div class="flex mui-ellipsis">
+                                            <b class="mui-ellipsis font14">生煎先生（4个）</b>
+                                            <div class="mui-h6 mui-ellipsis">月售1000份</div>
+                                            <div class="mui-h4 mui-ellipsis color_z"><small>¥</small>15</div>
+                                        </div>
+                                        <div class="cart_btn_box">
+                                            <div class="cart_icon minus_m minus">-</div>
+                                            <input type="text" value="0" maxlength="99" readonly/>
+                                            <div class="cart_icon minus_a plus shop_fly">+</div>
+                                        </div>
+                                    </li>
+                                    <li class="center box-pack">
+                                        <img src="images/cat/tu5.jpg" class="marr20">
+                                        <div class="flex mui-ellipsis">
+                                            <b class="mui-ellipsis font14">生煎先生（4个）</b>
+                                            <div class="mui-h6 mui-ellipsis">月售1000份</div>
+                                            <div class="mui-h4 mui-ellipsis color_z"><small>¥</small>15</div>
+                                        </div>
+                                        <div class="cart_btn_box">
+                                            <div class="cart_icon minus_m minus">-</div>
+                                            <input type="text" value="0" maxlength="99" readonly/>
+                                            <div class="cart_icon minus_a plus shop_fly">+</div>
+                                        </div>
+                                    </li>
+                                    <li class="center box-pack">
+                                        <img src="images/cat/tu6.jpg" class="marr20">
+                                        <div class="flex mui-ellipsis">
+                                            <b class="mui-ellipsis font14">生煎先生（4个）</b>
+                                            <div class="mui-h6 mui-ellipsis">月售1000份</div>
+                                            <div class="mui-h4 mui-ellipsis color_z"><small>¥</small>15</div>
+                                        </div>
+                                        <div class="cart_btn_box">
+                                            <div class="cart_icon minus_m minus">-</div>
+                                            <input type="text" value="0" maxlength="99" readonly/>
+                                            <div class="cart_icon minus_a plus shop_fly">+</div>
+                                        </div>
+                                    </li>
+                                    <li class="center box-pack">
+                                        <img src="images/cat/tu7.jpg" class="marr20">
+                                        <div class="flex mui-ellipsis">
+                                            <b class="mui-ellipsis font14">生煎先生（4个）</b>
+                                            <div class="mui-h6 mui-ellipsis">月售1000份</div>
+                                            <div class="mui-h4 mui-ellipsis color_z"><small>¥</small>15</div>
+                                        </div>
+                                        <div class="cart_btn_box">
+                                            <div class="cart_icon minus_m minus">-</div>
+                                            <input type="text" value="0" maxlength="99" readonly/>
+                                            <div class="cart_icon minus_a plus shop_fly">+</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+   
+                        </div>
+                    </div>
+                </div>
+                <!--评价-->
+                <div class="swiper-slide">
+                    <!--a-->
+                    <div class="mui-table-view">
+                        <div class="mui-table-view-cell">
+                            <div class="mui-row">
+                                <div class="mui-col-xs-4 mui-ellipsis border-r">
+                                    <div class="cssBox vertical mui-text-center">
+                                        <div class="mui-h3 color_z">4.7</div>
+                                        <div class="mui-h5"><b>综合评分</b></div>
+                                        <div class="mui-h6 line12">商家好评率85%</div>
+                                    </div>
+                                </div>
+                                <div class="mui-col-xs-8 mui-ellipsis">
+                                    <div class="center vertical box-pack height56">
+                                        <div class="mui-h5 color_z">
+                                            <span class="color_a marr_b5">配送评分</span>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <span class="marr_l5">4.9</span>
+                                        </div>
+                                        <div class="mui-h5 color_z">
+                                            <span class="color_a marr_b5">商家评分</span>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <span class="marr_l5">4.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--b-->
+                    <div class="mui-table-view border-b" style="margin-top: 2%;">
+                        <ul class="mui-table-view-cell commentList">
+                            <li class="mui-ellipsis">全部(135)</li>
+                            <li class="mui-ellipsis">好评(100)</li>
+                            <li class="mui-ellipsis">中评(25)</li>
+                            <li class="mui-ellipsis">差评(10)</li>
+                        </ul>
+                    </div>
+                    <!--c-->
+                    <div class="swiper-container swiper-gallery">
+                        <div class="swiper-scrollbar"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <ul class="mui-table-view function" style="margin-bottom: 140px;">
+                                    <li class="mui-table-view-cell">
+                                        <div class="cssBox">
+                                            <img src="images/storeList/2.jpg" class="head_img"/>
+                                            <div class="flex vertical marl10">
+                                                <b class="font14 color_a">1838****137</b>
+                                                <div class="color_z">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <span class="marr_l5 mui-h6">23分钟到达</span>
+                                                </div>
+                                                <div class="mui-h6 mui-ellipsis-3">分量足，我很喜欢。分量足，我很喜欢。分量足，我很喜欢。分量足，我很喜欢。分量足，我很喜欢。</div>
+                                                <div class="mui-h6 right_time">2016.11.21</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mui-table-view-cell">
+                                        <div class="cssBox">
+                                            <img src="images/storeList/1.jpg" class="head_img"/>
+                                            <div class="flex vertical marl10">
+                                                <b class="font14 color_a">1838****137</b>
+                                                <div class="color_z">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <span class="marr_l5 mui-h6">23分钟到达</span>
+                                                </div>
+                                                <div class="mui-h6 mui-ellipsis-3">分量足，我很喜欢。</div>
+                                                <div class="mui-h6 right_time">2016.11.21</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mui-table-view-cell">
+                                        <div class="cssBox">
+                                            <img src="images/storeList/3.jpg" class="head_img"/>
+                                            <div class="flex vertical marl10">
+                                                <b class="font14 color_a">1838****137</b>
+                                                <div class="color_z">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <span class="marr_l5 mui-h6">23分钟到达</span>
+                                                </div>
+                                                <div class="mui-h6 mui-ellipsis-3">分量足，我很喜欢。</div>
+                                                <div class="mui-h6 right_time">2016.11.21</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mui-table-view-cell">
+                                        <div class="cssBox">
+                                            <img src="images/storeList/5.jpg" class="head_img"/>
+                                            <div class="flex vertical marl10">
+                                                <b class="font14 color_a">1838****137</b>
+                                                <div class="color_z">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <span class="marr_l5 mui-h6">23分钟到达</span>
+                                                </div>
+                                                <div class="mui-h6 mui-ellipsis-3">分量足，我很喜欢。</div>
+                                                <div class="mui-h6 right_time">2016.11.21</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mui-table-view-cell">
+                                        <div class="cssBox">
+                                            <img src="images/storeList/6.jpg" class="head_img"/>
+                                            <div class="flex vertical marl10">
+                                                <b class="font14 color_a">1838****137</b>
+                                                <div class="color_z">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <span class="marr_l5 mui-h6">23分钟到达</span>
+                                                </div>
+                                                <div class="mui-h6 mui-ellipsis-3">分量足，我很喜欢。</div>
+                                                <div class="mui-h6 right_time">2016.11.21</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end-->
+                </div>
+                <!--商家-->
+                <div class="swiper-slide">
+                    <div class="swiper-container swiper-gallery">
+                        <div class="swiper-scrollbar"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="mui-row">
+                                    <div class="mui-table-view po_r">
+                                        <div class="mui-table-view-cell mui-row mui-h5">
+                                            <div class="mui-col-xs-1 mui-text-left"><i class="fa fa-heart-o font16"></i></div>
+                                            <div class="mui-col-xs-11">
+                                                <div class="cssBox justify">
+                                                    <div>用户评价4.7分</div>
+                                                    <div>月售：320份</div>
+                                                </div>
+                                            </div>
+                                            <div class="mui-col-xs-1 mui-text-left"><i class="fa fa-clock-o font16"></i></div>
+                                            <div class="mui-col-xs-11">10:00 - 20:00</div>
+                                            <div class="mui-col-xs-1"><i class="fa fa-map-marker font16 marll2"></i></div>
+                                            <div class="mui-col-xs-11 mui-ellipsis">广州市白云区联合御风广场第一栋1号</div>
+                                            <div class="mui-col-xs-1"><i class="fa fa-phone font16 marll2"></i></div>
+                                            <div class="mui-col-xs-11">020-86596521</div>
+                                        </div>
+                                    </div>
+                                    <h5 class="mui-content-padded">商家优惠</h5>
+                                    <div class="mui-table-view">
+                                        <div class="mui-table-view-cell mui-row mui-h5">
+                                            <div class="mui-col-xs-12 mui-ellipsis">在线支付满30元减6元；特惠套餐7.8折！</div>
+                                            <div class="mui-col-xs-12 mui-ellipsis">支持在线支付，新用户立减11元。</div>
+                                        </div>
+                                    </div>
+                                    <h5 class="mui-content-padded">店铺图片</h5>
+                                    <div class="mui-content-padded">
+                                        <ul class="store_img">
+                                            <li><img src="images/order/t1.jpg" width="100%"/></li>
+                                            <li><img src="images/order/t2.jpg" width="100%"/></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end-->
+            </div>
+        </div>
+    </div>
+    <!--底部-->
+    <div class="cssBox justify bg_while height50 bor-t" id="bottom_box">
+        <div class="foot_left_c"></div>
+        <div class="flex box-pack translate_l">
+            <!--<div class="font16">购物车是空的</div>-->
+            <div class="font16">
+                <div class="color_z">
+                    共<small> ¥ </small><span>50</span>
+                </div>
+                <div class="mui-h6">另需配送费5元</div>
+            </div>
+        </div>
+        <div class="foot_right_c">
+            <div class="mui-text-right mui-h5 l-height50 marr15">20元起送</div>
+            <!--<button type="submit" class="cartForm">选好了</button>-->
+        </div>
+    </div>
+    <!--end-->
+    <!--底部滑出订单详情-->
+    <div class="order_msg bg_while">
+        <div class="order-p">
+            <!--购物车圈-->
+            <div class="cart_shop_box">
+                <div class="ocart ocartbox active" id="shopCart">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span class="mui-badge">1</span>
+                </div>
+            </div>
+            <i class="fa fa-caret-up s-icon"></i>
+            <!--订单-->
+            <div class="order_menu">
+                <div class="mui-text-right mui-h5 marb5"><i class="fa fa-trash"></i><span class="marll5" id="clearCart">清空购物车</span></div>
+                <ul class="order_list mui-clearfix">
+                    <li class="mui-row mui-h5">
+                        <div class="mui-col-xs-7 mui-ellipsis">生煎先生（4个）</div>
+                        <div class="mui-col-xs-5">
+                            <div class="cssBox justify">
+                                <div class="color_z"><small>¥</small>15.00</div>
+                                <div class="">
+                                    <div class="cart_icon minus_m minus">-</div>
+                                    <input type="text" value="0" maxlength="99" readonly="">
+                                    <div class="cart_icon minus_a plus">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mui-row mui-h5">
+                        <div class="mui-col-xs-7 mui-ellipsis">生煎先生（4个）</div>
+                        <div class="mui-col-xs-5">
+                            <div class="cssBox justify">
+                                <div class="color_z"><small>¥</small>15.00</div>
+                                <div class="">
+                                    <div class="cart_icon minus_m minus">-</div>
+                                    <input type="text" value="0" maxlength="99" readonly="">
+                                    <div class="cart_icon minus_a plus">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="mui-row mui-h5">
+                        <div class="mui-col-xs-7 mui-ellipsis">生煎先生（4个）</div>
+                        <div class="mui-col-xs-5">
+                            <div class="cssBox justify">
+                                <div class="color_z"><small>¥</small>15.00</div>
+                                <div class="">
+                                    <div class="cart_icon minus_m minus">-</div>
+                                    <input type="text" value="0" maxlength="99" readonly="">
+                                    <div class="cart_icon minus_a plus">+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--end-->
+    </div>
+    <!--清除购物车弹框-->
+    <div class="sj_alert">
+        <div class="sj-popup">
+            <!--<h3 style="">卡券使用提示</h3>-->
+            <div class="sj_alert_title sj_danger">温馨提示</div>
+            <div class="tipList clearfix">
+                <div class="center padt20">确定要清空购物车吗？</div>
+            </div>
+            <!--btn-->
+            <div class="sj_btn">
+                <span class="sj_btn_t" id="sure">确定</span>
+                <span class="sj_btn_t close_s">取消</span>
+            </div>
+        </div>
+    </div>
+    <!--end-->
+    <div class="maskbox"></div>
+    <!--end-->
+</div>
+
+<script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/jquery.nicescroll.js"></script>
+<script src="<{$siteurl}>/newstyle/js/jquery.fly.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/mui.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/top_b/idangerous.swiper.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/top_b/idangerous.swiper.scrollbar-2.0.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/cart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+
+    $(function(){
+    	
+        //Init Navigation
+        var nav = $('.swiper-nav').swiper({
+            slidesPerView: 'auto',
+            freeMode:true,
+            noSwiping : true,
+            freeModeFluid:true,
+            calculateHeight : true,
+            visibilityFullFit: true,
+            onSlideClick: function(nav){
+                pages.swipeTo( nav.clickedSlideIndex )
+            }
+        });
+
+        //Function to Fix Pages Height
+        function fixPagesHeight() {
+            $('.swiper-pages').css({
+                height: $(window).height()-nav.height-140
+            })
+        }
+        $(window).on('resize',function(){
+            fixPagesHeight()
+        });
+        fixPagesHeight();
+
+        //Init Pages
+        var pages = $('.swiper-pages').swiper({
+            noSwiping : true,
+            onSlideChangeStart: function(){
+                $(".swiper-nav .active").removeClass('active');
+                $(".swiper-nav .swiper-slide").eq(pages.activeIndex).addClass('active')
+                if(pages.activeIndex == 0){
+                    $('#bottom_box,.order_msg').fadeIn();
+                }else{
+                    $('#bottom_box,.order_msg').hide();
+                }
+            }
+        });
+
+        //Scroll Containers
+        $('.scroll-container').each(function(){
+            $(this).swiper({
+                mode:'vertical',
+                scrollContainer: true,
+                mousewheelControl: true,
+                scrollbar: {
+                    container:$(this).find('.swiper-scrollbar')[0]
+                }
+            })
+        });
+
+        //Gallery
+        var swiperGallery = $('.swiper-gallery').swiper({
+            mode: 'vertical',
+            slidesPerView: 'auto',
+            freeMode: true,
+            freeModeFluid: true,
+            scrollbar: {
+                container:$('.swiper-gallery .swiper-scrollbar')[0]
+            }
+        });
+
+        swiperGallery.reInit()
+
+    })
+    
+    
+var baoshifu = false;
+function loaded() { 
+	if( baoshifu == false ){
+		baoshifu = true;
+		getcatefoods();	
+	}
+}
+
+function getcatefoods(){
+	 
+	var curcateid = $(".ordisordLeft li.ordisordaA").attr('cateid');
+ 
+		$("#catefoods").html('');
+		var url = '<{ofunc type=url link="/wxsite/catefoods"}>'; 
+				$.post(url, {'curcateid':curcateid,'shoptype':<{$shopinfo['shoptype']}>,'shopid':<{$shopinfo['id']}>,'type':1},function (data, textStatus){ 
+						$('#catefoods').html(data); 
+				   freshcart();
+				 scroll2.refresh();
+			 
+						$('.righ_l_b_btn_moren').unbind();
+						
+					 
+						   $('.right_l_btn_left').bind("click", function() {   
+						   if(lockclick()){ 
+									if($(this).attr('have_det') == 1){
+									removeoneproduct($(this).attr('data-id'),$(this).attr('data-shopid'),1);
+								   }else{
+									removeonedish($(this).attr('data-id'),$(this).attr('data-shopid'),1);
+									}
+									}
+						  }); 
+						   $('.right_l_btn_right').bind("click", function() {   
+									if(lockclick()){
+									 if($(this).attr('have_det') == 1){
+										addproduct($(this).attr('data-id'),$(this).attr('data-shopid'),1,this);
+									 }else{
+										addonedish($(this).attr('data-id'),$(this).attr('data-shopid'),1,this);
+								   }
+								  }
+								 
+						  }); 	
+					}, 'html');
+					
+}	
+
+</script>
+<script>
+
+    //    tab菜单样式切换
+    $(".sortlist li").click(function(e){
+        e.preventDefault();
+        var i = $(this).index();
+        $(".sortlist li").removeClass('active').eq(i).addClass('active');
+        $('.show_page').hide().eq(i).show();
+    });
+
+    //  隐藏滚动条
+    $('.hideScroll').niceScroll({cursoropacitymax: 0});
+
+    //  点击购物车订单详情出现和隐藏
+    $('.maskbox').height($(document).height());
+    $(".ocartbox,.maskbox").click(function(){
+        $(".maskbox").fadeToggle(300);
+        $('.order_menu').slideToggle(300);
+        $('.foot_left_c').toggle();
+        $('.translate_l').toggleClass('active');
+        $('.cart_shop_box').toggleClass('active')
+    });
+
+    //    购物车动画
+    $('.plus_show').click(function(){
+        $('.mui-none').addClass('on');
+        $('.ocart').addClass('on');
+        setTimeout(function(){
+            $('.ocart').removeClass('on');
+        },1000);
+    });
+
+    //    商品飞入购物篮
+    $(function() {
+        var offset = $(".ocart").offset();
+        $(".shop_fly").click(function(event){
+            var addcar = $(this);
+            var img = addcar.parents(".cart_btn_box").siblings("img").attr('src');
+            var flyer = $('<img  class="fly_img" src="'+img+'" />');
+            flyer.fly({
+                start: {
+                    left: event.pageX,
+                    top: event.pageY
+                },
+                end: {
+                    left: offset.left+10,
+                    top: offset.top+10,
+                    width: 0,
+                    height: 0
+                },
+                onEnd: function(){
+                    this.destory();
+                }
+            });
+        });
+
+        $(".minus_fly").click(function(event){
+//            $('.mui-none').removeClass('on');
+            $('.ocart').addClass('on');
+            setTimeout(function(){
+                $('.ocart').removeClass('on');
+            },1000);
+
+            var addcar = $(this);
+            var img = addcar.parents(".cart_btn_box").siblings("img").attr('src');
+            var flyer = $('<img  class="fly_img" src="'+img+'" />');
+            flyer.fly({
+                start: {
+                    left: offset.left+10,
+                    top: offset.top+10,
+                    width: 0,
+                    height: 0
+                },
+                end: {
+                    left: event.pageX,
+                    top: event.pageY
+                },
+                onEnd: function(){
+                    this.destory();
+                }
+            });
+        });
+    });
+
+
+    //    清空购物车
+    $('#sure').click(function(){
+        $('.order_list').empty();
+        $('.sj_alert').fadeOut();
+        $(".maskbox").fadeToggle(300);
+        $('.order_menu').slideToggle(300);
+    });
+
+    //   打开清空购物车弹框
+    $('#clearCart').click(function(){
+        $('.sj_alert').fadeIn();
+    });
+
+    //    关闭清空购物车弹框
+    $('.close_s').click(function(){
+        $('.sj_alert').fadeOut();
+    });
+</script>
+
+</body>
+</html>

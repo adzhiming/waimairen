@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>赞赏殷勤的<{$empInfo['applypost']}></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link href="<{$siteurl}>/newstyle/css/reward/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/reward/style.css">
+	<style>
+		html,body{height: 100%;}
+	</style>
+</head>
+<body>
+<form action="<{ofunc type=url link='/wxsite/weixin_reward_commit'}>" method="post" id="theForm"  onsubmit="return validate_form(this)">
+<div class="cssBox boxAlign" style="margin-bottom: 3%;">
+    <div class="photo">
+        <!-- <img src="<{$siteurl}>/newstyle/images/reward/vs.png" /> -->
+        <div class="box">
+            <img src="<{$empInfo['picurl']}>" />
+            <div class="textEdit bgcolor"><{$empInfo['name']}></div>
+        </div>
+    </div>
+<!--     <div class="rightBox">
+        <div class="textEdit bgcolor"><{$empInfo['name']}></div>
+    </div> -->
+</div>
+
+
+
+	<div style="overflow: hidden;">
+    <div class="textEdit bgcolor1">
+        <div class="pfCommon pf">评分：</div>
+        <div class="pfCommon showPf" id="target"></div>
+    </div>
+    <div id="star"></div>
+    <div class="textEdit bgcolor1">
+        <div class="pfCommon pf">点评：</div>
+        <div class="pfCommon showPf">
+			<{if $recordInfo.comment == ''}>
+				<input type="text"  class="inputStyle" id="dianping" name="dianping" value="很好" placeholder="点评"/>
+			<{else}>
+				<input type="text"  class="inputStyle" id="dianping" name="dianping" value="<{$recordInfo.comment}>" placeholder="点评"/>
+			<{/if}>
+		</div>
+    </div>
+	    <ul class="pjList" id="goodp">
+            <li <{if $recordInfo.comment == $re_array_set.comment1||$recordInfo.comment == ''}>class="active"<{/if}>><{$re_array_set.comment1}></li>
+            <li <{if $recordInfo.comment == $re_array_set.comment2}>class="active"<{/if}>><{$re_array_set.comment2}></li>
+            <li <{if $recordInfo.comment == $re_array_set.comment3}>class="active"<{/if}>><{$re_array_set.comment3}></li>
+            <li <{if $recordInfo.comment == $re_array_set.comment4}>class="active"<{/if}>><{$re_array_set.comment4}></li>
+	        <li <{if $recordInfo.comment == $re_array_set.comment5}>class="active"<{/if}>><{$re_array_set.comment5}></li>
+	    </ul>
+	
+	    <!-- <div class="textEdit bgcolor">点评人：<span>小帅</span></div> -->
+	    <div class="twoButton">
+	        <input type="hidden" name="Ctype" id="Ctype" value="dz">
+	        <a href="<{ofunc type=url link='/wxsite/employeeList/sn/'}><{$sn}>"><button type="button" style="margin-right: 10%;">赏金排行</button></a>
+	        <input type="hidden" name="sn" id="sn" value='<{$sn}>'>
+	        <input type="hidden" name="payment_no" id="payment_no" value='<{$payment_no}>'>
+	        <button type="button" class="saveDp">保存点评</button>
+	    </div>
+	
+	</div>
+
+<div class="box2">
+    <div class="boxTitle"><b>介绍说明</b></div>
+    <p><{$re_array_set.memo}></p>
+</div>
+</form>
+<script src="<{$siteurl}>/newstyle/js/reward/jquery-1.12.2.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/reward/jquery.raty.js"></script> 
+<script src="<{$siteurl}>/templates/adminpage/public/js/allj.js"></script>
+<script>
+
+    //    评分
+       $('#star').raty({
+        path: 'http://eat.banklay.cn/newstyle/images/reward/',
+        starOff: 'star-off-big.png',
+        starOn: 'star-on-big.png',
+        target : '#target',
+        targetText : 5,//"<{$recordInfo.start}>",
+        targetType: 'number',
+        score: 5,//"<{$recordInfo.start}>"
+
+    });
+
+    //    点评
+    $('#goodp li').click(function(){
+        var i = $(this).index();
+        $('#goodp li').stop().removeClass('active').eq(i).stop().addClass('active');
+        var j = $(this).text();
+        $('#dianping').val(j);
+    });
+
+    $(document).click(function(){
+    	var score = $("input[name=score]").val();
+        $('#target').html(score);
+        })
+    
+    $('.saveDp').click(function(){
+    	var score = $("input[name=score]").val();
+    	var dianping = $("#dianping").val();
+    	var sn = $("#sn").val();
+    	var payment_no = $("#payment_no").val();
+    	if($("input[name=score]").val() <1 ){
+			  alert("请填写评分!");
+			  return false;
+	    }
+    	if(payment_no =="" ){
+			  alert("获取单号失败!");
+			  return false;
+	    }
+
+        var data = { 'Ctype':'dz', 'score':score, 'dianping':dianping, 'payment_no':payment_no};
+        var url = '<{ofunc type=url link="/wxsite/weixin_reward_commit/random/@random@/datatype/json"}>'; 
+        var backdata = ajaxback(url,data); 
+        if(backdata.flag == false){
+            alert('保存成功');
+            location.href= backdata.content +"/wxsite/weixin_reward?sn="+sn+"&payment_no="+payment_no;
+        }else{
+            alert(backdata.content);
+            location.href = window.history.back(-1); 
+        }
+
+
+/*
+    	var ajaxUrl ="{:U('Third/weixin_reward_commit')}"
+    	$.ajax({
+			method:"POST",
+			url:ajaxUrl,
+			async:false,
+			data:{
+				    Ctype:'dz',
+				    score:score,
+				    dianping:dianping,
+				    payment_no:payment_no
+				},
+			success: function(data){
+				//console.log(data);
+				if(data.code){
+					alert('保存成功');
+					location.href="{:U('Third/weixin_reward')}?sn="+sn+"&payment_no="+payment_no;
+				}
+				else{
+					alert('保存失败')
+					location.href="{:U('Third/weixin_reward_index')}";
+				}
+			}
+    	})	*/
+    })
+    			
+   
+        
+        function validate_form(){
+    	if($("input[name=score]").val() <1 ){
+			  alert("请填评分!");
+			  return false;
+		  }
+    }
+
+	$("img").error(function() {
+		$(this).attr("src", "http://eat.banklay.cn/newstyle/images/reward/a1.jpg");
+	});
+</script>
+</body>
+</html>

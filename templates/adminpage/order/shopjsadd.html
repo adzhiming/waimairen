@@ -1,0 +1,152 @@
+ <{extends file="<{$tempdir}>/public/admin.html"}>
+   <{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+
+
+<{/block}>
+ <{block name=controlname}>未结算店铺查询<{/block}>
+ <{block name=bodylist}>
+   <div style="width:auto;overflow-x:hidden;overflow-y:auto">
+
+      	  <div class="search">
+
+
+            <div class="search_content">
+				<form method="post" name="form1" action="<{ofunc type=url link="/adminpage/order/module/shopjsadd"}>">
+
+            	  <label>选择查询日期</label><input class="Wdate datefmt" name="daytime" id="daytime" value="<{$showtime}>" onfocus="WdatePicker({isShowClear:false,readOnly:true});" type="text">
+			   	  
+            	    <input value="提交查询" class="button" type="submit">
+            	 </form>
+            	   <div class="select_page" style="width:100%;">
+                 	      	<a href="#" onclick="checkword(true);">全选</a>/<a href="#" onclick="checkword(false);">取消</a>
+                 	     <a  onclick="bkbase();" href="#"   class="delurl">立即结算</a>
+                 	     <span id="showstatus">注意每次加载最多100个店铺生成结算单结束后再刷新本页一次</span>
+
+                 </div>
+            </div>
+
+      	</div>
+
+
+           <div class="tags">
+
+          <div id="tagscontent">
+
+            <div id="con_one_1">
+
+              <div class="table_td" style="margin-top:10px;">
+
+              <form method="post" action="" onsubmit="return remind();" id="delform">
+
+                  <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+
+                    <thead>
+
+                      <tr>
+
+                        <th width="60px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+
+                        <th align="center">表名</th>
+                        <th align="center">&nbsp;</th>
+                      </tr>
+
+                    </thead>
+
+                     <tbody>
+
+                      <{foreach from=$shoplist item=items}>
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='ffffff';" bgcolor="#ffffff">
+                        <td align="center" ><input type="checkbox" name="id[]" value="<{$items['id']}>" data="<{$items['shopname']}>" ></td>
+                        <td align="center"><{$items['shopname']}></td>
+                        <td id="table_<{$items['id']}>">&nbsp;</td>
+
+                      </tr>
+                       <{/foreach}>
+
+                    </tbody>
+
+                  </table>
+
+                <div class="blank20"></div>
+
+
+
+                </form>
+
+                <div class="page_newc">
+
+
+                 </div>
+
+                <div class="blank20"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+  </div>
+
+</div>
+<!--newmain 结束-->
+<script>
+	//空气开始结束
+	//时间间隔
+	function bkbase(){
+		var dotable = '';
+		var dotname = '';
+		$("input[name='id[]']").each(function(){
+		 if($(this).is(":checked")){
+		 	 if($(this).attr('disabled')==false){
+		 	 	dotable = $(this).val();
+				dotname = $(this).attr('data');
+		 	 	$(this).attr('disabled',true);
+		 	 	 return false;
+		 	 }
+		 	}
+	 });
+	 if(dotable !=''){
+	 	 $('#showstatus').text('结算'+dotname+'表');
+	 	$.ajax({
+     type: 'post',
+     async:false,
+     data:{'shopid':dotable,'daytime':'<{$showtime}>'},
+   url: '<{ofunc type=url link="/adminpage/order/module/makejsorder/datatype/json"}>',
+     dataType: 'json',success: function(content) {
+     	if(content.error == false){
+     		$('#table_'+dotable).text('ok');
+     	}else{
+     		if(content.error == true)
+     		{
+     			$('#showstatus').text(content.msg);
+     			 $('#table_'+dotable).text(content.msg);
+     		}else{
+     			//diaerror(content);
+     			$('#showstatus').text(content);
+     			 $('#table_'+dotable).text(content);
+     		}
+     	}
+     	setTimeout("bkbase()",200);
+	   },
+     error: function(content) {
+     	 $('#showstatus').text('数据获取失败');
+       $('#table_'+dotable).text('数据获取失败');
+       setTimeout("bkbase()",200);
+	     }
+     });
+
+
+	 }else{
+	 	 $('#showstatus').text('结算完成');
+	 }
+
+		//
+	}
+</script>
+<{/block}>

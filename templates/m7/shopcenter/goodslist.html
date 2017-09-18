@@ -1,0 +1,673 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script>
+    var mynomenu='basemenu';
+</script>
+<{/block}>
+<{block name=bodylist}>
+
+<script id="adddet" type="text/html">
+    <table width=300px id="dovalueid">
+        <tr><th height=25px width=70%>图片</th><th width=30%>操作</th></tr>
+        <^% if(det.length > 0){%^>
+        <^% for(var i=0;i< det.length;i++){%^>
+        <tr class="shujudata"><td height=25px width=70%><img src="<^%=det[i].imgurl%^>" width=15px height=15px class="imgshow"   ><input type="hidden" name="ids[]" value="<^%=det[i].id%^>"><input type="hidden"   name="name[]" value="<^%=det[i].imgurl%^>"><span onclick="uploads(this);" style="font-size:12px;">上传</span></td><td width=30%><a href="#" onclick="delhang(this);">删除</a></td></tr>
+        <^%}%^>
+        <^%}%^>
+        <tr><td colspan="3"><input type="button" value="添加一张" class="button" onclick="addhang(this);"></td></tr>
+        <!--<tr><td height=25px>&nbsp;</td><input type="hidden" name="id" value="<^%=id%^>"> <td colspan="2"><input type="submit" value="提交保存" class="button"></td></tr>-->
+    </table>
+</script>
+<img id="goodmodule1" class="showmoduleimg" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/goodmodule1.png" />
+<img id="goodmodule2"  class="showmoduleimg" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/goodmodule2.png" />
+<!--content right start-->
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">菜单设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <div class="orderset">
+            <div class="shgiftset" style="top: 0;right:0;">
+                <div class="fl"><input type="text" id="shoptypename" name="shoptypename" value=""  class="form-control"/></div>
+                <div class="btn-a btn-prim"  id="add_FoodType" style="margin-left: 20px;">添加分类</div>
+            </div>
+           <!--  <div class="shgiftset">
+                <div class="fl" style="color:#333;font-size: 14px;">商品模板：</div>
+
+                <div class="shgift_right">
+                    <div  style="float:left;" ><input type="radio" name="goodlistmodule" value="0" <{if $shopinfo['goodlistmodule'] == 0 }> checked <{/if}> >1*1</div>
+                    <img id="defaultgoodmoduleimg" style="float:left;cursor:pointer; width:30px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/iconfont-tupian.png" />
+                    <div  style="float:left;" ><input type="radio" name="goodlistmodule" value="1" <{if $shopinfo['goodlistmodule'] == 1 }> checked <{/if}> >1*2</div>
+                    <img  id="newgoodmoduleimg"  style="float:left;cursor:pointer; width:30px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/iconfont-tupian.png" />
+                </div>
+                <div class="shgift_but fl">
+                    <button class="btn-a btn-prim" type="button">保存</button>
+                </div>
+                <div class="shgift_but_a fl" style="margin-left: 20px;">
+                    <button class="btn-a btn-prim" type="button"><a href="<{ofunc type=url link="/shopcenter/outgoods"}>" target="_blank" style="color:#fff;">导出</a></button> -->
+                    <!--<span><a href="<{ofunc type=url link="/shopcenter/outgoods"}>" target="_blank"></a></span>-->
+           <!--      </div>
+            </div> -->
+            <style>
+                .showmoduleimg{display:none;width:375px; height:667px; position:absolute; z-index:99999;top:50%; left:50%; margin-left:-187px; margin-top:-333px;}
+                .shgiftset{ color:#ffffff; height: 38px; line-height: 38px; }
+                .shgiftset .shgift_left{ float:left; height: 38px;  padding:0px 10px;  line-height: 38px;    text-align: center;  margin-right:10px;  background: #EC7501;}
+                .shgiftset .shgift_right{ float:left;margin-right:20px; }
+                .shgiftset .shgift_end{ float:left;margin-right:20px; }
+                .shgiftset .shgift_but{ float:left; }
+            </style>
+            <script>
+                $(".shgift_but").click(function(){
+                    var goodlistmodule = $("input[name=goodlistmodule]:checked").val();
+
+                    var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/savegoodsmoduletype/datatype/json"}>',{'moduletype':goodlistmodule,'shopid':<{$shopinfo['id']}>});
+                        if(backinfo.flag == true)
+                        {
+                            //	hideop();
+                            diaerror(backinfo.content)
+                        }else{
+                            //	hideop();
+                            artsucces('保存成功');
+                            location.reload();
+                        }
+                        });
+
+                $("#defaultgoodmoduleimg").hover(function(){
+                    $("#goodmodule1").show();
+                },function(){
+                    $("#goodmodule1").hide();
+                });
+                $("#newgoodmoduleimg").hover(function(){
+                    $("#goodmodule2").show();
+                },function(){
+                    $("#goodmodule2").hide();
+                });
+            </script>
+        </div>
+        <form action="" method="post">
+            <div class="caidanSet" style="width: 100%;">
+                <div class="caidanTitle mart10">
+                    <ul>
+                        <{foreach from=$list key=myid item=items}>
+                        <li  data="<{$items['id']}>"  dataname="<{$items['name']}>" dataorder="<{$items['orderid']}>"><{$items['name']}></li>
+                        <{/foreach}>
+                    </ul>
+                    <div class="editGtype" id="editGtype">
+                        <div class="delGDtype curbtn" ></div>
+                        <div class="editGDtype curbtn"></div>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>食品名称</th>
+                        <th>价格（元）</th>
+                        <th>打包费（元）</th>
+                        <th>每日数量</th>
+                        <th>上、下架</th>
+                        <th>排序</th>
+                        <th>支持类型</th>
+                        <th>卡券支付优惠类型</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <{foreach from=$list key=myid item=items}>
+                    <tbody id="subaddtype_<{$items['id']}>">
+                    <{foreach from=$items['det']  item=ite}>
+                    <tr  class="listgoodsdet goodsdiv_<{$items['id']}>  goodstr_<{$ite['parentid']}>"   data="<{$ite['id']}>" id="goodstr_<{$ite['id']}>" have_det="<{$ite['have_det']}>">
+                        <td><p class="name"><{$ite['name']}></p></td>
+                        <td><p class="cost"><{$ite['cost']}></p></td>
+                        <td><p class="bagcost"><{$ite['bagcost']}></p></td>
+                        <td><p class="count"><{$ite['count']}></p></td>
+                        <td><span class="is_live"><{if $ite['is_live'] ==1}>已上架<{else}>已下架<{/if}></span></td>
+                        <td><p class="good_order"><{$ite['good_order']}></p></td>
+                        <td> 
+                            <input type="checkbox" name="is_waisong" onclick="changegoods('<{$ite['id']}>','<{$ite['is_waisong']}>','ws')"  <{if $ite['is_waisong']==1}>checked<{/if}>>外送
+                           <{if $ite['shoptype'] == 0  }>
+                           <input type="checkbox" name="is_dingtai"   onclick="changegoods('<{$ite['id']}>','<{$ite['is_dingtai']}>','dt')" <{if $ite['is_dingtai']==1}>checked<{/if}>>堂食    
+                           <{/if}>
+                        </td>
+                        <td> 
+                            <input type="checkbox" name="is_membercard" onclick="changepayment('<{$ite['id']}>','<{$ite['is_membercard']}>','card')"  <{if $ite['is_membercard']==1}>checked<{/if}>>会员卡和优惠券
+                          
+<!--                           <input type="checkbox" name="is_coupon"   onclick="changepayment('<{$ite['id']}>','<{$ite['is_coupon']}>','coupon')" <{if $ite['is_coupon']==1}>checked<{/if}>>优惠券    -->
+                          
+                        </td>
+                        <td>
+                            <a  onclick="editgoods('<{$ite['id']}>');">编辑</a> /
+                            <a  onclick="delgoods('<{$ite['id']}>');">删除</a> /
+                            <a  onclick="setattr('<{$ite['id']}>');">上传多图</a>
+                        </td> 
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                    <{/foreach}>
+                    <tbody  id="additem" style="display:none;" >
+                    <input type="hidden" name="adgoodstypeid" value="">
+                    <tr     data="<{$ite['id']}>" id="goodstr_<{$ite['id']}>" have_det="<{$ite['have_det']}>">
+                        <td><input style="width:50%;" type="text" value="" name="adgoodname" placeholder="商品名称"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodcost" placeholder="商品单价"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodbagcost" placeholder="打包费"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodcount" placeholder="商品数量" onkeyup="this.value=this.value.replace(/\D/g,'')" /></td>
+                        <td><span class="is_live">下架</span><input type="hidden" name="add_islive" value="1"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodpaixu" placeholder="商品排序"/></td>
+                        <td> 
+                            <input type="checkbox" name="is_waisong" value="1" onclick="changegoods('<{$ite['id']}>','<{$ite['is_waisong']}>','ws')"  <{if $ite['is_waisong']==1}>checked<{/if}>>外送
+                           <{if $ite['shoptype'] == 0  }>
+                           <input type="checkbox" name="is_dingtai" value="1"  onclick="changegoods('<{$ite['id']}>','<{$ite['is_dingtai']}>','dt')" <{if $ite['is_dingtai']==1}>checked<{/if}>>堂食    
+                           <{/if}>
+                        </td>
+                        <td> 
+                            <input type="checkbox" name="is_membercard" onclick="changepayment('<{$ite['id']}>','<{$ite['is_membercard']}>','card')"  <{if $ite['is_membercard']==1}>checked<{/if}>>会员卡和优惠券
+                          
+<!--                           <input type="checkbox" name="is_coupon"   onclick="changepayment('<{$ite['id']}>','<{$ite['is_coupon']}>','coupon')" <{if $ite['is_coupon']==1}>checked<{/if}>>优惠券    -->
+                          
+                        </td>
+                        <td>
+                            <span style=" background:#27a9e3; padding:8px; color:#fff;" class="curbtn" id="saveaddgoods">保存</span>
+                        </td> 
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="mart10">
+                    <div class="order_goodlist">
+                        <div class="cd_name" style=" border:none;">
+                            <span  class="btn-a btn-prim" id="addgoods">添加菜品</span>
+                        </div>
+                        <div class="cd_name" style=" border:none;">
+                            <span style=" background:#F60;" class="btn-a btn-prim" onclick="alltoshopgoods();" >从商品库中快速添加商品</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    //上传多张商品图片
+    function setattr(gid){
+        dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=shopcenter&action=goodsupload&goodsid='+gid,{height:'660px',width:'1029px'},false);
+        dialogs.title('上传商品图片');
+    }
+
+    // 商品库 
+    function alltoshopgoods(){
+        var fenleiid =  $('.caidanTitle li.cur').attr('data');
+        dialogs = art.dialog.open(siteurl+'/index.php/<{$mid}>/shopcenter/alltoshopgoods/fenleiid/'+fenleiid,{height:'660px',width:'829px'});
+        dialogs.title('从商品库中快速添加商品到所属分类下');
+    }
+
+    function deltogoods(goodsid,fenleiid){
+
+        $(' .goodstr_'+goodsid).remove();
+    }
+
+       function addtogoods(goodsinfo,fenleiid){
+             // var htmldata ='<tr class="listgoodsdet goodsdiv_'+backinfo.content.typeid+'" data="'+backinfo.content.id+'" id="goodstr_'+backinfo.content.id+'" have_det="'+backinfo.content.have_det+'">';
+             //   htmldata +='<td><p class="name">'+backinfo.content.name+'</p></td>';
+             //   htmldata += '<td><p class="cost">'+backinfo.content.cost+'</p></td>';
+             //   htmldata +='<td><p class="bagcost">'+backinfo.content.bagcost+'</p></td>';
+             //   htmldata += '<td><p class="count">'+backinfo.content.count+'</p></td>';
+             //   htmldata +='<td>';
+             //   if(backinfo.content.is_live == 1){
+             //       htmldata += '<span class="is_live">下架</span>';
+             //   }else{
+             //       htmldata += '<span class="is_live">上架</span>';
+             //   }
+             //   htmldata += '</td>';
+             //   htmldata += '<td><p class="good_order">'+backinfo.content.good_order+'</p></td>';
+             //   htmldata += '<td>';
+             //   htmldata += '<a onclick="editgoods(\''+backinfo.content.id+'\');">编辑</a> / ';
+             //   htmldata += '<a onclick="delgoods(\''+backinfo.content.id+'\');">删除</a> / ';
+             //   htmldata += '<a onclick="setattr(\''+backinfo.content.id+'\');">上传多图</span>';
+             //   htmldata += '</td>';
+             //   htmldata += '</tr>';
+           var html = '<tr class="	listgoodsdet goodsdiv_'+goodsinfo.id+'  goodstr_'+goodsinfo.id+'  " data="'+goodsinfo.id+'" id="goodstr_'+goodsinfo.id+'" >';
+           html +='<td><p class="name">'+goodsinfo.name+'</p></td>';
+           html +='<td><p class="cost">'+goodsinfo.cost+'</p></td>';
+           html +='<td><p class="bagcost">0</p></td>';
+           html += '<td><p class="count">100</p></td>';
+           html +='<td>';
+           if(goodsinfo.is_live == 1){
+               html += '<span class="is_live">已上架</span>';
+           }else{
+               html += '<span class="is_live">已下架</span>';
+           }
+           html += '</td>';
+           html += '<td><p class="good_order">0</p></td>';
+    
+           html += '<td><input type="checkbox" name="is_waisong" onclick="changegoods(\''+goodsinfo.id+'\',\''+goodsinfo.is_waisong+'\',\'ws\')" checked /> 外送';
+           html += '<input type="checkbox" name="is_dingtai" onclick="changegoods(\''+goodsinfo.id+'\',\''+goodsinfo.is_dingtai+'\',\'dt\')" checked/> 堂食</td>'
+           html += '<td><input type="checkbox" name="is_membercard" onclick="changepayment(\''+goodsinfo.id+'\',\''+goodsinfo.is_membercard+'\',\'card\')" checked /> 会员卡和优惠券</td>';
+           html += '<td><a onclick="editgoods('+goodsinfo.id+');">编辑</a> /';
+           html += '<a onclick="delgoods('+goodsinfo.id+');">删除</a> /';
+           html += '<a onclick="setattr('+goodsinfo.id+');">上传多图</a>';
+           html += '</td>';
+           html += '</tr>';
+           $('#subaddtype_'+fenleiid).append(html);
+       }
+
+
+    // function addtogoods(goodsinfo,fenleiid){
+    //     var html = '<div class="order_list	listgoodsdet goodsdiv_'+goodsinfo.id+'  goodstr_'+goodsinfo.id+'  " data="'+goodsinfo.id+'" id="goodstr_'+goodsinfo.id+'" >';
+    //     html += '<div class="order_goodlist">';
+    //     html += ' <div class="cd_name" style="width:247px;">';
+    //     html += '<p class="name">'+goodsinfo.name+'</p>';
+    //     html += '</div>';
+    //     html += '<div class="cd_price">';
+    //     html += '<p class="cost">'+goodsinfo.cost+'</p>';
+    //     html += '</div>';
+    //     html += '<div class="cd_dbf">';
+    //     html += '<p class="bagcost">0</p>';
+    //     html += '</div>';
+    //     html += '<div class="cd_dayNum"style="width:80px;">';
+    //     html += '<p class="count">100</p>';
+    //     html += '</div>';
+    //     html += '<div class="cd_dayNum"style="width:80px;">';
+    //     if(goodsinfo.is_live == 1){
+    //         html += '<span class="is_live">下架</span>';
+    //     }else{
+    //         html += '<span class="is_live">上架</span>';
+    //     }
+    //     html += '</div>';
+    //     html += '<div class="cd_order"style="width:79px;">';
+    //     html += '<p class="good_order">0</p>';
+    //     html += '</div>';
+    //     html += '<div class="cd_caozuo" style="width:190px;">';
+    //     html += '<span style=" background:#27a9e3; padding:8px; color:#fff;" class="curbtn" onclick="editgoods('+goodsinfo.id+');">编辑</span>';
+    //     html += '<span style=" background:#ec7501; padding:8px;margin-left:5px; color:#fff;" class="curbtn" onclick="delgoods('+goodsinfo.id+');">删除</span>';
+    //     html+='<span style=" background:#ec7501; margin-left:5px;padding:8px; color:#fff;" class="curbtn" onclick="setattr('+goodsinfo.id+');">上传多图</span>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     html += '</div>';
+    //     $('#subaddtype_'+fenleiid).append(html);
+    // }
+
+</script>
+
+<!--<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>-->
+<script>
+    $(function(){
+//删除分类
+        var checkisexti =  $('.caidanTitle').find('li').length;
+        if(checkisexti == 0){
+
+            $('.caidanSet').hide();
+        }
+        $('.delGDtype').live('click',function(){
+            if(confirm('确定删除商品操作吗？删除后将同时删除该分类下的所有商品')){
+                var allobj = $(".caidanSet").find('li');
+                var typeid = 0;
+                for(var i=0;i< $(allobj).length;i++){
+                    if($(allobj).eq(i).hasClass("cur") ==  true){
+                        typeid = $(allobj).eq(i).attr('data');
+                    }
+                }
+
+                myajax('<{ofunc type=url link="/shopcenter/delgoodstype/datatype/json"}>',{'addressid':typeid});
+            }
+        });
+//编辑分类
+        $('.editGDtype').live('click',function(){
+            var allobj = $(".caidanSet").find('li');
+            var typeid = 0;
+            var typename = '';
+            var typeorder = '';
+            for(var i=0;i< $(allobj).length;i++){
+                if($(allobj).eq(i).hasClass("cur") ==  true){
+                    typeid = $(allobj).eq(i).attr('data');
+                    typename = $(allobj).eq(i).attr('dataname');
+                    typeorder = $(allobj).eq(i).attr('dataorder');
+                }
+            }
+            var	htmls = '<form method="post" id="doshwoform" action="#" style="text-align:center;"><table>';
+            htmls += '<tbody><tr>';
+            htmls += '<td height="50px">分类名称:</td>';
+            htmls += '<td> <input type="text" name="newtypename" value="'+typename+'" style="width:100px;"></td></tr>';
+            htmls +='<tr><td height="50px">排序ID:</td><td style="text-align:left;"> <input type="text" name="newtypeorderid" value="'+typeorder+'" style="width:50px;"></td></tr>'
+            htmls += '</tbody></table> ';
+            htmls += '<input type="hidden" value="'+typeid+'" name="newtypeid"> ';
+            htmls += '<input type="button" value="确认提交" class="button" id="updategoodstype" ></form>';
+            art.dialog({
+                id: 'testID3',
+                title:'保存店铺分类',
+                content: htmls
+            });
+
+
+        });
+//保持编辑分类
+        $('#updategoodstype').live('click',function(){
+
+            showop('保存商品分类信息');
+            myajax('<{ofunc type=url link="/shopcenter/editgoodstype/datatype/json"}>',{'what':'allinfo','name':$('input[name="newtypename"]').val(),'orderid':$('input[name="newtypeorderid"]').val(),'addressid':$('input[name="newtypeid"]').val()});
+        });
+
+//添加商品分类
+        $("#add_FoodType").live("click", function() {
+            if($('#shoptypename').val() == ''||$('#shoptypename').val() ==null){
+                diaerror('分类不能空');
+            }else{
+                var mm = $('#shoptypename').val();
+                $('#shoptypename').val('')
+                myajax('<{ofunc type=url link="/shopcenter/savegoodstype/datatype/json"}>',{'name':mm,'orderid':$(".caidanSet").find('li').length});
+            }
+        });
+
+
+//导航条切换	
+        $(".caidanSet ul li").click(function(){
+            $(this).addClass('cur').siblings().removeClass('cur');
+            var tempid = $(this).attr('data');
+            $('.listgoodsdet').hide();
+            $('.goodsdiv_'+tempid).show();
+            $('input[name="adgoodstypeid"]').val(tempid);
+            $('#additem').hide();
+            //获取坐标
+            //
+            var fleft = $('.caidanSet').offset().left;
+            var zleft = $(this).offset().left;
+            var resulte = Number(zleft) -Number(fleft);
+            $('#editGtype').css('margin-left',resulte);
+        });
+        $(".caidanSet").find("li").eq(0).trigger("click");//设置默认第一个
+
+//快捷编辑商品					
+        $(".listgoodsdet td p").live("click", function() { 
+            var is_save = $(this).hasClass('now_edit');
+            var typename = $(this).attr('class');
+            var doc = $(this).text(); 
+            if(is_save){
+
+            }else{
+                $(this).addClass('now_edit');
+                var goodsid = $(this).parent().parent().attr('data');
+                var havedet = $(this).parent().parent().attr('have_det');
+
+                if(typename == 'cost' || typename=='count'){
+                    if(havedet == 1){
+                        alert('多规格,请到编辑里编辑子商品');
+                        return false;
+                    }
+                }
+                $(this).html('<input style="width:80px;" type="text" value="'+doc+'" id="'+typename+goodsid+'" \/> <span class="curbtn" onclick="savegoodtxt(\''+goodsid+'\',\''+typename+'\');">保存<\/span>');
+            }
+        });
+ 
+
+        //商品上下架
+        $(".listgoodsdet .is_live").live("click", function() {
+            var goodsid = $(this).parent().parent().attr('data');
+            var typename = $(this).attr('class');
+            var state = $(this).text(); 
+            savegoodlive(goodsid,typename,state);
+        });
+        function savegoodlive(goodsid,typename,state){
+            if(state == '已上架'){
+                var values=0;
+            }else if(state == '已下架'){
+                var values=1;
+            }
+            showop('保存商品信息');
+            var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/updategoods/datatype/json"}>',{'controlname':typename,'goodsid':goodsid,'values':values});
+            if(backinfo.flag == true)
+            {
+                hideop();
+                diaerror(backinfo.content);
+            }else{
+                hideop();
+                if(values == 1){
+                    var show='已上架';
+                }else{
+                    var show='已下架';
+                }
+                $('#goodstr_'+goodsid).find('.'+typename).text(show);
+                artsucces('保存成功');
+            }
+        }
+
+//显示添加商品
+        $('#addgoods').live('click',function(){ 
+            $('#additem').show();
+        });
+//提交添加商品
+        $('#saveaddgoods').live('click',function(){
+            var typeid =   $('input[name="adgoodstypeid"]').val();
+            var data1 = $('input[name="adgoodname"]').val();
+            var data2 = $('input[name="adgoodcost"]').val();
+            var data3 = $('input[name="adgoodbagcost"]').val();
+            var data4 = $('input[name="adgoodcount"]').val();
+            var data5 = $('input[name="adgoodpaixu"]').val();
+            var data6 = $('input[name="add_islive"]').val();
+            var data7 = 0;
+            var data8 = 0;
+            var data9 = 0;
+            if($(this).parents().find('input[name="is_waisong"]').get(0).checked){
+            	data7 = 1;
+            }
+            if($(this).parents().find('input[name="is_dingtai"]').get(0).checked){
+            	data8 = 1;
+            }
+            if($(this).parents().find('input[name="is_membercard"]').get(0).checked){
+            	data9 = 1;
+            }
+            if(typeid == ''){
+                alert('请选择商品类型');
+                return false;
+            }
+            if(data1 == ''){
+                alert('请录入商品名称');
+                return false;
+            }
+            if(confirm('确定操作吗？')){
+                showop('保存商品信息');
+                var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/addgoods/datatype/json"}>',{'name':data1,'typeid':typeid,'cost':data2,'bagcost':data3,'count':data4,'good_order':data5,'is_live':data6,'is_waisong':data7,'is_dingtai':data8,'is_membercard':data9});
+                if(backinfo.flag == true)
+                {
+                    hideop();
+                    diaerror(backinfo.content);
+                }else{
+                    hideop();
+
+                   var htmldata ='<tr class="listgoodsdet goodsdiv_'+backinfo.content.typeid+'" data="'+backinfo.content.id+'" id="goodstr_'+backinfo.content.id+'" have_det="'+backinfo.content.have_det+'">';
+                   htmldata +='<td><p class="name">'+backinfo.content.name+'</p></td>';
+                   htmldata += '<td><p class="cost">'+backinfo.content.cost+'</p></td>';
+                   htmldata +='<td><p class="bagcost">'+backinfo.content.bagcost+'</p></td>';
+                   htmldata += '<td><p class="count">'+backinfo.content.count+'</p></td>';
+                   htmldata +='<td>';
+                   if(backinfo.content.is_live == 1){
+                       htmldata += '<span class="is_live">已上架</span>';
+                   }else{
+                       htmldata += '<span class="is_live">已下架</span>';
+                   }
+                   htmldata += '</td>';
+                   htmldata += '<td><p class="good_order">'+backinfo.content.good_order+'</p></td>';
+                   if(backinfo.content.is_waisong == 1){
+                        checked = 'checked';
+                   }else{
+                        checked = '';
+                   }
+                   if(backinfo.content.is_dingtai == 1){
+                       checked2 = 'checked';
+                  }else{
+                       checked2 = '';
+                  }
+                   htmldata += '<td><input type="checkbox" name="is_waisong" onclick="changegoods(\''+backinfo.content.id+'\',\''+backinfo.content.is_waisong+'\',\'ws\')"'+checked+'/> 外送';
+                   htmldata += '<input type="checkbox" name="is_dingtai" onclick="changegoods(\''+backinfo.content.id+'\',\''+backinfo.content.is_dingtai+'\',\'dt\')"'+checked2+'/> 堂食</td>';
+                   htmldata += '<td><input type="checkbox" name="is_membercard" onclick="changepayment(\''+backinfo.content.id+'\',\''+backinfo.content.is_membercard+'\',\'card\')" checked /> 会员卡和优惠券</td>';
+                   htmldata += '<td>';
+                   htmldata += '<a onclick="editgoods(\''+backinfo.content.id+'\');">编辑</a> / ';
+                   htmldata += '<a onclick="delgoods(\''+backinfo.content.id+'\');">删除</a> / ';
+                   htmldata += '<a onclick="setattr(\''+backinfo.content.id+'\');">上传多图</span>';
+                   htmldata += '</td>';
+                   htmldata += '</tr>';
+
+                    // var htmldata = '<div class="order_list	listgoodsdet goodsdiv_'+backinfo.content.typeid+'" data="'+backinfo.content.id+'" id="goodstr_'+backinfo.content.id+'" have_det="'+backinfo.content.have_det+'">';
+                    // htmldata += ' <div class="order_goodlist">';
+                    // htmldata += '       <div class="cd_name" style="width:247px;">';
+                    // htmldata += '          <p class="name">'+backinfo.content.name+'</p>';
+                    // htmldata += '       </div>';
+                    // htmldata += '      <div class="cd_price">';
+                    // htmldata += '          <p class="cost">'+backinfo.content.cost+'</p>  ';
+                    // htmldata += '     </div>';
+                    // htmldata += '     <div class="cd_dbf">';
+                    // htmldata += '          <p class="bagcost">'+backinfo.content.bagcost+'</p>  ';
+                    // htmldata += '      </div>';
+                    // htmldata += '      <div class="cd_dayNum" style="width:80px;">';
+                    // htmldata += '           <p class="count">'+backinfo.content.count+'</p>   ';
+                    // htmldata += '      </div>';
+                    // htmldata += '      <div class="cd_dayNum" style="width:80px;">';
+                    // if(backinfo.content.is_live == 1){
+                    //     htmldata += '           <span class="is_live">下架</span>   ';
+                    // }else{
+                    //     htmldata += '           <span class="is_live">上架</span>   ';
+                    // }
+                    // htmldata += '      </div>';
+                    // htmldata += '      <div class="cd_order" style="width:79px;">';
+                    // htmldata += '           <p class="good_order">'+backinfo.content.good_order+'</p>   ';
+                    // htmldata += '      </div>';
+                    // htmldata += '       <div class="cd_caozuo" style="width:190px;">';
+                    // htmldata += '          <span style=" background:#27a9e3; padding:8px; color:#fff;" class="curbtn" onclick="editgoods(\''+backinfo.content.id+'\');">编辑</span>';
+                    // htmldata += '            <span style=" background:#ec7501; padding:8px; color:#fff;" class="curbtn" onclick="delgoods(\''+backinfo.content.id+'\');">删除</span>';
+                    // htmldata+='<span style=" background:#ec7501; margin-left: 5px;padding:8px; color:#fff;" class="curbtn" onclick="setattr(\''+backinfo.content.id+'\');">上传多图</span>';
+                    // htmldata += '      </div>';
+                    // htmldata += '  </div> ';
+                    // htmldata += '</div>';
+
+                    $('#additem').prev('tbody').last('tr').append(htmldata);
+                    $('input[name="adgoodname"]').val('');
+                    $('input[name="adgoodcost"]').val('');
+                    $('input[name="adgoodbagcost"]').val('');
+                    $('input[name="adgoodcount"]').val('');
+                    $('#additem').hide();
+                    artsucces('保存成功');
+                }
+            }
+        });
+        //删除商品
+    });
+    function savegoodtxt(goodsid,typename){
+        var values = $('#'+typename+goodsid).val();
+        showop('保存商品信息');
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/updategoods/datatype/json"}>',{'controlname':typename,'goodsid':goodsid,'values':values});
+        if(backinfo.flag == true)
+        {
+            hideop();
+            diaerror(backinfo.content);
+        }else{
+            hideop();
+            $('#goodstr_'+goodsid).find('.'+typename).text(values);
+            $('#goodstr_'+goodsid).find('.'+typename).removeClass('now_edit');
+            artsucces('保存成功');
+        }
+    }
+
+    function delgoods(gid){
+        if(confirm('确定删除该商品操作吗？')){
+            var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/delgoods/datatype/json"}>',{'id':gid});
+            if(backinfo.flag == true)
+            {
+                hideop();
+                diaerror(backinfo.content);
+            }else{
+                hideop();
+                $('#goodstr_'+gid).remove();
+                artsucces('删除成功');
+            }
+        }
+    }
+    //改变支持状态yanyh
+    function changegoods(gid,is_support,type){
+        if(is_support == 0 ){
+            is_support = 1;
+        }else{
+            is_support = 0;
+        }
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/changegoods/datatype/json"}>',{'id':gid,'is_support':is_support,'type':type});
+        artsucces('更新成功');   
+    }
+    
+    //改变支付类型状态
+    function changepayment(gid,is_support,type){
+        if(is_support == 0 ){
+            is_support = 1;
+        }else{
+            is_support = 0;
+        }
+        //alert(type);
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/changepayment/datatype/json"}>',{'id':gid,'is_support':is_support,'type':type});
+        artsucces('更新成功');   
+    }
+
+    var dialogs ;
+    function editgoods(gid){
+        dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=shopcenter&action=goodsone&gid='+gid,{height:'760px',width:'1029px'},false);
+        dialogs.title('编辑商品');
+    }
+    function refreshgoods(info){
+        dialogs.close();
+        //$('#goodstr_'+info.id).remove();
+        // var htmldata = '<div class="order_list	listgoodsdet goodsdiv_'+info.typeid+'" data="'+info.id+'" id="goodstr_'+info.id+'" have_det="'+info.have_det+'">';
+        // htmldata += ' <div class="order_goodlist">';
+        // htmldata += '       <div class="cd_name" style="width:247px;">';
+        // htmldata += '          <p class="name">'+info.name+'</p>';
+        // htmldata += '       </div>';
+        // htmldata += '      <div class="cd_price">';
+        // htmldata += '          <p class="cost">'+info.cost+'</p>  ';
+        // htmldata += '     </div>';
+        // htmldata += '     <div class="cd_dbf">';
+        // htmldata += '          <p class="bagcost">'+info.bagcost+'</p>  ';
+        // htmldata += '      </div>';
+        // htmldata += '      <div class="cd_dayNum" style="width:80px;">';
+        // htmldata += '           <p class="count">'+info.count+'</p>   ';
+        // htmldata += '      </div>';
+
+        // htmldata += '      <div class="cd_dayNum" style="width:80px;">';
+        // if(info.is_live == 1){
+        //     htmldata += '           <span class="is_live">下架</span>   ';
+        // }else{
+        //     htmldata += '           <span class="is_live">上架</span>   ';
+        // }
+
+        // htmldata += '      </div>';
+
+        // htmldata += '      <div class="cd_order" style="width:79px;">';
+        // htmldata += '           <p class="good_order">'+info.good_order+'</p>   ';
+        // htmldata += '      </div>';
+        // htmldata += '       <div class="cd_caozuo" style="width:190px;">';
+        // htmldata += '          <span style=" background:#27a9e3; padding:8px; color:#fff;" class="curbtn" onclick="editgoods(\''+info.id+'\');">编辑</span>';
+        // htmldata += '            <span style=" background:#ec7501; padding:8px; color:#fff;" class="curbtn" onclick="delgoods(\''+info.id+'\');">删除</span>';
+        // htmldata+='<span style=" background:#ec7501; margin-left:5px;padding:8px; color:#fff;" class="curbtn" onclick="setattr(\''+info.id+'\');">上传多图</span>';
+        // htmldata += '      </div>';
+        // htmldata += '  </div> ';
+        // htmldata += '</div>';
+        
+        // $('#additem').before(htmldata);
+        var allobj = $(".caidanSet").find('li');
+        var typeid = 0;
+        for(var i=0;i< $(allobj).length;i++){
+            if($(allobj).eq(i).hasClass("cur") ==  true){
+                typeid = $(allobj).eq(i).attr('data');
+            }
+        }
+        if(typeid != info.typeid){
+            $('#goodstr_'+info.id).hide();
+        }
+
+        artsucces('保存成功');
+
+    }
+
+</script>
+
+
+
+
+<{/block}>

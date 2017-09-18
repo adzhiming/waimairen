@@ -1,0 +1,60 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+
+<{block name=controlname}>网站导航<{/block}>
+<{block name=bodylist}>
+
+
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+
+    <div id="tagscontent">
+        <div id="con_one_1">
+            <div class="table_td mart15" >
+                <form method="post" action="<{ofunc type=url link="/adminpage/system/module/savetoplink/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/adminpage/system/module/toplink"}>',this);">
+                <table class="list table table-bordered" name="table" id="table" >
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>导航名称</th>
+                        <th>连接</th>
+                        <th>排序</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="type">
+                    <{if !empty($footlink)}>
+                    <{$footlink = $footlink|unserialize}>
+                    <{foreach from=$footlink key=myid item=items}>
+                    <tr
+                    <{if $myid%2 == 0}>
+                    <{else}>
+                    <{/if}>
+                    >
+                    <td align="center"><input type="hidden" name="id[]" value=""></td>
+                    <td  align="left" style="padding-left:10px;">
+                        <input type="text" name="typename[]" id="typename[]" value="<{$items['typename']}>"  class='skey form-control' style='width:130px;'/>
+                    </td>
+                    <td  align="left"style="padding-left:10px;">
+                        <input type="text" name="typeurl[]" id="typeurl[]" value="<{$items['typeurl']}>"  class='skey form-control'/>
+                    </td>
+                    <td>
+                        <input type="text" name="typeorder[]" id="typeorder[]" value="<{$items['typeorder']}>"  class='skey form-control' style='width:50px;'/>
+                    </td>
+                    <td align="center"> <a onclick="$(this).parent().parent().remove();" href="javascript:;" class="fa fa-trash"></a></td>
+                    </tr>
+                    <{/foreach}>
+                    <{/if}>
+                    </tbody>
+                </table>
+                <div class="blank20"></div>
+                <input type="hidden" name="stopoutenable" id="stopoutenable" value="07a4c77a48ab3d859107568f7a1e1e68"/>
+                <input type="submit" name="button" id="button" value="提交保存" class='button btn-prim'>
+                <input type="button" name="button" id="typebutton" value="添加一个分类" onclick="adddaohang();" class="button btn-prim" />
+                </form>
+                <div class="blank20"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<{/block}>

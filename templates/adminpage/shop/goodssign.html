@@ -1,0 +1,58 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<{/block}>
+<{block name=controlname}>标签列表<{/block}>
+<{block name=bodylist}>
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+    <div class="tags">
+        <div id="tagscontent">
+            <div id="con_one_1">
+                <div class="table_td mart15">
+                    <form method="post" action="" onsubmit="return remind();"  id="delform">
+                        <table class="list table table-bordered" name="table" id="table">
+                            <thead>
+                            <tr>
+                                <th width="40px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+                                <th>ID</th>
+                                <th>标签名称</th>
+                                <th>标签类型</th>
+                                <th>标签图标</th>
+                                <th>说明</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{load_data assign="list" table="goodssign" showpage="true"  fileds="*" where="<{$where}>"  }>
+                            <{foreach from=$list['list'] item=items}>
+                            <tr class="s_out">
+                                <td><input type="checkbox" name="id[]" value="<{$items['id']}>"></td>
+                                <td><{$items['id']}></td>
+                                <td> <{$items['name']}> </td>
+                                <td> <{if $items['type']=='goods'}>商品标签<{elseif $items['type'] == 'cx'}>促销标签<{/if}> </td>
+                                <td><img src="<{$items['imgurl']}>" width=15px height=15px></td>
+                                <td><{$items['instro']}></td>
+                                <td>
+                                    <a href="<{ofunc type=url link="/adminpage/shop/module/addgoodssign/id/<{$items['id']}>"}>" class="fa fa-edit" title="编辑"></a>
+                                    <a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/shop/module/delgoodssign/id/<{$items['id']}>/datatype/json"}>" class="fa fa-trash" title="删除"></a>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="page_newc marT20">
+                        <div class="select_page">
+                            <a href="#" onclick="checkword(true);" class="color-f">全选</a> / <a href="#" onclick="checkword(false);" class="color-f">取消</a>
+                            <a onclick="return remindall(this);" href="<{ofunc type=url link="/adminpage/shop/module/delgoodssign/datatype/json"}>" class="button btn-prim">删除</a>
+                            <a  href="<{ofunc type=url link="/adminpage/shop/module/addgoodssign"}>" class="button btn-prim">添加标签</a>
+                        </div>
+                        <div class="show_page"><ul><{$list['pagecontent']}></ul></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--newmain 结束-->
+<{/block}>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>在线预订</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .mui-radio input[type=radio]:before {font-size: 24px;}
+        .mui-radio input[type=radio] {top: 7px;}
+        .mui-content{margin-bottom: 70px;}
+    </style>
+</head>
+<body>
+<div class="mui-content">
+
+    <ul class="yd_tab clearfix mui-row">
+        <a href="onlineAppoint.html"><li class="mui-col-xs-6 active">现在预约</li></a>
+        <a href="myAppoint.html"><li class="mui-col-xs-6">已预约</li></a>
+    </ul>
+    <form action="" id="ydForm" name="theform" method="post">
+        <ul class="mui-table-view2 function mart15">
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-calendar color_z"></i>日期：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="选择日期" id="yd_data" value="">
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-clock-o color_z"></i>时间：</div>
+                    <div class="flex">
+                        <select name="" id="yd_time">
+                            <option value="0">请选择</option>
+                            <option value="1">1:00</option>
+                            <option value="2">2:00</option>
+                        </select>
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-user color_z"></i>人数：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="有多少小伙伴呢" id="yd_num">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-flag color_z"></i>桌台：</div>
+                    <div class="flex ">
+                        <select name="" id="yd_type">
+                            <option value="0">请选择</option>
+                            <option value="1">大堂</option>
+                            <option value="2">包间</option>
+                        </select>
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="mui-table-view2 function mart15">
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-tag color_z"></i>姓名：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="您的大名" id="yd_name">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-phone color_z"></i>电话：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="给个联系方式呗" id="yd_phone">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-venus-mars color_z"></i>性别：</div>
+                    <div class="flex">
+                        <div class="mui-row">
+                            <div class="mui-col-xs-6">
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>男</label>
+                                    <input name="sex" type="radio" checked>
+                                </div>
+                            </div>
+                            <div class="mui-col-xs-6">
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>女</label>
+                                    <input name="sex" type="radio">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="mui-table-view2 function mart15">
+            <li>
+                <div class="cssBox">
+                    <div class="label_w" style="padding-top: 10px;"><i class="fa fa-sticky-note-o color_z"></i>备注：</div>
+                    <div class="flex">
+                        <textarea name="" id="" cols="30" rows="2" placeholder="请把你想说的告诉我们喔"></textarea>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!--btn-->
+        <div class=" mui-row mui-text-center">
+            <div class="mui-col-xs-6">
+                <a href="shoppingCart.html"><button type="button" class="table_btn">我要点餐</button></a>
+            </div>
+            <div class="mui-col-xs-6">
+                <button type="button" class="table_btn" id="yd_sub">提交预约</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--底部导航-->
+<nav class="mui-bar mui-bar-tab">
+    <a class="mui-tab-item" href="reservePage.html">
+        <span class="mui-icon fa fa-home"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a class="mui-tab-item mui-active" href="onlineAppoint.html">
+        <span class="mui-icon fa fa-comments"></span>
+        <span class="mui-tab-label">在线预约</span>
+    </a>
+    <a class="mui-tab-item" href="tel:18380384137">
+        <!--fa fa-cog 设置-->
+        <span class="mui-icon fa fa-phone"></span>
+        <span class="mui-tab-label">电话预约</span>
+    </a>
+    <a class="mui-tab-item" href="#">
+        <!--fa fa-cog 设置-->
+        <span class="mui-icon fa fa-map-marker"></span>
+        <span class="mui-tab-label">商家导航</span>
+    </a>
+</nav>
+
+<script src="js/jquery-1.12.2.min.js"></script>
+<script src="js/layer/laydate/laydate.js"></script>
+<script src="js/layer/layer.min.js"></script>
+<script>
+
+
+
+    $(function() {
+
+        //    日期
+        laydate.skin('molv');
+        var start = {
+            elem: "#yd_data",
+            format: "YYYY/MM/DD",
+            min: laydate.now(),//设定最小日期为当前日期
+            max: "2099-06-16", //最大日期
+            istime: true,
+            istoday: false
+        };
+        laydate(start);
+
+        $('#yd_sub').click(function(e) {
+            var yd_data = $('#yd_data').val();
+            var yd_time =$("#yd_time").find("option:selected").text();
+            var yd_num = $('#yd_num').val();
+            var yd_type = $("#yd_type").find("option:selected").text();
+            var yd_name = $('#yd_name').val();
+            var yd_phone = $('#yd_phone').val();
+            var phoneReg =/^0?(13[0-9]|15[012356789]|18[0-9]|17[0-9])[0-9]{8}$/;
+
+            if(yd_data == ''){
+                layer.msg('请选择日期~');
+                return false;
+            }else if(yd_time == '请选择'){
+                layer.msg('请选择时间~~');
+                return false;
+            } else if(yd_num == ''){
+                layer.msg('有多少小伙伴呢~');
+                return false;
+            }else if(yd_type == '请选择'){
+                layer.msg('请选择桌台~');
+                return false;
+            }else if(yd_name == ''){
+                layer.msg('请填写您的名字~');
+                return false;
+            }else if(yd_phone == ''){
+                layer.msg('请填写您的手机号~');
+                return false;
+            }else if(!phoneReg.test(yd_phone)){
+                layer.msg('请输入正确的手机号码~');
+                return false;
+            }else if(idCard == ''){
+                layer.msg('请填写您的证件号码~');
+                return false;
+            }
+            else{
+//            $.ajax({
+//                type:"post",
+//                url:"",
+//                data:{},
+//                success:function(data){}
+//            });
+            }
+        });
+
+
+        //    底部导航
+        $('.mui-bar-tab a').on('touchstart', function () {
+            var i = $(this).index();
+            $(".mui-bar-tab a").removeClass('mui-active').eq(i).addClass('mui-active');
+        });
+
+
+    });
+</script>
+</body>
+</html>

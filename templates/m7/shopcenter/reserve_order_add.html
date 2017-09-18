@@ -1,0 +1,185 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js?" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/public.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='reserve_order_add';
+</script>
+<script>
+
+function onModified(btn){
+    var uname = btn;
+    $('#booktime').attr('value',uname);
+    var yytime =$('input:radio:checked').val();
+    var reserve_id     = $('#reserve_id').val();
+    //alert(yytime);
+    var data = {'reserve_id':reserve_id,'yytime':yytime};
+        var url = '<{ofunc type=url link="/shopcenter/getsytable/random/@random@/datatype/json"}>'; 
+        var backdata = ajaxback(url,data); 
+     
+        if(backdata.flag == false){
+            
+            var html = '<option value="0">请选择</option>';
+      
+            $.each(backdata.content, function(){
+                $('#tableid option').remove();
+                html+="<option  value="+this.id+">"+this.name+"</option>";
+            });
+            $('#tableid').append(html); 
+        }else{
+            alert(backdata.content);
+        }
+}
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname"><{if empty($cxinfo)}>添加<{else}>编辑<{/if}>预订订单</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/Reservemenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/reserve_order_save/datatype/json"}>">
+        <div class="jutiSet">
+          
+            <table width="800" border="0" cellspacing="0" cellpadding="0" class="reservedate_list">
+            <tr>
+                <td class="bo">日期</td>
+              <td class="bo">可预订时间段</td>
+              <td class="bo">可预订桌台总量</td>
+              <td class="bo">已预订桌台量</td>
+              <td class="bo">可预订桌台余量</td>
+            </tr>
+                <{foreach from=$list item=items}>
+                <tr>
+                    <td>
+                        
+                    <input <{if $items['allowance'] <= 0}> disabled <{/if}> name="<{$items['reserve_num']}>" type="radio" value="<{$items['name']}> <{$start_booktime}>|<{$items['name']}> <{$end_booktime}>" id="yytime" onclick="onModified('<{$items['bookstime']}>')" /><{$items['name']}></td>
+                  <td><{$start_booktime}> - <{$end_booktime}></td>
+                  <td><{$items['reserve_num']}></td>
+                  <td><{$items['yyy_total']|default:'0'}></td>
+                  <td><{$items['allowance']}></td>
+                </tr>
+                <{/foreach}>
+            
+          </table>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>预订时间：</span>
+                </div>
+                <div class="xuanze_right">
+                    <input class="form-control" type="text" name="booktime" id="booktime" value="<{$date}> <{$time}>"  onFocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' });" />
+                </div>
+                <div class="cl"></div>
+             </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>桌号：</span>
+                </div>
+                <div class="dianpu_right">
+                    <{if $tablename}>
+                        <select name="tableid" id="tableid" class="form-control">
+                            <{foreach from=$table_list item=items}>
+                            <option value="<{$items['id']}>"  <{if $items['id'] == $cxinfo['tableid']}> selected="selected" <{/if}> ><{$items['name']}></option>
+                            <{/foreach}>
+                        </select>
+                    <{else}>
+                        <select name="tableid" id="tableid" class="form-control">
+                           <option value="" class="form-control">请先选择右边对应的时间</option>
+                        </select>
+                    <{/if}>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>姓名：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input type="text" style="width:130px; float:left;" id="buyername" name="buyername" value="<{$cxinfo['buyername']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>性别：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input type="radio" name="sex" value="<{$items['sex']}>" <{if $items['sex'] == 1}>checked<{/if}>> 男
+                    <input type="radio" name="sex" value="<{$items['sex']}>" <{if $items['sex'] == 2}>checked<{/if}>> 女
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>电话：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input type="text" style="width:130px; float:left;" id="buyerphone" name="buyerphone" value="<{$cxinfo['buyerphone']}>"  class="input1"/>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>备注：</span>
+                </div>
+                <div class="dianpu_right">
+                    <textarea name="content" id="presentcontenttitle" style="width:200px;margin-top:5px;height:30px;line-height:30px; "><{$cxinfo['content']}></textarea>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="cl"></div>
+
+            <input name="reserve_id" id="reserve_id" type="hidden" value="<{$reserve_id}>" />
+            <input type="hidden" name="id" value="<{$cxinfo['id']}>">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >点击提交</div>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        //var id = '<{$cxinfo['id']}>';
+        subform("<{ofunc type=url link='/shopcenter/Reserve'}>",$('#loginForm'));
+    });
+    
+
+
+</script>
+
+<{/block}>

@@ -1,0 +1,139 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta http-equiv="Content-Language" content="zh-CN"> 
+<meta content="all" name="robots"> 
+<meta name="description" content=""> 
+<meta content="" name="keywords"> 
+<title>配送设置</title> 
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/admin.css">
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/index.css"> 
+
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.js" type="text/javascript" language="javascript"></script>  
+ <script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/artDialog.js?skin=wmrPopup"></script>
+ <style>
+ cite, blackquote, em, i {
+    font-style: normal;
+}
+ </style>
+ <script>
+	$(function(){ 
+	$(".popLayDiseLrad ul li .popDisRada").click(function(){
+		var x = $(".popLayDiseLrad ul li .popDisRada").index(this);
+		$(".popLayDiseLrad ul li .popDisRadb").eq(x).addClass("popDisRad01")
+		})
+	$(".popLayDiseLrad ul li .popDisRada").mousedown(function(){
+		$(".popLayDiseLrad ul li .popDisRadb").removeClass("popDisRad01")
+		})
+	 
+	$(".popLayDiseR tr td .popDisRada").click(function(){
+		var x = $(".popLayDiseR tr td .popDisRada").index(this);
+ 		$(".popLayDiseR tr td .popDisRada i").eq(x).addClass("popDisRad01")
+		})
+	$(".popLayDiseR tr td .popDisRada").mousedown(function(){
+		$(".popLayDiseR tr td .popDisRada i").removeClass("popDisRad01")
+		})
+	});
+ </script>
+</head>
+<body>
+	 <form  method="post" name="upform" action="<{ofunc type=url link="/areaadminpage/area/module/savesetps"}>" >  
+	 	
+	 	<div class="popLayCon ">
+	 
+	<div class="popLayBox">
+		<div class="popLayOrdCon">
+			<div class="popLayDise">
+			<div style="width:300px;float:left;height:380px;OVERFLOW-Y: auto;OVERFLOW-X: hidden;">
+				<div class="popLayDiseL" >
+					<h4>配送类型</h4>
+					<div class="popLayDiseLrad">
+						<ul>
+							<li><input type="radio" name="sendtype" value="0" <{if $shopdetinfo['sendtype'] ==0}>checked<{/if}> class="popDisRada"><i class="popDisRadb  <{if $shopdetinfo['sendtype'] ==0}>popDisRad01<{/if}>  "></i><span>网站配送</span></li>
+							<li><input type="radio"  name="sendtype" value="1" <{if $shopdetinfo['sendtype'] ==1}>checked<{/if}>" class="popDisRada"><i class="popDisRadb <{if $shopdetinfo['sendtype'] ==1}>popDisRad01<{/if}> "></i><span>店铺配送</span></li>
+						</ul>
+					</div>
+					<div class="popLayDiseLfee">
+					<input type="hidden" value="<{$shopdetinfo['shopid']}>" name="shopid" />
+						<ul>
+							<li><span>配送费：</span><input type="text" name="pscost" value="<{$shopdetinfo['pscost']}>" ><span>元</span></li>
+							<li  id="showbangjing"><span>配送半径：</span><input type="text"  name="pradius" value="<{$shopdetinfo['pradius']}>"  onchange="doselect();" ><span>千米</span></li>
+							 
+ 						</ul>
+					 
+					</div> 
+				</div>
+				</div>
+				
+			
+				
+				<div class="popLayDiseR" style="width:260px;padding:0px 20px;float:left;height:380px;OVERFLOW-Y: auto;OVERFLOW-X: hidden;"  id="arealist">
+					<h4 >选择配送区域</h4>
+						 <div style="width:300px;float:left;margin-top:10px;height:260px;OVERFLOW-Y: auto;OVERFLOW-X: hidden;" id="arealist">
+						
+								<table>
+ 						<{foreach from=$arealist item=items}>
+								 <tr class="s_out doselect_<{$items['admin_id']}>"   bgcolor="#fafafa" id="tr_<{$items['id']}>">  
+											  <td colspan="2" style="text-align:left;">
+												  <div style="padding-left:<{$items['space']*50}>px;">
+												  <{if !in_array($items['id'],$parent_ids)}>	<input type="checkbox" class="popDisRada" name="areaids[]" value="<{$items['id']}>" <{if in_array($items['id'],$choiceid)}>checked<{/if}>><{/if}><i class="popDisCheb <{if in_array($items['id'],$choiceid)}>popDisRad01<{/if}>"><{$items['name']}> 
+												  </div>
+											  </td>  
+										</tr>
+						 <{/foreach}>  
+								</table>   
+							
+						</div>  
+				 
+				</div>
+				
+				
+			</div> 
+			
+			<div class="popLayOrdBut"><input type="submit" value="保存设置"></div>
+		</div>
+	</div>
+</div>
+	 	 
+	  
+ 
+	 	 
+ 	 	
+  </form>
+<script>
+var checklocation = '<{$locationtype}>';
+$(function(){ 
+	/*
+	if(checklocation == 1){
+	   
+	  $('.showpesong').hide();
+	  
+	}else{
+		$('.showbangjing').hide();
+	}*/
+	doselect(); 
+});
+function doselect(){
+	var bangjing = $('input[name="pradius"]').val();
+	var htmls = '';
+	var checkleng = Number(<{$dolenth}>);
+	$('.bangjingvalue').remove();
+	for(var i=0;i<bangjing;i++){
+		var c = i+1; 
+		if(i < checkleng){
+		<{foreach from=$shopvalues key=mykey item=items}>
+		  if(i == <{$mykey}>){
+	     	htmls += '<li  class="bangjingvalue"><span>'+i+'-'+c+'千米配送费：</span><input type="text" name="radiusvalue'+i+'" value="<{$items}>" ><span>元</span></li>';
+ 	    }
+		<{/foreach}>
+		
+	  }else{
+	  	htmls += '<li  class="bangjingvalue"><span>'+i+'-'+c+'千米配送费：</span><input type="text"  name="radiusvalue'+i+'" value=""><span>元</span></li>';
+ 	  }
+		
+	}
+	$('#showbangjing').after(htmls);
+	//
+}
+</script>
+</body>
+</html>

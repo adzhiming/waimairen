@@ -1,0 +1,153 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='lineupmanage';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">屏幕设置</h5>
+        </div>
+    </div>
+
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/lineupmenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/screen_setting/datatype/json"}>">
+        <div class="jutiSet">
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>大屏标题：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="title" name="title" value="<{$cxinfo['title']}>" class="form-control" placeholder="" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <!--大屏背景图-->
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>大屏背景图：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="hidden" name="html5logo" id="html5logo" value="<{$cxinfo['imggb_url']}>" >
+                    <img width="200" height="100" src="<{$cxinfo['imggb_url']}>" class="img-style" id="html5logoshow" <{if  empty($cxinfo['imggb_url'])}> style="display:none;"<{/if}>>
+                         
+                         <span onclick="uploadk();" class="button-1 btn-prim mart30" style="padding:5px;">上传图片</span>
+                    <span class="tip-r">请上传图片大小为1920*1080</span>
+                    
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+<!--           二维码上传
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>二维码上传：</span>
+                </div>
+                <div class="dianpu_right" style="width:287px;">
+                    <input type="hidden" name="wxqrimg" id="wxqrimg" value="<{$cxinfo['wxqrimg']}>" >
+                    
+                    <img width="130" height="130" src="<{$cxinfo['wxqrimg']}>" class="img-style" id="wxqrimgshow" <{if  empty($cxinfo['wxqrimg'])}> style="display:none;"<{/if}>>
+                    <span onclick="uploadk_wxqrimg();" class="button-1 btn-prim mart30" style="padding:5px;">上传图片</span>
+                    <span class="tip-r">请上传图片大小为115*115</span>
+                    
+                </div>
+                <div class="cl"></div>
+            </div>-->
+
+            
+<!--            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>大屏幕底部文字：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input type="text" style="width:387px; float:left;" id="bottom_wz" name="bottom_wz" value="<{$cxinfo['bottom_wz']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>-->
+            
+            <div class="cl"></div>
+
+            <input name="action" type="hidden" value="ok" />
+            <input type="hidden" name="cxid" value="ok">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >点击提交</div>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        subform('<{ofunc type=url link="/shopcenter/screen_setting"}>',$('#loginForm'));
+    });
+    
+    function uploadk(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucessk"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucessk(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploadk();
+        }else{
+            dialogs.close();
+            $('#html5logo').val(linkurl);
+            $('#html5logoshow').attr('src',linkurl);
+            $('#html5logoshow').show();
+        }
+    }
+    
+    
+    function uploadk_wxqrimg(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucessk_wxqrimg"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucessk_wxqrimg(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploadk_wxqrimg();
+        }else{
+            dialogs.close();
+            $('#wxqrimg').val(linkurl);
+            $('#wxqrimgshow').attr('src',linkurl);
+            $('#wxqrimgshow').show();
+        }
+    }
+
+
+</script>
+
+<{/block}>

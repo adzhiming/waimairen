@@ -1,0 +1,64 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<{/block}>
+<{block name=controlname}>投诉原因列表<{/block}>
+<{block name=bodylist}>
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+
+    <div id="tagscontent">
+        <div id="con_one_1">
+            <div class="table_td mart15" >
+                <form method="post" action="<{ofunc type=url link="/adminpage/ask/module/saveREreason/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/adminpage/ask/module/complreasonlist"}>',this);">
+                <table class="list table table-bordered" name="table" id="table">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>投诉原因</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="type">
+                    <{if !empty($refundreasonlist)}>
+                    <{$list = $refundreasonlist|unserialize}>
+                    <{foreach from=$list key=myid item=items}>
+                    <{if !empty($items)}>
+                    <tr class="s_out"
+                    <{if $myid%2 == 0}>
+                    <{else}>
+                    <{/if}>
+                    >
+                    <td><input type="hidden" name="id[]" value=""></td>
+                    <td align="left" style="padding-left:10px;">
+                        <input type="text" name="typename[]" id="typename[]" value="<{$items}>"  class='skey form-control' style='width:430px;'/>
+                    </td>
+                    <td> <a onclick="$(this).parent().parent().remove();" href="javascript:" class="fa fa-trash" title="删除"></a></td>
+                    </tr>
+                    <{/if}>
+                    <{/foreach}>
+                    <{/if}>
+                    </tbody>
+                </table>
+                <div class="marT20">
+                    <input type="submit" name="button" id="button" value="提交保存" class='button btn-prim'>
+                    <input type="button" name="button" id="typebutton" value="添加一个" onclick="addbz();" class="button btn-prim" />
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function addbz(){
+        var 	htmldata='<tr class="s_out">';
+        htmldata+='<td><input type="hidden" name="id[]" value=""></td>';
+        htmldata+='<td align="left" style="padding-left:10px;">';
+        htmldata+='<input type="text" name="typename[]" id="typename[]" value=""  class=\'skey form-control\' style=\'width:430px;\'/> </td>';
+        htmldata+='<td> <a onclick="$(this).parent().parent().remove();" href="javascript:" class="fa fa-trash" title="删除"></a></td></tr>';
+        $('#type').append(htmldata);
+    }
+</script>
+<{/block}>

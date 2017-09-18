@@ -1,0 +1,77 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<{/block}>
+<{block name=controlname}>添加充值余额<{/block}>
+<{block name=bodylist}>
+<{load_data assign="info" table="rechargecost" where="`id`=$id"  type="one"}>
+<div style="width:98%;overflow-y:auto;white-space:nowrap;">
+
+    <div class="tags">
+        <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/card/module/saverechargecost/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/adminpage/card/module/rechargezend"}>',this);">
+            <div class="mart15">
+                <table class="list tableList" name="table" id="table">
+                    <tbody>
+                    <tr>
+                        <td class="left">充值金额</td>
+                        <td><input type="text" name="cost" id="cost" value="<{$info['cost']}>" class="skey form-control" style="width:150px;" ></td>
+                    </tr>
+                    <tr>
+                        <td class="left">是否赠送账户余额</td>
+                        <td>
+                            <input type="radio" name="is_sendcost"   value="0"  <{if $info['is_sendcost'] == 0 }>checked<{/if}>  /> 否
+                            <input type="radio" name="is_sendcost"   value="1"  <{if !empty($info) }>   <{if $info['is_sendcost'] == 1 }>checked<{/if}>  <{else}>checked<{/if}> class="marl30"/> 是
+                            &nbsp;&nbsp;&nbsp;<span id="sendcost" <{if $info['is_sendcost'] == 0 }>style="display:none;"<{/if}>   >赠送金额：<input type="text"  class="form-control" value="<{$info['sendcost']}>" style="width:100px;" name="sendcost" />&nbsp;元</span>
+                        </td>
+                    </tr>
+                    <script>
+
+                        $("input[name='is_sendcost']").click(function(){
+                            var checkid =  $("input[name='is_sendcost']:checked").val();
+                            //befortime
+                            if(checkid == 1){
+                                $('#sendcost').show();
+                            }else{
+                                $('#sendcost').hide();
+                            }
+
+                        });
+                    </script>
+                    <tr>
+                        <td class="left">是否赠送优惠券</td>
+                        <td>
+                            <input type="radio" name="is_sendjuan"   value="0"  <{if !empty($info) }>   <{if $info['is_sendjuan'] == 0 }>checked<{/if}>  <{else}>checked<{/if}>  style="width:15px;" /> 否
+                            <input type="radio" name="is_sendjuan"   value="1" class="marl30"  <{if $info['is_sendjuan'] == 1 }>checked<{/if}>  style="width:15px;" /> 是
+                            &nbsp;&nbsp;&nbsp;<span id="sendjuancost"  <{if $info['is_sendjuan'] == 0 }> style="display:none;" <{/if}> >赠送优惠券总金额：<input type="text" value="<{$info['sendjuancost']}>" class="form-control" style="width:100px;" name="sendjuancost" />&nbsp;元</span>
+                        </td>
+                    </tr>
+
+                    <script>
+                        $("input[name='is_sendjuan']").click(function(){
+                            var checkid =  $("input[name='is_sendjuan']:checked").val();
+                            //befortime
+                            if(checkid == 1){
+                                $('#sendjuancost').show();
+                            }else{
+                                $('#sendjuancost').hide();
+                            }
+
+                        });
+                    </script>
+                    <tr>
+                        <td class="left">排序</td>
+                        <td><input type="text" name="orderid" id="orderid" value="<{$info['orderid']}>" class="skey form-control" style="width:80px;" ></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="确认提交" class="button btn-prim mart15"></td>
+                    </tr>
+                    <input type="hidden" name="id"   value="<{$info['id']}>">
+                    </tbody>
+                </table>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<{/block}>

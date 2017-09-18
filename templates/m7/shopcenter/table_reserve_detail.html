@@ -1,0 +1,65 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script>
+    var mynomenu='Reserve_detail_settig';
+</script>
+
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">预订详情设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+     
+        <div class="jutiSet">
+            <div style="font-size: 12px; color: #ccc; padding-bottom: 10px;"> (备注：灰色表示该时间已被预定)</div>
+            <table width="800" border="0" cellspacing="0" cellpadding="0" class="reservedate_table">
+            <tr>
+                <td class="bo">日期</td>
+              <td class="bo">时间段</td>
+  
+            </tr>
+                <{foreach from=$list item=items}>
+                <tr>
+                    <td>
+                       <{$items['name']}>
+                    </td>
+                  <td>
+                      <{foreach from=$items['tlist'] item=v}>
+                      
+                      <a href="<{if $v['flag']==0}>  <{ofunc type=url link="/shopcenter/reserve_order_add/reserve_id/<{$v['reserve_id']}>/tablename/<{$tablename}>/date/<{$items['name']}>/time/<{$v['start_booktime']|date_format:"%H:%M"}>"}>  <{else}> # <{/if}> ">
+                      <span <{if $v['flag']==1}>style="color: #CCC;"<{else}>style="color: #000;"<{/if}>>
+                          
+                           <{$v['start_booktime']|date_format:"%H:%M"}>-<{$v['end_booktime']|date_format:"%H:%M"}>&nbsp; &nbsp;
+                          
+                      </span>
+                      </a>
+                      <{/foreach}>
+                      </td>
+                </tr>
+                <{/foreach}>
+            
+          </table>
+
+
+
+        </div>
+    
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+
+
+
+</script>
+
+<{/block}>

@@ -1,0 +1,341 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script>
+    var mynomenu='basemenu';
+</script>
+<{/block}>
+<{block name=bodylist}>
+<style>
+<!--
+.searchBtn {
+    background: #27A9E3;
+    cursor: pointer;
+    display: inline-block;
+    height: 28px;
+    padding: 0 20px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 28px;
+    border: solid 1px #27A9E3;
+    margin: 7px;
+}
+.searchBtn a:link,a:visited
+	{
+color:#fff;
+}
+-->
+</style>
+
+
+<!--content right start-->
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">类型管理</h5>
+          
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+       <div class="clearfix">
+              <a  class="searchBtn" style="float: right;" href="<{ofunc type=url link="/shopcenter/addtables"}>"   >新建桌台</a>
+	      <a  class="searchBtn" style="float: right;" href="<{ofunc type=url link="/shopcenter/tablestype"}>"   >餐桌类型管理</a>
+	      <a  class="searchBtn" style="float: right;" href="<{ofunc type=url link="/shopcenter/tablesarea"}>"   >餐桌区域管理</a>
+        </div>
+        <form action="" method="post">
+            <div class="caidanSet" style="width: 100%;">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>桌台类型</th>
+                        
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$list  item=ite}>
+                    <tr  class="listgoodsdet goodsdiv_<{$items['id']}>  goodstr_<{$ite['id']}>"   data="<{$ite['id']}>" id="goodstr_<{$ite['id']}>">
+                        <td><p class="name"><{$ite['name']}>人桌</p></td>
+                        <td>
+                            <a  onclick="deltypes('<{$ite['id']}>');">删除</a>
+                        </td> 
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                    <tbody  id="additem" style="display:none;" >
+                    <input type="hidden" name="adgoodstypeid" value="">
+                    <tr     data="<{$ite['id']}>" id="goodstr_<{$ite['id']}>" have_det="<{$ite['have_det']}>">
+                        <td><input style="width:250px;" type="text" value="" name="adgoodname" placeholder="请填入建议用餐人数,如10人桌,请填入10" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                        <span style=" background:#27a9e3; padding:8px; color:#fff;" class="curbtn" id="saveaddgoods">保存</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="mart10">
+                    <div class="order_goodlist">
+                        <div class="cd_name" style=" border:none;">
+                            <span  class="btn-a btn-prim" id="addgoods">添加桌台类型</span>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    //上传多张商品图片
+    function setattr(gid){
+        dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=shopcenter&action=goodsupload&goodsid='+gid,{height:'660px',width:'1029px'},false);
+        dialogs.title('上传商品图片');
+    }
+
+    // 商品库
+    function alltoshopgoods(){
+        var fenleiid =  $('.caidanTitle li.cur').attr('data');
+        dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=shopcenter&action=alltoshopgoods&fenleiid='+fenleiid,{height:'500px',width:'700px'},false);
+        dialogs.title('从商品库中快速添加商品到所属分类下');
+    }
+
+    function deltogoods(goodsid,fenleiid){
+
+        $(' .goodstr_'+goodsid).remove();
+    }
+
+       function addtogoods(goodsinfo,fenleiid){
+
+           var html = '<tr class="	listgoodsdet goodsdiv_'+goodsinfo.id+'  goodstr_'+goodsinfo.id+'  " data="'+goodsinfo.id+'" id="goodstr_'+goodsinfo.id+'" >';
+           html +='<td><p class="name">'+goodsinfo.name+'</p></td>';
+           html += '<a onclick="deltypes('+goodsinfo.id+');">删除</a> /';
+           html += '</td>';
+           html += '</tr>';
+           $('#subaddtype_'+fenleiid).append(html);
+       }
+
+
+
+
+</script>
+
+<!--<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>-->
+<script>
+    $(function(){
+//删除分类
+        var checkisexti =  $('.caidanTitle').find('li').length;
+        if(checkisexti == 0){
+
+           // $('.caidanSet').hide();
+        }
+        $('.delGDtype').live('click',function(){
+            if(confirm('确定删除商品操作吗？删除后将同时删除该分类下的所有商品')){
+                var allobj = $(".caidanSet").find('li');
+                var typeid = 0;
+                for(var i=0;i< $(allobj).length;i++){
+                    if($(allobj).eq(i).hasClass("cur") ==  true){
+                        typeid = $(allobj).eq(i).attr('data');
+                    }
+                }
+
+                myajax('<{ofunc type=url link="/shopcenter/deltypestype/datatype/json"}>',{'addressid':typeid});
+            }
+        });
+//编辑分类
+        $('.editGDtype').live('click',function(){
+            var allobj = $(".caidanSet").find('li');
+            var typeid = 0;
+            var typename = '';
+            var typeorder = '';
+            for(var i=0;i< $(allobj).length;i++){
+                if($(allobj).eq(i).hasClass("cur") ==  true){
+                    typeid = $(allobj).eq(i).attr('data');
+                    typename = $(allobj).eq(i).attr('dataname');
+                    typeorder = $(allobj).eq(i).attr('dataorder');
+                }
+            }
+            var	htmls = '<form method="post" id="doshwoform" action="#" style="text-align:center;"><table>';
+            htmls += '<tbody><tr>';
+            htmls += '<td height="50px">分类名称:</td>';
+            htmls += '<td> <input type="text" name="newtypename" value="'+typename+'" style="width:100px;"></td></tr>';
+            htmls +='<tr><td height="50px">排序ID:</td><td style="text-align:left;"> <input type="text" name="newtypeorderid" value="'+typeorder+'" style="width:50px;"></td></tr>'
+            htmls += '</tbody></table> ';
+            htmls += '<input type="hidden" value="'+typeid+'" name="newtypeid"> ';
+            htmls += '<input type="button" value="确认提交" class="button" id="updategoodstype" ></form>';
+            art.dialog({
+                id: 'testID3',
+                title:'保存店铺分类',
+                content: htmls
+            });
+
+
+        });
+//保持编辑分类
+        $('#updategoodstype').live('click',function(){
+
+            showop('保存商品分类信息');
+            myajax('<{ofunc type=url link="/shopcenter/editgoodstype/datatype/json"}>',{'what':'allinfo','name':$('input[name="newtypename"]').val(),'orderid':$('input[name="newtypeorderid"]').val(),'addressid':$('input[name="newtypeid"]').val()});
+        });
+
+//添加商品分类
+        $("#add_FoodType").live("click", function() {
+            if($('#shoptypename').val() == ''||$('#shoptypename').val() ==null){
+                diaerror('分类不能空');
+            }else{
+                var mm = $('#shoptypename').val();
+                $('#shoptypename').val('')
+                myajax('<{ofunc type=url link="/shopcenter/savegoodstype/datatype/json"}>',{'name':mm,'orderid':$(".caidanSet").find('li').length});
+            }
+        });
+
+
+//导航条切换	
+        $(".caidanSet ul li").click(function(){
+            $(this).addClass('cur').siblings().removeClass('cur');
+            var tempid = $(this).attr('data');
+            $('.listgoodsdet').hide();
+            $('.goodsdiv_'+tempid).show();
+            $('input[name="adgoodstypeid"]').val(tempid);
+            $('#additem').hide();
+            //获取坐标
+            //
+            var fleft = $('.caidanSet').offset().left;
+            var zleft = $(this).offset().left;
+            var resulte = Number(zleft) -Number(fleft);
+            $('#editGtype').css('margin-left',resulte);
+        });
+        $(".caidanSet").find("li").eq(0).trigger("click");//设置默认第一个
+
+//快捷编辑商品					
+        $(".listgoodsdet td p").live("click", function() { 
+            var is_save = $(this).hasClass('now_edit');
+            var typename = $(this).attr('class');
+            var doc = $(this).text(); 
+            if(is_save){
+
+            }else{
+                $(this).addClass('now_edit');
+                var goodsid = $(this).parent().parent().attr('data');
+                var havedet = $(this).parent().parent().attr('have_det');
+
+                if(typename == 'cost' || typename=='count'){
+                    if(havedet == 1){
+                        alert('多规格,请到编辑里编辑子商品');
+                        return false;
+                    }
+                }
+                $(this).html('<input style="width:80px;" type="text" value="'+doc+'" id="'+typename+goodsid+'" \/> <span class="curbtn" onclick="savetypetxt(\''+goodsid+'\',\''+typename+'\');">保存<\/span>');
+            }
+        });
+ 
+
+
+//显示添加商品
+        $('#addgoods').live('click',function(){ 
+            $('#additem').show();
+        });
+//提交添加商品
+        $('#saveaddgoods').live('click',function(){
+            var data1 = $('input[name="adgoodname"]').val();
+            if(data1 == ''){
+                alert('请录入类别名称');
+                return false;
+            }
+            if(confirm('确定操作吗？')){
+                showop('保存类别信息');
+                var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/addtabletype/datatype/json"}>',{'name':data1});
+                if(backinfo.flag == true)
+                {
+                    hideop();
+                    diaerror(backinfo.content);
+                }else{
+                   hideop();
+                   var htmldata ='<tr class="listgoodsdet goodsdiv_'+backinfo.content.id+'" data="'+backinfo.content.id+'" id="goodstr_'+backinfo.content.id+'" >';
+                   htmldata +='<td><p class="name">'+backinfo.content.name+'人桌</p></td>';
+                  
+                   htmldata += '<td>';
+                   htmldata += '<a onclick="deltypes(\''+backinfo.content.id+'\');">删除</a>';
+                   htmldata += '</td>';
+                   htmldata += '</tr>';
+                   $('#additem').prev('tbody').last('tr').append(htmldata);
+                   $('input[name="adgoodname"]').val('');
+                   $('#additem').hide();
+                   artsucces('保存成功');
+                }
+            }
+        });
+        //删除商品
+    });
+    function savetypetxt(typeid,typename){
+        var values = $('#'+typename+typeid).val();
+        showop('保存商品信息');
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/updatetypes/datatype/json"}>',{'controlname':typename,'typeid':typeid,'values':values});
+        if(backinfo.flag == true)
+        {
+            hideop();
+            diaerror(backinfo.content);
+        }else{
+            hideop();
+            $('#goodstr_'+typeid).find('.'+typename).text(values);
+            $('#goodstr_'+typeid).find('.'+typename).removeClass('now_edit');
+            artsucces('保存成功');
+            window.location.reload();
+        }
+    }
+
+    function deltypes(gid){
+        if(confirm('确定删除该类型操作吗？')){
+            var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/deltypes/datatype/json"}>',{'id':gid});
+            if(backinfo.flag == true)
+            {
+                hideop();
+                diaerror(backinfo.content);
+            }else{
+                hideop();
+                $('#goodstr_'+gid).remove();
+                artsucces('删除成功');
+            }
+        }
+    }
+    //改变支持状态yanyh
+    function changegoods(gid,is_support,type){
+        if(is_support == 0 ){
+            is_support = 1;
+        }else{
+            is_support = 0;
+        }
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/changegoods/datatype/json"}>',{'id':gid,'is_support':is_support,'type':type});
+        artsucces('更新成功');   
+    }
+
+    var dialogs ;
+    function editgoods(gid){
+        dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=shopcenter&action=goodsone&gid='+gid,{height:'760px',width:'1029px'},false);
+        dialogs.title('编辑商品');
+    }
+    function refreshgoods(info){
+        dialogs.close();
+       
+        var allobj = $(".caidanSet").find('li');
+        var typeid = 0;
+        for(var i=0;i< $(allobj).length;i++){
+            if($(allobj).eq(i).hasClass("cur") ==  true){
+                typeid = $(allobj).eq(i).attr('data');
+            }
+        }
+        if(typeid != info.typeid){
+            $('#goodstr_'+info.id).hide();
+        }
+
+        artsucces('保存成功');
+
+    }
+
+</script>
+
+
+
+
+<{/block}>

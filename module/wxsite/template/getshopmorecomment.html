@@ -1,0 +1,28 @@
+<{if !empty($commentlist) }>
+ <{foreach from=$commentlist item=items }>
+ 				 	<div class="commessCon" >	
+			 	 <div class="commessBox">	
+ 			 	  <div class="commessR" style="width:100%;">	
+			 	   <ul class="commessname">	
+			 		<li><a><{$items['username']}></a></li>	
+			 		<li class="commer"><{section name=total loop=$items['point'] }><i class="fa fa-star"></i><{/section}><{section name=total loop=5-$items['point'] }><i class="fa fa-star" style="color:#C7C7C7;"></i><{/section}>
+			 	   </li>	
+			 	   </ul>	
+			 	   <ul class="commesshna">	
+			 		<li><i></i><span><{$items['goodname']}></span></li>	
+			 		<li class="commer"><b><{$items['addtime']}></b></li>	
+			 	   </ul>	
+ 			<{if $items['content'] != '' }>
+				 		<div class="commesscus"><p><{$items['content']}></p></div>	
+			<{/if}>
+ 			<{if $items['replytime'] != 0 }>
+ 			 	   <div class="commessbus">	
+			 		<i class="commsj"></i>	
+			 		<p>商家回复:<{$items['replycontent']}></p><span><{$items['huifutime']}></span>	
+			 	   </div>	
+			<{/if}>
+			 	  </div>	
+			 	 </div>	
+			 	</div>	
+	<{/foreach}>
+ <{/if}>

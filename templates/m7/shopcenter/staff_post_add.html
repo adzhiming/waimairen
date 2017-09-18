@@ -1,0 +1,116 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='staffmanage';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname"><{if empty($cxinfo)}>新建<{else}>编辑<{/if}>岗位</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/staffmenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/staff_save/datatype/json"}>">
+        <div class="jutiSet">
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>姓名：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="name" name="name" value="<{$cxinfo['name']}>" class="form-control" placeholder="请输入姓名" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>手机号码：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="tel" name="tel" value="<{$cxinfo['tel']}>" class="form-control" placeholder="请输入手机号码" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>岗位：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <{foreach from=$catlist key=myid item=items}> 
+                    <input type="checkbox" name="postid[]" id="postid[]" value="<{$items['id']}>" <{if $items['id'] == $cxinfo['postid']}> checked="echecked" <{/if}>  ><{$items['name']}>
+                    <{/foreach}>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>状态：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="radio"   name="status"   value="1" <{if $cxinfo['status'] == 1 || !$cxinfo['status']}>checked<{/if}>/>启用
+                    <input type="radio"  name="status"   value="0" <{if $cxinfo['status'] == 0}>checked<{/if}>/>关闭
+
+                </div>
+                <div class="cl"></div>
+            </div>
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>备注：</span>
+                </div>
+                <div class="dianpu_right">
+                    <textarea rows="3"   name="remarks" id="remarks" class="checks form_textarea" > <{$cxinfo['remarks']}></textarea>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="cl"></div>
+
+            <input name="action" type="hidden" value="ok" />
+            <input type="hidden" name="cxid" value="<{$cxinfo['id']}>">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >点击提交</div>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        subform("<{ofunc type=url link='/shopcenter/staffmanage'}>",$('#loginForm'));
+    });
+
+
+</script>
+
+<{/block}>

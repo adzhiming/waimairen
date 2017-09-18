@@ -1,0 +1,506 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+	var mynomenu='tableslist';
+</script>
+<{/block}>
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/sweetalert.css" />
+<style>
+	.mar20{margin-top: 20px;}
+	.searchBtn {background: #27A9E3; cursor: pointer; display: inline-block;height: 28px;padding: 0 20px;border-radius: 3px;color: #fff; line-height: 28px;border: solid 1px #27A9E3; margin: 7px; font-size: 14px;float: right;}
+	a.searchBtn:link,a.searchBtn:visited {color:#fff;}
+	.dele{ cursor: pointer; position:absolute;right:-30px;top:0;font-size:18px;color:red;}
+	.data_text{position:relative;display:inline-block;}
+	.select_option{ width: 100%;}
+</style>
+<{/block}>
+
+<{block name=bodylist}>
+<div class="conWaiSet">
+	<div class="ibox float-e-margins">
+		<div class="ibox-title">
+			<h5 id="positionname">桌台设置</h5>
+		</div>
+		<div class="ibox-content clearfix">
+			<div class="">门店名称： <{$shopname}></div>
+			<form action="" method="get" id="theForm">
+
+				<div class="mar20">
+					<input type="text" class=" form-control" placeholder="输入桌台名称" value="<{$name}>" name="tablename" />
+					<input type="text" class=" form-control" placeholder="输入设备SN" value="<{$sn}>" name="sn" /> &nbsp;&nbsp;
+					<button class="btn-a btn-prim " type="submit" >搜索</button>
+					<a  class="searchBtn" href="<{ofunc type=url link="/shopcenter/addtables"}>"   >新建桌台</a>
+					<a  class="searchBtn"  href="<{ofunc type=url link="/shopcenter/tablestype"}>"   >餐桌类型管理</a>
+					<a  class="searchBtn" href="<{ofunc type=url link="/shopcenter/tablesarea"}>"   >餐桌区域管理</a>
+					<!--  <a href="{:U('Merchant/storeTableAdd',array('sid'=> $sid)) }" class="btn-a btn-prim"   style="float: right">新建桌台</a> -->
+					<!-- <button class="btn-a btn-prim " type="button" onclick="openlink('http://diancan.dev/index.php/90022/shopcenter/usershopreal');">商家实景</button> -->
+				</div>
+				<!--     <ul class="searchZ mar20">
+                        <li>
+                            <input type="text" class="selectText" placeholder="输入桌台名称" value="{$name}" name="tablename" />
+                        </li>
+                          <li>
+                            <input type="text" class="selectText" placeholder="输入设备SN" value="{$sn}" name="sn" />
+                        </li>
+                          <li>
+                            <a class="searchBtn">搜索</a>
+                            <button class="searchBtn" type="submit" > 搜索</button>
+                        </li>
+                         <li><a href="{:U('Merchant/storeTableAdd',array('sid'=> $sid)) }" class="searchBtn checkAuth"   style="float: right">新建桌台</a></li>
+                         <li><a   class="searchBtn" onclick="AlipayAuth({$mid},0)"   style="float: right">口碑开店</a></li>
+                        <div class="clear"></div>
+                    </ul>
+                     -->
+				<div class="hoverC mar20">
+					<table class="table table-bordered">
+						<thead>
+						<tr class="ad">
+							<th>ID</th>
+							<th>桌台名称</th>
+							<th>区域</th>
+							<th>类型</th>
+							<th>是否开放预订</th>
+							<th>已绑定手表设备</th>
+							<th>备注</th>
+							<th>操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<{if $lists == "" }>
+						<tr><td colspan="9">暂无</td></tr>
+						<{/if}>
+						<{if $lists != "" }>
+						<{foreach from=$lists key=myid item=items}>
+
+
+						<tr>
+							<td><{$items['id']}></td>
+							<!--  	<td><{$items.shopname}></td> -->
+							<td><{$items.name}></td>
+							<td><{$items.table_area}></td>
+							<td><{$items.table_type}>人桌</td>
+							<td><{if $items['reserve_status'] ==1}>开放<{else}>关闭<{/if}></td>
+							<td>
+
+
+								<table class="select_option ">
+									<{foreach from=$list key=myid item=item}>
+									<tr>
+										<{if $item['cid'] != '' }>
+
+										<td>
+											<{if $item['id'] == $items['id']   }>
+											<div class="data_text"> <{$item.sn}><span data-cid="<{$item['cid']}>" class="dele deleclick">x</span></div>
+
+											<{/if}>
+
+										</td>
+
+										<{else}>
+
+
+										<td></td>
+
+
+										<{/if}>
+									</tr>
+									<{/foreach}>
+								</table>
+
+
+
+							</td>
+							<td><{$items.remark}></td>
+							<td style="text-align:center;">
+								<table class="select_option">
+									<tr>
+										<td> <a  data-id="<{$items.id}>" class="tobinding" >新增绑定</a>  <a href="<{ofunc type=url link="/shopcenter/addtables/id/<{$items['id']}>"}>">编辑/ </a> <a  onClick="storeDelete(<{$items['id']}>)">删除  /</a> <a  href="<{ofunc type=url link="/shopcenter/tablesqrcode/sid/<{$items['sid']}>/id/<{$items['id']}>"}>">堂食二维码</a> / 
+                                                                                    <a  href="<{ofunc type=url link="/shopcenter/table_reserve_detail/id/<{$items['id']}>"}>">预订(<{$items['ydcount']}>)</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						</volist>
+						<{/foreach}>
+						<{/if}>
+						</tbody>
+						<!--  <tr><td colspan="15"><empty name="list" value="">暂无相关数据<else />总共有{$num}条数据</empty></td></tr> -->
+					</table>
+
+			</form>
+
+
+			<!------------新蹭绑定(弹出框)-------------->
+			<div class="showBg doorT" style="display: none">
+				<div class="show">
+					<div class="showNav">
+						<ul class="showSearch clearfix">
+							<li>绑定手表设备</li>
+							<div class="clear"></div>
+						</ul>
+						<span class="closeBg"></span>
+					</div>
+					<div class="showMain" >
+						<table style="margin: auto" >
+							<tr>
+								<td>手表设备</td>
+								<td>
+									<select class="form-control operator ajxget"  style="width:200px">
+										<option value="">请选择</option>
+									</select>
+								</td>
+							</tr>
+
+						</table>
+					</div>
+					<!---------按钮部分------------->
+					<div class="prceBtn marT15 mar20" style="text-align: center;">
+						<a class="btn-a btn-prim  storeSet" id="storeSet" name="storeSet">确定</a>
+						<a class="btn-a btnX btn-prim" style=" background:#F60;" id="resetA">取消</a>
+					</div>
+				</div>
+			</div>
+			<!--end-->
+
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+<!-- 
+<img id="goodmodule1" class="showmoduleimg" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/goodmodule1.png" />
+<img id="goodmodule2"  class="showmoduleimg" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/goodmodule2.png" />
+-content right start-
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">菜单设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <div class="orderset">
+            <div class="shgiftset">
+                <div class="fl" style="color:#333;font-size: 14px;">商品模板：</div>
+
+                <div class="shgift_right">
+                    <div  style="float:left;" ><input type="radio" name="goodlistmodule" value="0" <{if $shopinfo['goodlistmodule'] == 0 }> checked <{/if}> >1*1</div>
+                    <img id="defaultgoodmoduleimg" style="float:left;cursor:pointer; width:30px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/iconfont-tupian.png" />
+                    <div  style="float:left;" ><input type="radio" name="goodlistmodule" value="1" <{if $shopinfo['goodlistmodule'] == 1 }> checked <{/if}> >1*2</div>
+                    <img  id="newgoodmoduleimg"  style="float:left;cursor:pointer; width:30px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/images/iconfont-tupian.png" />
+                </div>
+                <div class="shgift_but fl">
+                    <button class="btn-a btn-prim" type="button">保存</button>
+                </div>
+                <div class="shgift_but_a fl" style="margin-left: 20px;">
+                    <button class="btn-a btn-prim" type="button"><a href="<{ofunc type=url link="/shopcenter/outgoods"}>" target="_blank" style="color:#fff;">导出</a></button>
+                    <span><a href="<{ofunc type=url link="/shopcenter/outgoods"}>" target="_blank"></a></span>
+                </div>
+            </div>
+            <style>
+                .showmoduleimg{display:none;width:375px; height:667px; position:absolute; z-index:99999;top:50%; left:50%; margin-left:-187px; margin-top:-333px;}
+                .shgiftset{ color:#ffffff; height: 38px; line-height: 38px; }
+                .shgiftset .shgift_left{ float:left; height: 38px;  padding:0px 10px;  line-height: 38px;    text-align: center;  margin-right:10px;  background: #EC7501;}
+                .shgiftset .shgift_right{ float:left;margin-right:20px; }
+                .shgiftset .shgift_end{ float:left;margin-right:20px; }
+                .shgiftset .shgift_but{ float:left; }
+            </style>
+            <script>
+                $(".shgift_but").click(function(){
+                    var goodlistmodule = $("input[name=goodlistmodule]:checked").val();
+
+                    var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/savegoodsmoduletype/datatype/json"}>',{'moduletype':goodlistmodule,'shopid':<{$shopinfo['id']}>});
+                        if(backinfo.flag == true)
+                        {
+                            //	hideop();
+                            diaerror(backinfo.content)
+                        }else{
+                            //	hideop();
+                            artsucces('保存成功');
+                            location.reload();
+                        }
+                        });
+
+                $("#defaultgoodmoduleimg").hover(function(){
+                    $("#goodmodule1").show();
+                },function(){
+                    $("#goodmodule1").hide();
+                });
+                $("#newgoodmoduleimg").hover(function(){
+                    $("#goodmodule2").show();
+                },function(){
+                    $("#goodmodule2").hide();
+                });
+            </script>
+            <div class="addFenlei" style="top: 0;right:0;">
+                <div class="fl"><input type="text" id="shoptypename" name="shoptypename" value=""  class="form-control"/></div>
+                <div class="btn-a btn-prim"  id="add_FoodType" style="margin-left: 20px;">添加分类</div>
+            </div>
+        </div>
+        <form action="" method="post">
+            <div class="caidanSet" style="width: 100%;">
+                <div class="caidanTitle mart10">
+                    <ul>
+                        <{foreach from=$list key=myid item=items}>
+                        <li  data="<{$items['id']}>"  dataname="<{$items['name']}>" dataorder="<{$items['orderid']}>"><{$items['name']}></li>
+                        <{/foreach}>
+                    </ul>
+                    <div class="editGtype" id="editGtype">
+                        <div class="delGDtype curbtn" ></div>
+                        <div class="editGDtype curbtn"></div>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>食品名称</th>
+                        <th>价格（元）</th>
+                        <th>打包费（元）</th>
+                        <th>每日数量</th>
+                        <th>上、下架</th>
+                        <th>排序</th>
+                        <th>支持类型</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <{foreach from=$list key=myid item=items}>
+                    <tbody id="subaddtype_<{$items['id']}>">
+                    <{foreach from=$items['det']  item=ite}>
+                    <tr  class="listgoodsdet goodsdiv_<{$items['id']}>  goodstr_<{$ite['parentid']}>"   data="<{$ite['id']}>" id="goodstr_<{$ite['id']}>" have_det="<{$ite['have_det']}>">
+                        <td><p class="name"><{$ite['name']}></p></td>
+                        <td><p class="cost"><{$ite['cost']}></p></td>
+                        <td><p class="bagcost"><{$ite['bagcost']}></p></td>
+                        <td><p class="count"><{$ite['count']}></p></td>
+                        <td><span class="is_live"><{if $ite['is_live'] ==1}>已上架<{else}>已下架<{/if}></span></td>
+                        <td><p class="good_order"><{$ite['good_order']}></p></td>
+                        <td> 
+                            <input type="checkbox" name="is_waisong" onclick="changegoods('<{$ite['id']}>','<{$ite['is_waisong']}>','ws')"  <{if $ite['is_waisong']==1}>checked<{/if}>>外送
+                           <{if $ite['shoptype'] == 0  }>
+                           <input type="checkbox" name="is_dingtai"   onclick="changegoods('<{$ite['id']}>','<{$ite['is_dingtai']}>','dt')" <{if $ite['is_dingtai']==1}>checked<{/if}>>堂食    
+                           <{/if}>
+                        </td>
+                        <td>
+                            <a  onclick="editgoods('<{$ite['id']}>');">编辑</a> /
+                            <a  onclick="delgoods('<{$ite['id']}>');">删除</a> /
+                            <a  onclick="setattr('<{$ite['id']}>');">上传多图</a>
+                        </td> 
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                    <{/foreach}>
+                    <tbody  id="additem" style="display:none;" >
+                    <input type="hidden" name="adgoodstypeid" value="">
+                    <tr  class="listgoodsdet goodsdiv_<{$items['id']}>  goodstr_<{$ite['parentid']}>"   data="<{$ite['id']}>" id="goodstr_<{$ite['id']}>" have_det="<{$ite['have_det']}>">
+                        <td><input style="width:50%;" type="text" value="" name="adgoodname" placeholder="商品名称"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodcost" placeholder="商品单价"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodbagcost" placeholder="打包费"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodcount" placeholder="商品数量"/></td>
+                        <td><span class="is_live">下架</span><input type="hidden" name="add_islive" value="1"/></td>
+                        <td><input  style="width:50%;" type="text" value="" name="adgoodpaixu" placeholder="商品排序"/></td>
+                        <td> 
+                            <input type="checkbox" name="is_waisong" value="1" onclick="changegoods('<{$ite['id']}>','<{$ite['is_waisong']}>','ws')"  <{if $ite['is_waisong']==1}>checked<{/if}>>外送
+                           <{if $ite['shoptype'] == 0  }>
+                           <input type="checkbox" name="is_dingtai" value="1"  onclick="changegoods('<{$ite['id']}>','<{$ite['is_dingtai']}>','dt')" <{if $ite['is_dingtai']==1}>checked<{/if}>>堂食    
+                           <{/if}>
+                        </td>
+                        <td>
+                            <span style=" background:#27a9e3; padding:8px; color:#fff;" class="curbtn" id="saveaddgoods">保存</span>
+                        </td> 
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="mart10">
+                    <div class="order_goodlist">
+                        <div class="cd_name" style=" border:none;">
+                            <span  class="btn-a btn-prim" id="addgoods">添加菜品</span>
+                        </div>
+                        <div class="cd_name" style=" border:none;">
+                            <span style=" background:#F60;" class="btn-a btn-prim" onclick="alltoshopgoods();" >从商品库中快速添加商品</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </form>
+    </div>
+</div> -->
+
+
+<!--<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>-->
+<script>
+	var sid = "<{$sid}>";
+	var id = '';
+
+
+
+
+
+	$('.tobinding').click(function(){
+		id =$(this).data('id');
+		$('.doorT').show();
+		var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/getmersnandoperator/datatype/json"}>',{'type':'get'});
+		if(backinfo.flag == true){
+			var obj = backinfo.content;
+			var html = '<option value="">请选择</option>';
+			for(var i in obj){
+				var data =  obj[i];
+				html +=
+						"<option value="+ data.sn +">"+ data.operator +"</option>"
+			}
+
+			$('.ajxget').html(html);
+
+		}
+		//console.log(html);
+	})
+
+	$('.closeBg, .btnX').click(function(){
+		$('.doorT').hide();
+	})
+
+	$('.storeSet').click(function(){
+
+		var  _sn =	$('.ajxget').val(); //console.log(_operator);
+                if(_sn==""){
+			alert("请选择");
+			return;
+		}
+
+		var _id = id;
+		//console.log(_sn,_id);
+
+		var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/getoprtotables/datatype/json"}>',{'sn':_sn,'id':_id});
+		if(backinfo.flag == true){
+
+			diaerror(backinfo.content);
+			window.setTimeout("window.location.reload()",1000);
+
+		}else{
+			diaerror(backinfo.content);
+			//location.reload();
+			window.setTimeout("window.location.reload()",1000);
+		}
+
+
+
+	});
+
+
+	function getTableValtoQRCode(sid,id){
+		var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/createtablesqrc/datatype/json"}>',{'sid':sid,'id':id});
+		if(backinfo.flag == true){//console.log(backinfo);
+			window.open(backinfo.content);
+		}
+	}
+
+
+	$('.deleclick').click(function(){
+		var cid = $(this).data('cid');
+		//console.log(cid);
+
+		swal({
+			title: "确定删除手表设备吗？",
+			type: "warning",
+
+			showConfirmButton: true,
+			confirmButtonText: "确定",
+			showCancelButton: true,
+			cancelButtonText:'取消',
+			closeOnCancel: true,
+			closeOnConfirm: false
+		}, function(isConfirm){
+			if(isConfirm) {
+				var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/delwatch/datatype/json"}>',{'id':cid});
+
+				if(backinfo.flag == true)
+				{
+					swal({
+						title: '删除成功',
+						type: "success",
+
+
+					});
+					window.setTimeout("window.location.reload()",1000);
+				}else{
+					swal({
+						title: backinfo.content,
+						type: "error",
+
+
+					});
+					//location.reload();
+					window.setTimeout("window.location.reload()",1000);
+				}
+
+			}
+			else {
+
+			}
+		});
+
+	});
+
+
+
+	function storeDelete(id) {
+		swal({
+			title: "确定删除桌台？",
+			type: "warning",
+
+			showConfirmButton: true,
+			confirmButtonText: "确定",
+			showCancelButton: true,
+			cancelButtonText:'取消',
+			closeOnCancel: true,
+			closeOnConfirm: false
+		}, function(isConfirm){
+			if(isConfirm) {
+				var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/tabledel/datatype/json"}>',{'id':id});
+
+				if(backinfo.flag == true)
+				{
+					swal({
+						title: '删除成功',
+						type: "success",
+
+
+					});
+					window.setTimeout("window.location.reload()",1000);
+				}else{
+					swal({
+						title: backinfo.content,
+						type: "error",
+
+
+					});
+					//location.reload();
+					window.setTimeout("window.location.reload()",1000);
+				}
+
+			}
+			else {
+
+			}
+		});
+	}
+
+
+
+
+</script>
+
+
+
+
+<{/block}>

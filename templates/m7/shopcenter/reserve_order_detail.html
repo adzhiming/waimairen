@@ -1,0 +1,62 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='reserve_order_add';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">预订订单详情</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/Reservemenu.html"}>
+        <!--<div class="cl"></div>-->
+       
+        <div class="jutiSet">
+            
+            <ul class="reserve_order_detail">
+                <li>订单号：<{$cxinfo['dno']}></li>
+                <li>订单金额：<{$cxinfo['allcost']}></li>
+                <li>联系信息：<{$cxinfo['buyername']}>/<{$cxinfo['buyerphone']}></li>
+                <li>下单时间：<{$cxinfo['addtime']|date_format:"%Y-%m-%d %H:%M"}></li>
+                <li> 预订日期/时间：<{$cxinfo['booktime']|date_format:"%Y-%m-%d %H:%M"}></li>
+                <li>订单状态：<{if $cxinfo['ydstatus'] == 0}>未接单<{elseif $cxinfo['ydstatus'] == 1}>已接单<{elseif $cxinfo['ydstatus'] == 2}>已完成<{elseif $cxinfo['ydstatus'] == 3}>已取消<{elseif $cxinfo['ydstatus'] == 4}>消费中<{else}>未知<{/if}></li>
+                <li>支付状态：<{if $cxinfo['paystatus'] == 1}>已支付<{else}>未支付<{/if}></li>
+                <li>桌台区域/类型：<{$cxinfo['table_area']}>/<{$cxinfo['table_type']}>人桌</li>
+            </ul>
+
+
+
+  
+        </div>
+        
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        //var id = '<{$cxinfo['id']}>';
+        subform("<{ofunc type=url link='/shopcenter/Reserve'}>",$('#loginForm'));
+    });
+
+
+</script>
+
+<{/block}>

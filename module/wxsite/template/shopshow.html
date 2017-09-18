@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>购物车</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/cs/idangerous.swiper.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/cs/idangerous.swiper.scrollbar.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+    <script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+    <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/public.js"></script>
+<script src="<{$siteurl}>/templates/adminpage/public/js/allj.js"></script>  
+   <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/swipe.js"></script> 
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/iscroll.js"></script> 
+    <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/newiscroll.js"></script>  
+	    <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/scrllo_function.js"></script>  
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/jquery.cookie.js"></script>
+    <style>
+        html,body{height: 100%;overflow: hidden;position: relative;}
+ #loading{text-align:center; wdith:80px; height:90px; margin-left:-5px; margin-top:-45px;  position:absolute;top:50%;left:50%;z-index:99999999; }
+#loading .refuImg{  padding: 0px; margin: 0px;  height: 56px;}
+#loading .refuImg img{    width: 50px; height: 50px;  margin-top: 3px;}
+#loading .refuFang{width: 80px;font-size: 12px; height: 20px; line-height: 20px; padding: 0px;  margin: 0px auto; 
+   margin-bottom:3px; color:#323233; text-align: center;}
+    </style>
+    <script>
+        var siteurl = "<{$siteurl}>"
+    	var shopid = "<{$shopdet['shopid']}>";
+    	var shoplimitcost = '<{$shopdet['limitcost']}>';
+    	var checknext = false;
+    	var zuocart = '<{$siteurl}>/index.php?mid=<{$mid}>&ctrl=wxsite&action=gowei&id=<{$id}>';
+    	var mid = "<{$mid}>"
+    </script>
+</head>
+<body>
+ <div id="loading"  style="display: block;">
+	<p class="refuImg"><img   src="/upload/images/wmrloading.gif"  ></p>
+	<p class="refuFang" >努力加载中...</p>
+ </div>
+<div class="cssBox vertical">
+    <!--头部信息-->
+    <div >
+        <div class="cart_box">
+            <img src="<{$siteurl}>/templates/m7/public/wxsite/images/grzx_by.png" class="shop_Dimg"/>
+            <div class="cssBox vertical box-pack cart_po">
+                <ul class="cat_head clearfix">
+                    <li class="cssBox">
+                        <div class="marr15">
+                            <img src="<{$shopinfo['shoplogo']|default:$sitelogo}>" class="cart_logo"/>
+                        </div>
+                        <div class="flex mui-ellipsis vertical cssBox box-pack">
+                            <ul class="cart_list mui-row">
+                                <li>起送<span>¥<{$shopdet['limitcost']}></span></li>
+                                <li>配送<span>¥<{$shopdet['pscost']}></span></li>
+                                <li>送达<span><{$shopdet['arrivetime']}></span>分钟</li>
+                            </ul>
+                            <div class="mui-row mart5">
+                                <div class="mui-col-xs-12">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <span>4.6</span>分
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="cssBox">
+                        <div class="marr15">月售：<{$sellcnt}>份</div>
+                        <div class="flex">营业时间：<{$shopinfo.starttime}></div>
+                    </li>
+                    <li class="cssBox">
+                        <div>优惠信息：</div>
+                        <div class="flex mui-ellipsis-2"><{$shopinfo.notice_info|default:'暂无'}></div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <!--tab切换menu-->
+        <div class="swiper-nav swiper-container">
+            <!--tab切换menu-->
+            <ul class="swiper-wrapper mui-row cart_tab">
+                <li class="swiper-slide mui-col-xs-4 active" style= "width: 50%;" >点菜</li>
+                <li class="swiper-slide mui-col-xs-4" style= "width: 50%;">评价</li>
+              <!--   <li class="swiper-slide mui-col-xs-4">商家</li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="flex m-content" >
+        <div class="swiper-pages swiper-container">
+            <div class="swiper-wrapper">
+                <!--点菜-->
+                <div class="swiper-slide po_r">
+                    <div class="mui-row">
+                        <!--菜单tab-->
+                        <div class="mui-col-xs-3 hideScroll cart_left ordisordLeft">
+                            <ul class="sortlist" style="padding-bottom: 85px;">
+                                <{foreach from=$goodstype key=mykey item=items}>
+                                <li class="mui-ellipsis  <{if $mykey == 0  }>active ordisordaA<{/if}>"  cateid="<{$items['id']}>"  ><{$items['name']}></li>
+                                <{/foreach}>
+                            </ul>
+                        </div>
+                        <!--商品展示-->
+                        <div class="mui-col-xs-9 cart_right bg_while">
+                            <!--1-->
+                            <div class="show_page" style="display: block;" id="catefoods">
+                                <ul class="goodsList">
+                                    
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--评价-->
+                <div class="swiper-slide">
+                    <!--a-->
+                    <div class="mui-table-view">
+                        <div class="mui-table-view-cell">
+                            <div class="mui-row">
+                                <div class="mui-col-xs-4 mui-ellipsis border-r">
+                                    <div class="cssBox vertical mui-text-center">
+                                        <div class="mui-h3 color_z"><{$zonghefen}></div>
+                                        <div class="mui-h5"><b>综合评分</b></div>
+                                        <div class="mui-h6 line12">商家好评率85%</div>
+                                    </div>
+                                </div>
+                                <div class="mui-col-xs-8 mui-ellipsis">
+                                    <div class="center vertical box-pack height56">
+                                        <div class="mui-h5 color_yellow">
+                                            <span class="color_a marr_b5">配送评分</span>
+                                            <{section name=loop loop=$psfuwustart }>
+                                              <i class="fa fa-star"></i>
+                                            <{/section}>
+                                            <{section name=loop loop=5-$psfuwustart }>
+                                              <i class="fa fa-star" style="color:#C7C7C7;"></i>
+                                            <{/section}>
+                                            <span class="marr_l5"><{$psfuwustart}></span>
+                                        </div>
+                                        <div class="mui-h5 color_yellow">
+                                            <span class="color_a marr_b5">商家评分</span>
+                                            <{section name=loop loop=$zongtistart }>
+                                              <i class="fa fa-star"></i>
+                                            <{/section}>
+                                            <{section name=loop loop=5-$zongtistart }>
+                                              <i class="fa fa-star" style="color:#C7C7C7;"></i>
+                                            <{/section}>
+                                            <span class="marr_l5"><{$zongtistart}></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--b-->
+                    <!-- <div class="mui-table-view border-b" style="margin-top: 2%;">
+                        <ul class="mui-table-view-cell commentList">
+                            <li class="mui-ellipsis">全部(135)</li>
+                            <li class="mui-ellipsis">好评(100)</li>
+                            <li class="mui-ellipsis">中评(25)</li>
+                            <li class="mui-ellipsis">差评(10)</li>
+                        </ul>
+                    </div> -->
+                    <!--c-->
+                    <div class="swiper-container swiper-gallery">
+                        <div class="swiper-scrollbar"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <ul class="mui-table-view function" style="margin-bottom: 140px;">
+                                   <{foreach from=$commentlist item=items}>
+	                                    <li class="mui-table-view-cell">
+	                                        <div class="cssBox">
+	                                            <img src="<{$items.userlogo}>" class="head_img"/>
+	                                            <div class="flex vertical marl10">
+	                                                <b class="font14 color_a"><{$items.username}></b>
+	                                                <div class="color_yellow">
+	                                                    <{$items.startpoin}>
+	                                                    <!-- <span class="marr_l5 mui-h6">23分钟到达</span> -->
+	                                                </div>
+	                                                <div class="mui-h6 mui-ellipsis-3"><{$items.content}></div>
+	                                                <div class="mui-h6 right_time"><{$items.addtime}></div>
+	                                             </div>
+	                                         </div>
+	                                      </li>
+                                    <{/foreach}>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end-->
+                </div>
+                <!--商家-->
+                <div class="swiper-slide">
+                    <div class="swiper-container swiper-gallery">
+                        <div class="swiper-scrollbar"></div>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="mui-row">
+                                    <div class="mui-table-view po_r">
+                                        <div class="mui-table-view-cell mui-row mui-h5">
+                                            <div class="mui-col-xs-1 mui-text-left"><i class="fa fa-heart-o font16"></i></div>
+                                            <div class="mui-col-xs-11">
+                                                <div class="cssBox justify">
+                                                    <div>用户评价<{$zonghefen}>分</div>
+                                                    <div>月售：<{$sellcnt}>份</div>
+                                                </div>
+                                            </div>
+                                            <div class="mui-col-xs-1 mui-text-left"><i class="fa fa-clock-o font16"></i></div>
+                                            <div class="mui-col-xs-11"><{$shopinfo.starttime}></div>
+                                            <div class="mui-col-xs-1"><i class="fa fa-map-marker font16 marll2"></i></div>
+                                            <div class="mui-col-xs-11 mui-ellipsis"><{$shopinfo.address}></div>
+                                            <div class="mui-col-xs-1"><i class="fa fa-phone font16 marll2"></i></div>
+                                            <div class="mui-col-xs-11"><{$shopinfo.phone}></div>
+                                        </div>
+                                    </div>
+                                    <h5 class="mui-content-padded">商家优惠</h5>
+                                    <div class="mui-table-view">
+                                        <div class="mui-table-view-cell mui-row mui-h5">
+                                            <div class="mui-col-xs-12 mui-ellipsis"><{$shopinfo.cx_info}></div>
+                                            <div class="mui-col-xs-12 mui-ellipsis"><{$shopinfo.notice_info}></div>
+                                        </div>
+                                    </div>
+                                    <h5 class="mui-content-padded">店铺图片</h5>
+                                    <div class="mui-content-padded">
+                                        <ul class="store_img">
+                                            <{foreach from=$shopimage item=items}>
+                                               <li><img src="<{$items.img}>" width="100%"/></li>
+                                            <{/foreach}>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end-->
+            </div>
+        </div>
+    </div>
+    <!--底部-->
+    <div class="cssBox justify bg_while height40 bor-t" id="bottom_box">
+        <div class="foot_left_c"></div>
+        <div class="flex box-pack translate_l">
+            <!--<div class="font16">购物车是空的</div>-->
+            <div class="font16">
+                <div class="color_z">
+                    共<small> ¥ </small><span id="total_money">0</span>元
+                </div>
+                <div class="mui-h6"><!-- 另需配送费5元 --></div>
+            </div>
+        </div>
+        <div class="foot_right_c">
+           <!--  <div class="mui-text-right mui-h5 l-height50 marr15">20元起送</div> -->
+            <button type="button" class="cartForm" onclick="dolink('<{$siteurl}>/index.php/<{$mid}>/wxsite/shopcart/id/<{$id}>');">选好了</button>
+            <div  id="showlimit" class="limitordeilpaybut"    ><input type="button" value="还差<{$shopdet['limitcost']}>元"></div>
+        </div>
+    </div>
+    <!--end-->
+    <!--底部滑出订单详情-->
+    <div class="order_msg bg_while" id="showorderdet">
+        <div class="order-p ">
+            <!--购物车-->
+            <div class="cart_shop_box">
+                <div class="ocart ocartbox active" id="shopCart">
+                    <!-- <i class="fa fa-shopping-cart"></i> -->
+                    <img src="<{$siteurl}>/templates/m7/public/wxsite/images/gwcb.png" />
+                    <span class="mui-badge" id="total_count">0</span>
+                </div>
+            </div>
+            <i class="fa fa-caret-up s-icon"></i>
+            <!--订单-->
+           <div class="order_menu showorderList">
+           
+           </div>
+        </div>
+        <!--end-->
+    </div>
+    <!--清除购物车弹框-->
+    <div class="sj_alert">
+        <div class="sj-popup">
+            <!--<h3 style="">卡券使用提示</h3>-->
+            <div class="sj_alert_title sj_danger">温馨提示</div>
+            <div class="tipList clearfix">
+                <div class="center padt20">确定要清空购物车吗？</div>
+            </div>
+            <!--btn-->
+            <div class="sj_btn">
+                <span class="sj_btn_t" id="sure">确定</span>
+                <span class="sj_btn_t close_s">取消</span>
+            </div>
+        </div>
+    </div>
+    <!--end-->
+    <div class="maskbox"></div>
+    <!--end-->
+</div>
+
+
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/cart.js"></script>
+<script src="<{$siteurl}>/newstyle/js/jquery.nicescroll.js"></script>
+<script src="<{$siteurl}>/newstyle/js/jquery.fly.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/mui.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/top_b/idangerous.swiper.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/top_b/idangerous.swiper.scrollbar-2.0.js"></script>
+<script src="<{$siteurl}>/templates/adminpage/public/js/allj.js"></script>
+<script>
+function myyanchi(){
+		
+	  checknext = false;
+}
+    $(function(){
+    	var baoshifu = false;
+    	if( baoshifu == false ){
+    		baoshifu = true;
+    		getcatefoods();	
+    	}
+        //Init Navigation
+        var nav = $('.swiper-nav').swiper({
+            slidesPerView: 'auto',
+            freeMode:true,
+            noSwiping : true,
+            freeModeFluid:true,
+            calculateHeight : true,
+            visibilityFullFit: true,
+            onSlideClick: function(nav){
+                pages.swipeTo( nav.clickedSlideIndex )
+            }
+        });
+
+        //Function to Fix Pages Height
+        function fixPagesHeight() {
+            $('.swiper-pages').css({
+                height: $(window).height()-nav.height-140
+            })
+        }
+        $(window).on('resize',function(){
+            fixPagesHeight()
+        });
+        fixPagesHeight();
+
+        //Init Pages
+        var pages = $('.swiper-pages').swiper({
+            noSwiping : true,
+            onSlideChangeStart: function(){
+                $(".swiper-nav .active").removeClass('active');
+                $(".swiper-nav .swiper-slide").eq(pages.activeIndex).addClass('active')
+                if(pages.activeIndex == 0){
+                    $('#bottom_box,.order_msg').fadeIn();
+                }else{
+                    $('#bottom_box,.order_msg').hide();
+                }
+            }
+        });
+
+        //Scroll Containers
+        $('.scroll-container').each(function(){
+            $(this).swiper({
+                mode:'vertical',
+                scrollContainer: true,
+                mousewheelControl: true,
+                scrollbar: {
+                    container:$(this).find('.swiper-scrollbar')[0]
+                }
+            })
+        });
+
+        //Gallery
+        var swiperGallery = $('.swiper-gallery').swiper({
+            mode: 'vertical',
+            slidesPerView: 'auto',
+            freeMode: true,
+            freeModeFluid: true,
+            scrollbar: {
+                container:$('.swiper-gallery .swiper-scrollbar')[0]
+            }
+        });
+
+        swiperGallery.reInit()
+
+        
+     //new add start
+     $(".cart_left li").bind('click',function(){
+    	 $('#loading').show();
+		  if(lockclick()){  
+			$(".cart_left li").removeClass('ordisordaA');
+			$(this).addClass('ordisordaA');
+			getcatefoods();
+		  }
+	 });
+        
+        function getcatefoods(){
+        	 
+    		var curcateid = $(".ordisordLeft li.ordisordaA").attr('cateid');
+    	        
+    			$(".goodsList").html('');
+    			var url = '<{ofunc type=url link="/wxsite/catefoods"}>'; 
+    					$.post(url, {'curcateid':curcateid,'shoptype':<{$shopinfo['shoptype']}>,'shopid':<{$shopinfo['id']}>,'type':1},function (data, textStatus){ 
+    							$('.goodsList').html(data); 
+    					     freshcart(mid);
+    							$('.righ_l_b_btn_moren').unbind();
+    							$('#loading').hide();
+    						 
+    							   $('.right_l_btn_left').bind("click", function() {   
+    							   if(lockclick()){ 
+     									if($(this).attr('have_det') == 1){ 
+    										removeoneproduct(mid,$(this).attr('data-id'),$(this).attr('data-shopid'),1);
+    									   }else{ 
+    										removeonedish(mid,$(this).attr('data-id'),$(this).attr('data-shopid'),1,this);
+    										}
+    									}
+    							  }); 
+    							   $('.right_l_btn_right').bind("touchstart", function() {
+     									if(lockclick()){
+    										 if($(this).attr('have_det') == 1){
+    											 addproduct(mid,$(this).attr('data-id'),$(this).attr('data-shopid'),1,this);
+    											    
+    										 }else{
+    											 addonedish(mid,$(this).attr('data-id'),$(this).attr('data-shopid'),1,this);
+    									   }
+    									  }
+    									 
+    							  }); 
+    							
+    						}, 'html');
+    						
+    }   
+     //end
+    })
+</script>
+<script>
+
+    //    tab菜单样式切换
+    $(".sortlist li").click(function(e){
+        e.preventDefault();
+        var i = $(this).index();
+        $(".sortlist li").removeClass('active').eq(i).addClass('active');
+        //$('.show_page').hide().eq(i).show();
+    });
+
+    //  隐藏滚动条
+    $('.hideScroll').niceScroll({cursoropacitymax: 0});
+
+    //  点击购物车订单详情出现和隐藏
+    $('.maskbox').height($(document).height());
+    $(".ocartbox,.maskbox").click(function(){
+        $(".maskbox").fadeToggle(300);
+        $('.order_menu').slideToggle(300);
+        $('.foot_left_c').toggle();
+        $('.translate_l').toggleClass('active');
+        $('.cart_shop_box').toggleClass('active')
+        freshowdetcart();
+    });
+
+
+
+    
+
+
+
+    //    清空购物车
+     $("body").on("click","#sure",function(){
+        $('.order_list').empty();
+        $('.sj_alert').fadeOut();
+        $(".maskbox").fadeToggle(300);
+        $('.order_menu').slideToggle(300);
+        var mid = "<{$mid}>";
+        delshopcart(mid);
+
+    });
+
+    //   打开清空购物车弹框
+    function clearCart(){
+        $('.sj_alert').fadeIn();
+    };
+
+    //    关闭清空购物车弹框
+    $('.close_s').click(function(){
+        $('.sj_alert').fadeOut();
+    });
+    
+    
+    
+ //new add
+var click_button = false;
+function doubleclick(){
+	click_button = false;
+}
+function lockclick(){
+	 if(click_button == false){
+			click_button = true;
+			setTimeout("doubleclick()", 400); 
+			return true;
+	 }else{
+		 return false;
+	 }
+}
+
+	function initshop(datas){
+ 		 $('.onselect').removeClass('onselect');
+	         	 $('.righ_l_b_btn_moren').show();
+	         	 $('.righ_l_b_btn_hover').hide();
+	         	 $('.cartshuliang').hide();
+	         	 $('.right_l_btn_nub').val(0);
+	         	 $('.cartshuliang').text(0);
+	         	 $('#total_count').text(0);
+	         	 $('#total_money').text(0);
+	      if(datas.flag == false){    
+	         if($('#total_money').html() != undefined){ 
+	         	
+	         	    $('.qipao').text(0);
+	         	 $.each(datas.content.list, function(i,val){   
+	         	 	
+	         	 	 if($('#gidli_'+val.id).html() != undefined){  
+	         	 	 	  var typeid = $('#gidli_'+val.id).attr('typeid');
+ 	                 $('#gidli_'+val.id).addClass('onselect');
+					  
+					               if($('#cp_'+val.typeid).html() != undefined){
+									   if($('#cp_'+val.typeid).find('.qipao').eq(0).html() != undefined){  
+										     var othershu = Number($('#cp_'+val.typeid).find('.qipao').eq(0).text())+Number(val.count);
+										    $('#cp_'+val.typeid).find('.qipao').eq(0).text(othershu);
+										  
+									   }else{ 
+										  $('#cp_'+val.typeid).append('<div class="qipao" style="position: absolute; margin-top: 5px; right: 5px; width: 16px; height: 16px; line-height: 13px; text-align: center; color: rgb(255, 255, 255); background-image: url(/upload/images/qipao.png); background-size: 16px; background-position: 0px 0px; background-repeat: no-repeat no-repeat;  display: inline-block;">'+val.count+'</div>');
+										}
+								  }
+   
+					 
+					 
+					 
+	             
+	                 $('#gshu_'+val.id).val(val.count); 
+	                $('#gidli_'+val.id).find('.righ_l_b_btn_moren').eq(0).hide();
+	                $('#gidli_'+val.id).find('.righ_l_b_btn_hover').eq(0).show();
+	                $('#gshu_'+val.id).parent().addClass('on');
+	                 $('#gshu_'+val.id).show();
+	         	 	 } 
+	          	}); 
+	          	$('#total_count').text(datas.content.sumcount);
+				checkcartifempty();
+				var shijicost = datas.content.sum;
+	          	$('#total_money').text(shijicost.toFixed(2));
+				
+	          	if(Number(datas.content.sum) >= Number(shoplimitcost)){
+	          		 $('#showlimit input').val('');
+					 $("#addShopping").show();
+					 $("#showlimit").hide();
+					
+	          	}else{
+	          	        var checkcost = Number(shoplimitcost)-Number(datas.content.sum);
+						checkcost = checkcost.toFixed(2);
+						<{if $shopdet['is_goshop'] == 1  }>
+	          	        $('#showlimit input').val('还差'+checkcost+'元');
+						<{else}>
+	          	        $('#showlimit input').val('还差'+checkcost+'元');
+						<{/if}>
+						 $("#addShopping").hide();
+						$("#showlimit").show();
+	          	         
+	          	}
+       	 }else{
+					
+       	 }
+       }
+	 
+   }
+	
+    function checkcartifempty(){    //检查购物车是否为空
+
+  		
+       	if( $('#total_count').html() == 0 ){
+		$(".ordeilpaymenshop").hide();
+		$(".emptycartBg").show();
+		$(".ordeilpaymen").hide();
+		$(".emptyordeilpaymen").show();
+	}else{
+		$(".ordeilpaymenshop").show();
+		$(".emptycartBg").hide();
+		$(".ordeilpaymen").show();
+		$(".emptyordeilpaymen").hide();
+	}
+   }
+    
+    function freshowdetcart(){
+    	 $('.showorderList').html(''); 
+		 url = siteurl+'/index.php?mid=<{$mid}>&ctrl=wxsite&action=cart&shopid='+shopid+'&datatype=json&random=@random@';
+		url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+		var bk = ajaxback(url,''); 
+   	    var html = '';
+   	    var htmls = '<div class=\"mui-text-right mui-h5 marb5\"><i class=\"fa fa-trash\"></i><span class=\"marll5\" onclick="clearCart()">清空购物车</span></div>';
+   	 	  $.each(bk.content.list, function(i,val){
+   	 		  var obj = {list:val};
+   	 		  var info = obj.list
+   	 		  var attrname =""
+   	 			var product_html = ""
+   	 		  if(info.have_det == 1) {
+   	 			  product_html="product_id ='"+info.gg.id+"'"
+   	 			  attrname = "("+info.gg.attrname+")"
+   	 		  }
+    	   
+             html ="<ul class=\"order_list mui-clearfix\">"+
+	                      "<li class=\"mui-row mui-h5\">"+
+	                          "<div class=\"mui-col-xs-7 mui-ellipsis\">"+info.name+attrname+"</div>"+
+	                          "<div class=\"mui-col-xs-5\">"+
+	                              "<div class=\"cssBox justify\">"+
+	                                  "<div class=\"color_z\"><small>¥</small>"+info.cost+"</div>"+
+	                                  "<div class=\"\">"+
+	                                      "<div class=\"cart_icon minus_m minus\" onclick=\"downdbtn(this)\" have_det="+info.have_det+" data-id="+info.id+"  "+product_html+" data-shopid="+info.shopid+">-</div>"+
+	                                      
+	                                      "<input type=\"text\" value=\""+info.count+"\" maxlength=\"99\" readonly=\"\">"+
+	                                      "<div class=\"cart_icon minus_a plus\"  onclick=\"addbtn(this)\"  have_det="+info.have_det+" data-id="+info.id+"  "+product_html+" data-shopid="+info.shopid+">+</div>"+
+	                                  "</div>"+
+	                              "</div>"+
+	                          "</div>"+
+	                      "</li>"+
+	                  "</ul>"
+	            htmls = htmls +html   
+	        
+   	    }); 
+   	 	$('body .showorderList').html(htmls);
+			 
+}  
+
+    function showcartdet(datas){ 
+    	 $('.showorderList').html(''); 
+    	  if(datas.flag == false){    
+       	   //	$('.listcontent').remove();
+       	    var html = '';
+       	    var htmls = '<div class=\"mui-text-right mui-h5 marb5\"><i class=\"fa fa-trash\"></i><span class=\"marll5\" onclick="clearCart()">清空购物车</span></div>';
+             // $('#showorderdet .showorderList').append(temp_htmls);
+       	 	  $.each(datas.content.list, function(i,val){
+       	 		  var obj = {list:val};
+       	 		  var info = obj.list
+       	 		 // console.log(info)
+       	 	 	  //var htmls = template.render('cartlist', {list:val});
+       	 	 	  //$('#showorderdet .showorderList').append(htmls);
+        	   
+                 html ="<ul class=\"order_list mui-clearfix\">"+
+		                      "<li class=\"mui-row mui-h5\">"+
+		                          "<div class=\"mui-col-xs-7 mui-ellipsis\">"+info.name+"</div>"+
+		                          "<div class=\"mui-col-xs-5\">"+
+		                              "<div class=\"cssBox justify\">"+
+		                                  "<div class=\"color_z\"><small>¥</small>"+info.cost+"</div>"+
+		                                  "<div class=\"\">"+
+		                                      "<div class=\"cart_icon minus_m minus\" onclick=\"downdbtn(this)\" have_det="+info.have_det+"       data-id="+info.id+" data-shopid="+info.shopid+">-</div>"+
+		                                      
+		                                      "<input type=\"text\" value=\""+info.count+"\" maxlength=\"99\" readonly=\"\">"+
+		                                      "<div class=\"cart_icon minus_a plus\">+</div>"+
+		                                  "</div>"+
+		                              "</div>"+
+		                          "</div>"+
+		                      "</li>"+
+		                  "</ul>"
+		            htmls = htmls +html   
+		        
+       	    }); 
+       	 	$('body .showorderList').html(htmls);
+ 
+
+
+              
+   		      $('.showorderList').css('height',$('#showorderdet').find('.box_inline').length*49);
+   		   //scroll5.refresh();
+   		 
+        	  
+       }else{
+             $('#cartlist').hide(); 
+       }
+   }
+    
+
+    /* 点击展示购物车详情   end*/    
+   
+           function downdbtn(obj){
+           	  if(checknext ==  false){ 
+           	  		checknext = true;
+       				var checkhavedet = $(obj).attr('have_det');
+       				if(checkhavedet == 1){
+       					 removeoneproduct(mid,$(obj).attr('product_id'),$(obj).attr('data-shopid'),1);
+       					 freshowdetcart();
+       				 
+       				}else{
+       					//console.log(mid+$(obj).attr('data-id')+$(obj).attr('data-shopid'))
+       					removeonedish(mid,$(obj).attr('data-id'),$(obj).attr('data-shopid'),1,this);
+       					freshowdetcart();
+       					freshcart(mid);
+       					 
+       			   }
+       	     	   setTimeout("myyanchi()", 500 );
+           	  }
+       	 	
+          };
+          
+  	 function addbtn(obj){
+ 	    	if(checknext ==  false){ 
+ 	    		checknext = true;
+				var checkhavedet = $(obj).attr('have_det');
+				 
+				if(checkhavedet == 1){					 
+					  uponeproduct(mid,$(obj).attr('product_id'),$(obj).attr('data-shopid'),1);
+					 freshowdetcart();
+				}else{
+					addonedish(mid,$(obj).attr('data-id'),$(obj).attr('data-shopid'),1,this);
+				 	freshowdetcart();
+				 	freshcart(mid);
+					
+			   }
+			  
+ 	     	   setTimeout("myyanchi()", 500 );
+      	  }
+ 	 	
+     };
+       
+</script>
+
+</body>
+</html>

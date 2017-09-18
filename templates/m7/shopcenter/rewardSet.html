@@ -1,0 +1,191 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+    var mynomenu='staffmanage';
+</script>
+<{/block}>
+<{block name=extendcss}>
+
+<{/block}>
+
+<{block name=bodylist}>
+<!--content right start-->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">考勤设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/staffmenu.html"}>
+        
+       <div class="cl"></div>
+
+    <!--列表-->
+    <div class="mart20"  id="pingjia">
+      <form action="<{ofunc type=url link="/shopcenter/rewardSet"}>" method="post" id="theForm"  onsubmit="return validate_form(this)">
+            <div class="titleM mar20">设置详情：请设置打赏详情</div>
+            <div class="kuangJ1">
+                <table class="ta">
+                    <tr style="margin:10px 0; display:block"> 
+                        <td align="right">
+                            <span> 服务介绍：</span>
+                        </td>
+                        <td>
+                            <textarea name="memo" id="memo"  class="textArea1 form_contrle" placeholder="请输入介绍内容.." style="height: 100px;width: 78%;"><{$info.memo}></textarea>
+                        </td>
+                    </tr>
+                    <!--
+                    <tr>
+                        <td align="right">时间设置：</td>
+                        <td>
+                            <input type="text" class="selectTextZ time" placeholder="开始时间">
+                            <span style="margin: 0 10px;">至</span>
+                            <input type="text" class="selectTextZ time" placeholder="结束时间">
+                        </td>
+                    </tr>
+                    -->
+                    <tr style="margin:10px 0; display:block">
+                        <td align="right">打赏金额：</td>
+                        <td>
+                            <ul class="reward">
+                                <li style="float: left; padding-left:5px; ">
+                                    <input type="text" name="price1" id="price1" value=<{if $info.price1 ==''}> "10"<{else}><{$info.price1}> <{/if}>>
+                                </li> 
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="price2" id="price2" value=<{if $info.price2 ==''}> "5"<{else}><{$info.price2}> <{/if}>>
+                                </li>
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="price3" id="price3" value=<{if $info.price3 ==''}> "2"<{else}><{$info.price3}> <{/if}>>
+                                </li>
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="price4" id="price4" value=<{if $info.price4 ==''}> "1"<{else}><{$info.price4}> <{/if}>>
+                                </li>
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="price5" id="price5" value=<{if $info.price5 ==''}> "0.1"<{else}><{$info.price5}> <{/if}>>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <!--<tr>
+                        <td align="right">是否使用默认打赏：</td>
+                        <td>
+                            <div class="radio radio-info" style="float: left;">
+                                <input type="radio" id="reward1" value="option" name="reward">
+                                <label for="reward1">是</label>
+                            </div>
+                            <div class="radio radio-info"  style="float: left;">
+                                <input type="radio" id="reward2" value="option" name="reward">
+                                <label for="reward2">否</label>
+                            </div>
+                        </td>
+                    </tr>-->
+                    <tr style="margin:10px 0; display:block">
+                        <td align="right">点评设置：</td>
+                        <td>
+                            <ul class="reward">
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="comment1" id="comment1" value=<{if $info.comment1 == ''}> "很好"<{else}><{$info.comment1}> <{/if}>>
+                                </li>
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="comment2" id="comment2" value=<{if $info.comment2 == ''}> "好"<{else}><{$info.comment2}> <{/if}>>
+                                </li>
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="comment3" id="comment3" value=<{if $info.comment3 == ''}> "一般"<{else}><{$info.comment3}> <{/if}>>
+                                </li>
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="comment4" id="comment4" value=<{if $info.comment4 == ''}> "差"<{else}><{$info.comment4}> <{/if}>>
+                                </li>
+                                <li style="float: left; padding-left:5px;">
+                                    <input type="text" name="comment5" id="comment5" value=<{if $info.comment5 == ''}> "很差"<{else}><{$info.comment5}> <{/if}>>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr style="margin:10px 0; display:block">
+                        <td align="right">是否启用：</td>
+                        <td>
+                            <div class="radio radio-info" style="float: left;">
+                                <input type="radio" id="op1" value="1" name="status" <{if $info.status == '1'}>checked<{/if}>>
+                                <label for="op1">是</label>
+                            </div>
+                            <div class="radio radio-info"  style="float: left;">
+                                <input type="radio" id="op2" value="0" name="status" <{if $info.status == '0'}>checked<{/if}>>
+                                <label for="op2">否</label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="btnDiv mar15">
+                <button type="submit" class="btn" style="width:75px;height:30px; border-radius:8px;color: #fff;background:#27a9e3;display:inline-block;border:0;">确定</button>
+                <button type="button" class="btnX" style="width:75px;height:30px; border-radius:8px;color: #fff;background:#b1abae;display:inline-block;border:0;">取消</button>
+            </div>
+           </form>
+
+        <div class="show_page mart10" style="font-size: 14px;"><ul><{$list['pagecontent']}></ul></div>
+    </div>
+
+    </div>
+
+</div>
+<script>
+    $('input[name="is_name"]').click(function(){
+//        var is_scanhitcard     = $('#is_scanhitcard').val();
+        var is_longhitcard     = $('#is_longhitcard').val();
+        
+        
+//        if($('#is_scanhitcard').is(':checked')){
+//            is_scanhitcard = 1;
+//        }else{
+//            is_scanhitcard = 0;
+//        }
+        
+        if($('#is_longhitcard').is(':checked')){
+            is_longhitcard = 1;
+        }else{
+            is_longhitcard = 0;
+        }
+        
+        //alert(is_scanhitcard);
+//        var data = {'is_scanhitcard':is_scanhitcard,'is_longhitcard':is_longhitcard};
+//        var url = '<{ofunc type=url link="/shopcenter/changeattendancesetting/random/@random@/datatype/json"}>';
+//        var backdata = ajaxback(url,data);
+//        if(backdata.flag == false){
+//            //alert(backdata.content);
+//            //window.location.reload();
+//        }else{
+//            alert(backdata.content);
+//        }
+        var data = {'is_longhitcard':is_longhitcard};
+        var url = '<{ofunc type=url link="/shopcenter/changeattendancesetting/random/@random@/datatype/json"}>';
+        var backdata = ajaxback(url,data);
+        if(backdata.flag == false){
+            //alert(backdata.content);
+            //window.location.reload();
+        }else{
+            alert(backdata.content);
+        }
+    });
+    
+    $('input[name="hitcarddistance"]').blur(function(){
+        var hitcarddistance     = $('#hitcarddistance').val();
+
+        var data = {'hitcarddistance':hitcarddistance};
+        var url = '<{ofunc type=url link="/shopcenter/changeattendancesetting/random/@random@/datatype/json"}>';
+        var backdata = ajaxback(url,data);
+        if(backdata.flag == false){
+            //alert(backdata.content);
+            //window.location.reload();
+        }else{
+            alert(backdata.content);
+        }
+
+    });
+        
+</script>
+
+<{/block}>

@@ -1,0 +1,201 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/ajaxfileupload.js"> </script>
+<script>
+    var mynomenu='staffmanage';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname"><{if empty($cxinfo)}>新建<{else}>编辑<{/if}>员工</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/staffmenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/staff_save/datatype/json"}>">
+        <div class="jutiSet">
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>姓名：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="name" name="name" value="<{$cxinfo['name']}>" class="form-control" placeholder="请输入姓名" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>手机号码：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="tel" name="tel" value="<{$cxinfo['tel']}>" class="form-control" placeholder="请输入手机号码" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>班次：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                        <select name="shift_id" class="form-control">
+                            <{foreach from=$attlist item=items}>
+                              <option value="<{$items['id']}>" <{if $items['id'] == $cxinfo['shift_id']}> selected="selected" <{/if}> ><{$items['name']}></option>
+                            <{/foreach}>
+                        </select>
+                </div>
+                <div class="cl"></div>
+            </div>
+      
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>岗位：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <{foreach from=$catlist key=myid item=items}> 
+                    <input type="radio" name="applypost[]" id="applypost[]" value="<{$items['name']}>" <{if $items['name'] == $cxinfo['applypost'] || !$cxinfo['applypost']}> checked="checked" <{/if}>  ><{$items['name']}>
+                    <{/foreach}>
+                </div>
+                <div class="cl"></div>
+            </div>
+
+            <!--员工头像-->
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>员工头像：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <div class="upimg">
+                        <div class="file_img">
+                            <img src="<{$cxinfo['picurl']}>" width="136" height="130" class="img-style" id="picurlshow">
+                            <input type="hidden" name="picurl" id="picurl" value="<{$cxinfo['picurl']}>" >
+                            <div onclick="uploadk();" class="button-1 btn-prim mart30" style="margin-left: 25px; margin-top: 5px; width: 80px; line-height: 30px; text-align: center;">上传图片</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cl"></div>
+            </div>
+
+             <!--微信二维码-->
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>微信二维码：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    
+                    <div class="upimg">
+                        <div class="file_img">
+                            <img src="<{$cxinfo['wechat_qrcode']}>" width="136" height="130" class="img-style" id="wechat_qrcodeshow">
+                            <input type="hidden" name="wechat_qrcode" id="wechat_qrcode" value="<{$cxinfo['wechat_qrcode']}>" >
+                            <div onclick="uploadk_wx();" class="button-1 btn-prim mart30" style="margin-left: 25px; margin-top: 5px; width: 80px; line-height: 30px; text-align: center;">上传图片</div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>状态：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="radio"   name="status"   value="1" <{if $cxinfo['status'] == 1 || !$cxinfo['status']}>checked="checked" <{/if}>/>启用
+                    <input type="radio"  name="status"   value="0" <{if $cxinfo['status'] == 0}> checked="checked" <{/if}>/>关闭
+
+                </div>
+                <div class="cl"></div>
+            </div>
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>备注：</span>
+                </div>
+                <div class="dianpu_right">
+                    <textarea rows="3"   name="remarks" id="remarks" class="checks form_textarea" > <{$cxinfo['remarks']}></textarea>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="cl"></div>
+
+            <input name="action" type="hidden" value="ok" />
+            <input type="hidden" name="cxid" value="<{$cxinfo['id']}>">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >点击提交</div>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!--content right end-->
+<!--content right start-->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        subform("<{ofunc type=url link='/shopcenter/staffmanage'}>",$('#loginForm'));
+    });
+    
+
+    function uploadk(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucessk"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucessk(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploadk();
+        }else{
+            dialogs.close();
+            $('#picurl').val(linkurl);
+            $('#picurlshow').attr('src',linkurl);
+            $('#picurlshow').show();
+        }
+    }
+    
+    function uploadk_wx(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucessk_wx"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucessk_wx(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploadk();
+        }else{
+            dialogs.close();
+            $('#wechat_qrcode').val(linkurl);
+            $('#wechat_qrcodeshow').attr('src',linkurl);
+            $('#wechat_qrcodeshow').show();
+        }
+    }
+
+</script>
+
+<{/block}>

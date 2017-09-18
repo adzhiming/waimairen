@@ -1,0 +1,110 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.PrintArea.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<{/block}>
+<{block name=controlname}>订单评价<{/block}>
+<{block name=bodylist}>
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+    <div class="search">
+        <div class="search_content">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/order/module/ordercomment"}>">
+            <label>查询类型：</label>
+            <select name="querytype" class="form-control mar-right">
+                <option value="0">未选择</option>
+                <option value="b.username"  <{if $querytype == 'b.username'}>selected<{/if}>>会员名</option>
+                <option value="sh.shopname"  <{if $querytype == 'sh.shopname'}>selected<{/if}>>店铺名称</option>
+            </select>
+            <label>查询条件：</label>
+            <input type="text" name="searchvalue" value="<{$searchvalue}>" class="form-control">
+            <input type="submit" value="确认提交" class="button btn-prim">
+            </form>
+        </div>
+    </div>
+    <div class="tags">
+        <div id="tagscontent">
+            <div id="con_one_1">
+                <div class="table_td mart15" >
+                    <form method="post" action="" onsubmit="return remind();"  id="delform">
+                        <table class="list table table-bordered" name="table" id="table">
+                            <thead>
+                            <tr>
+                                <th width="40px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+                                <th>商品名称</th>
+                                <th>评价人</th>
+                                <th>对应店铺</th>
+                                <th>评分</th>
+                                <th>内容</th>
+                                <th>评论时间</th>
+                                <th>留言回复</th>
+                                <th>回复时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{foreach from=$list item=items}>
+                            <tr class="s_out">
+                                <td><input type="checkbox" name="id[]" value="<{$items['id']}>"></td>
+                                <td><{$items['goodsname']}></td>
+                                <td> <{$items['username']}> </td>
+                                <td><{$items['shopname']}></td>
+                                <td><{$items['point']}></td>
+                                <td><{$items['content']}></td>
+                                <td><{$items['addtime']|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+                                <td><{$items['replycontent']}></td>
+                                <td><{if $items['replytime'] != 0}><{$items['replytime']|date_format:"%Y-%m-%d %H:%M:%S"}><{/if}></td>
+                                <td>
+                                    <{if empty($items['replycontent'])}><a href="#" onclick="reask('<{$items['id']}>',this);">回复</a><{/if}>
+                                    <{if $items['is_show'] == 0}>
+                                    <a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/order/module/showcommlist/id/<{$items['id']}>/datatype/json"}>">设置成不展示</a>
+                                    <{else}>
+                                    <a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/order/module/showcommlist/id/<{$items['id']}>/datatype/json"}>">设置成展示</a>
+                                    <{/if}>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="page_newc marT20">
+                        <div class="select_page"><a href="#" onclick="checkword(true);" class="color-f">全选</a> / <a href="#" onclick="checkword(false);" class="color-f">取消</a>
+                            <a onclick="return remindall(this);" href="<{ofunc type=url link="/adminpage/order/module/delcommlist/datatype/json"}>" class="button btn-prim">删除</a> </div>
+                        <div class="show_page"><ul><{$pagecontent}></ul></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="askback" style="display:none;">
+    <div>
+        <table border="0" cellspacing="1" cellpadding="4" class="list" name="table" id="table" width="100%">
+            <tbody>
+            <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='ffffff';" bgcolor="ffffff">
+                <td><textarea name="askback" style="height:70px;width:200px"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="blank20"></div>
+    <input type="hidden" name="askbackid" id="askbackid" value="" class="skey" style="width:150px;">
+    <input type="submit" value="确认提交" class="button">
+</div>
+<script>
+    var dialogs ;
+    function reask(ids,obj){
+        var formurl = '<{ofunc type=url link="/adminpage/order/module/backcomment/datatype/json"}>';
+        $('#askbackid').val(ids);
+        var showcontent = '<form method="post" name="form1" action="'+formurl+'" onsubmit="return subform(\'<{ofunc type=url link="/adminpage/order/module/ordercomment"}>\',this);">'
+
+        showcontent += $('#askback').html();
+        showcontent +='</form>';
+        var dialog =  art.dialog({
+            title:'留言回复',
+            id:'comment',
+            content: showcontent
+        });
+    }
+
+</script>
+<{/block}>

@@ -1,0 +1,23 @@
+
+
+
+<div class="ordertjmenu" >
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/lineupmanage'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/lineupmanage"}>');">客人队列</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/phsz'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/phsz"}>');">排号设置</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/screen_setting'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/screen_setting"}>');">屏幕设置</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/watchequipment'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/watchequipment"}>');">手表设备</button>
+</div>
+
+<div style="margin-left: 350px; margin-top: -50px; font-size: 14px; color:#CCC;">排号屏幕地址：<{ofunc type=url link="/site/phpmdz/shopid/"}><{ICookie::get('adminshopid')}></div>
+
+
+
+<script>
+    $(function(){
+        $(".waimaiset .jbset").click(function(){
+            $(this).css('background','#ec7501').siblings().css('background','');
+        });
+    });
+</script>
+       	 
+       		 

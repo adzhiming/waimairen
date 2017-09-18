@@ -1,0 +1,136 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<{/block}>
+ <{block name=controlname}>用户客户端<{/block}>
+ <{block name=bodylist}>
+
+      <div style="width:auto;overflow-x:hidden;overflow-y:auto">
+
+      	  <div class="search">
+
+
+            <div class="search_content">
+
+            	 <form method="post" name="form1"  id="formdodod"> 
+            	    <label>发送标题：</label>
+            	    <input type="text" name="content" value="" style="width:100px;">
+					<label>发送标题：</label>
+            	    <input type="text" name="titlecontent" value="" style="width:100px;">
+            	  
+            	    <input type="button" value="提交查询" class="button" id="doshoplist">
+            	 </form>
+            </div>
+
+      	</div>
+
+
+
+
+
+
+           <div class="tags">
+
+
+
+          <div id="tagscontent">
+
+            <div id="con_one_1">
+
+              <div class="table_td" style="margin-top:10px;">
+
+              <form method="post" action="" onsubmit="return remind();" id="delform">
+
+                  <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+
+                    <thead>
+
+                      <tr>
+
+                        <th width="60px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+
+                        <th align="center">信息发送说明</th>
+                         
+                        <th align="center">发送时间</th>  
+
+                      </tr>
+
+                    </thead>
+
+                     <tbody id="dobacklist">
+                   
+                   
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='ffffff';" bgcolor="#ffffff">
+                        <td align="center" ></td>  <td align="center"></td>  <td align="center"></td>  
+                      </tr>
+                        
+
+                    </tbody>
+
+                  </table>
+
+                <div class="blank20"></div>
+
+                </form> 
+                <div class="blank20"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+  </div>
+
+</div>
+<script>
+var dopage = 1; 
+var doflag = false;
+var dolink = '<{ofunc type=url link="/adminpage/app/module/piliangmsg/datatype/json/page/@page@/random/@random@"}>';
+	 $(function(){
+		doflag = false;
+		$('#doshoplist').bind('click',function(){ 
+				 dosend();
+			 
+		});
+	    
+	 });  
+	 function dosend(){ 
+			 var tempc =   dolink.replace('@page@',dopage);
+			$.ajax({
+			 type: 'post',
+			 async:true,
+			 data:$('#formdodod').serialize(),
+			 url: tempc.replace('@random@', 1+Math.round(Math.random()*1000)), 
+			 dataType: 'json',success: function(content) {    
+				if(content.error == false){
+					var htmls = '    <tr class="s_out" onmouseover="this.bgColor=\'#F5F5F5\';" onmouseout="this.bgColor=\'ffffff\';" bgcolor="#ffffff">'
+                       +'<td align="center" ></td>  <td align="center">'+content.msg.content+'</td>  <td align="center">'+content.msg.time+'</td>' 
+                      +'</tr>'; 
+					  $('#dobacklist').append(htmls);
+					  dopage = Number(dopage)+1;
+					 setTimeout("dosend()", 1000); 
+				}else{
+					
+					if(content.error == true)
+					{
+						diaerror(content.msg); 
+					}else{
+						diaerror(content); 
+					}
+				} 
+				},
+			  error: function(content) { 
+				 
+				diaerror('数据提交失败'); 
+			  }
+		   });   
+	 }
+	 
+</script>
+
+<{/block}>

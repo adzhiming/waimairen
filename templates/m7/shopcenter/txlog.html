@@ -1,0 +1,74 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.PrintArea.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='baseordertj';
+</script>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+<div class="conWaiSet">
+    <div class="ibox-title">
+        <h5 id="positionname">商家金额记录</h5>
+
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/order_tj_menu.html"}>
+        <div class="orderTongji">
+            <!--<div class="sjser" style="font-weight:none;">商家订单统计查询</div>-->
+            <form action="<{ofunc type=url link="/shopcenter/txlog"}>" method="post" id="chafrom">
+            <div>
+      <span>从
+	   <input class="form-control" type="text" name="stime" id="stime" value="<{$stime|date_format:"%Y-%m-%d"}>"  onFocus="WdatePicker({isShowClear:false,readOnly:true});" style="width:150px;"/>
+	   至
+	    <input class="form-control" type="text" name="etime" id="etime" value="<{$etime|date_format:"%Y-%m-%d"}>"  onFocus="WdatePicker({isShowClear:false,readOnly:true});" style="width:150px;"/>
+      </span>
+                <span id="showmonth"></span>
+                <span id="showday"></span>
+                <span id="dosubmit" class="btn-a btn-prim">查询</span>
+                <!--<span class="tingjiSer curbtn" id="dosubmit"></span>-->
+            </div>
+            </form>
+        </div>
+        <div class="caidanSet mart10" style="width: 100%;">
+            <!---留言管理----->
+            <div id="liuyan">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>描述</th>
+                        <th>金额</th>
+                        <th>时间</th>
+                        <th>状态</th>
+                        <th>余额</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$jslist item=items}>
+                    <tr>
+                        <td> <{$items['name']}> </td>
+                        <td> <{$items['cost']}> </td>
+                        <td> <{$items['adddate']}> </td>
+                        <td> <{$items['statusname']}> </td>
+                        <td><{$items['yue']}></td>
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                </table>
+                <div class="show_page mart10" style="font-size: 14px;"><{$pagecontent}></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---content right end--->
+<script>
+    $(function(){
+        $('#dosubmit').click(function(){
+            $('#chafrom').submit();
+        });
+    });
+</script>
+
+<{/block}>

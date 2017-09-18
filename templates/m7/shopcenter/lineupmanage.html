@@ -1,0 +1,44 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/template.min.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/ajaxfileupload.js"> </script>
+<script>
+    var mynomenu='lineupmanage';
+</script>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">客人队列</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/lineupmenu.html"}>
+        <!--<div class="cl"></div>-->
+        
+        <ul class="lineup_main">
+            
+            
+                <{foreach from=$list key=myid item=items}>
+                    <a href="<{ofunc type=url link="/shopcenter/krdl_list/id/<{$items['id']}>/status/1"}>">
+                      <li class="btn-c btn-prim-lineup"><span class="phrs">当前排号人数：<{$items['phrs']}></span> <span class="jrz"><{$items['dlname']}></span></li>
+                    </a>
+                <{/foreach}> 
+            
+            
+            
+            
+
+        </ul>
+        
+    </div>
+    
+
+    
+</div>
+
+<{/block}>

@@ -1,0 +1,76 @@
+
+*{margin: 0;padding: 0; font-family:'Microsoft YaHei',Arial,Helvetica,sans-serif; box-sizing: border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;font-weight:600;}
+html{font-size: 100%;background:#ff5438;}
+html,body{padding:4.5% 2% 1%;font-size: 1em;}
+body{font-size: 1em;}
+ul{list-style: none;overflow: hidden;}
+
+.cssBox{ display: -moz-box; display: -webkit-box; display:box; display: -ms-flexbox; }
+.boxAlign{ box-align:center; -webkit-box-align:center; -moz-box-align:center;  -moz-box-pack:center;  -webkit-box-pack:center; -o-box-pack:center; box-pack:center; -ms-flex-pack:center; -ms-flex-align:center;}
+.vertical {  -moz-box-orient: vertical;  -webkit-box-orient: vertical; -o-box-orient: vertical; box-orient: vertical; }
+.horizontal{ -moz-box-orient: horizontal;  -webkit-box-orient: horizontal;  -o-box-orient: horizontal; box-orient: horizontal;}
+.flex{ -moz-box-flex:1; -webkit-box-flex:1; box-flex:1; -ms-flex:1;}
+.justify{ -moz-box-pack:justify; -webkit-box-pack:justify; -o-box-pack:justify; box-pack:justify;}
+.stretch{ -moz-box-align:stretch; -webkit-box-align:stretch; -o-box-align:stretch; box-align:stretch;}
+
+/*.box{margin-bottom: 8%;}*/
+.box img,.leftBox img{width: 100%;}
+.box2{background: #15D0D7;border-radius: 8px;padding:6% 5%;color: #fff;box-sizing: border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; }
+.box3{border-radius: 8px;padding:6% 5%;box-sizing: border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; background-color: #fff;margin-bottom: 4%;color: #15D0D7;overflow: hidden;display: -webkit-box;}
+
+.fuwu-name{text-align:center;color:#fff;font-size:16px;}
+.fuwu-name p{font-size:12px;margin-top:3px;}
+.msg_m li:not(:first-child){margin-top: 2%;}
+.erwm_box{width: 80px;height: 80px;}
+.erwm_box img{width: 100%; height: 100%;}
+.textEdit{/*border-radius: 20em;*/font-size: 1.3em;color: #fff;text-align:center;box-sizing: border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;overflow: hidden;}
+.bgcolor{background: #ffb400;padding:1% 0;}
+.bgcolor1{background: #fff;}
+.bgcolor2{background: #FFB400;padding:3% 0;}
+.btnList{width: 100%;margin:8% auto;}
+.btnList li{float: left;width: 50%;}
+.btnList li img{width:80%;margin-left: auto;margin-right: auto;display: block;}
+.boxTitle{border-left: 8px solid #FFB400;text-indent: 5px;font-size: 1.4em;}
+.box2 p{margin-top: 1.5%;font-size: 1em;}
+.box2-box{position:fixed;width: 100%;left: 0px;background: #fff;bottom: 0px;padding:4%;box-sizing:border-box;font-size:14px;overflow:hidden;}
+.box2-box div{float:left;}
+.box2-box div p{font-weight:normal;margin-bottom:3px;}
+.box2-box div:first-child{width:70%;}
+.box2-box div:last-child{width:30%;text-align:right;}
+.box2-box div:last-child img{width:70px;height:70px;}
+
+
+/*赞/赏Css*/
+.leftBox{width: 50%;position: relative;}
+.position{position: absolute;left: 14%;top: 3.5%;width: 80%;height: 90%;border-radius: 100%;background: #000;}
+.position img{width: 100%;height: 100%;border-radius: 100%;}
+.rightBox{width: 45%;margin-left: 5%;}
+.pfCommon{float: left;padding: 3% 5%;position: relative;font-weight:normal;}
+.inputStyle{width: 100%;position: absolute;left: 0;top: 0;text-align: center;border: none;outline: none;font-size: 1em;padding: 5% 0;}
+.pf{background: #FFB400;/*border-radius: 20em;*/}
+.showPf{width: 65%;color: #3A393F;}
+#star{margin: 3% auto;text-align:right;}
+#star img{width: 11%; height: 11%;}
+.pjList{margin: 5% 0;}
+.pjList li{float: left;background: #fff;border-radius: 20em;color: #a3a3a3;padding: 3% 0;text-align: center;width: 18%;font-size: 1em;}
+.pjList li:not(:last-child){margin-right: 2.5%;}
+.pjList li.active{background: #FFB400;}
+.twoButton{width: 80%;margin: 6% auto;overflow: hidden;}
+.twoButton button{background:#FFB400; color:#fff;padding: 8px 0;font-size: 1.4em;outline: none;border: none;border-radius: 15px;float: left;width: 42.5%;}
+.photo{text-align:center;}
+.photo img{border-radius:50%;border:3px solid #fff;width:75%;}
+.photo .box div{position:relative;top:-1.5em;width:80%;margin:0px auto;border-radius:20em;}
+/*lodaingCSS */
+.fixdPo{position: fixed;top: 0;left:0;width: 100%;height: 100%;background: rgba(0,0,0,.6);}
+.fixdPo .center-vel{width:200px;position: absolute;left: 50%;top:50%;margin: -64px 0 0 -100px;text-align: center;}
+
+/*排行榜Css*/
+.fiexdList li{width: 32%;float: left;text-align: center;background: #FFB400;border-radius: 15px;font-size: 1.4em;}
+.fiexdList li:not(:last-child){margin-right: 2%;}
+.fiexdList li a{display: block;text-decoration: none;color: #fff;padding: 9.5% 0;}
+.table{width: 100%;max-width: 100%;text-align: center; border-spacing: 0;border-collapse:collapse!important;color: #6E73E7;}
+.table tr td,.table tr th{line-height: 1.42857;padding: 2% 0;vertical-align: middle;}
+.whileBox{background: #fff;height: 95%;width: 90%;margin: auto;}
+.scollBox{height: 90%;padding-top:3%;}
+.fixedFoot{position: fixed;bottom:1%;left:2%;width: 96%;}
+.text_hide{overflow: hidden; text-overflow: ellipsis;white-space:nowrap; -o-text-overflow:ellipsis;text-align: center;width: 75px;margin: auto;}

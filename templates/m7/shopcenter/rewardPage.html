@@ -1,0 +1,271 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+    var mynomenu='staffmanage';
+</script>
+<{/block}>
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/sweetalert.css" />
+<style>
+    .mar20{margin-top: 20px;}
+    .searchBtn {background: #27A9E3; cursor: pointer; display: inline-block;height: 28px;padding: 0 20px;border-radius: 3px;color: #fff; line-height: 28px;border: solid 1px #27A9E3; margin: 7px; font-size: 14px;float: right;}
+    a.searchBtn:link,a.searchBtn:visited {color:#fff;}
+    .dele{ cursor: pointer; position:absolute;right:-30px;top:0;font-size:18px;color:red;}
+    .data_text{position:relative;display:inline-block;}
+    .select_option{ width: 100%;}
+</style>
+<{/block}>
+
+<{block name=bodylist}>
+<!--content right start-->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">打赏管理</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        
+    <div class="ordertjmenu" >
+        <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/attendancesetting'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/rewardSet"}>');">打赏设置</button>
+        <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/punchrecording'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/rewardStatistics"}>');">打赏统计</button>
+    </div>
+
+
+
+<script>
+    $(function(){
+        $(".waimaiset .jbset").click(function(){
+            $(this).css('background','#ec7501').siblings().css('background','');
+        });
+    });
+</script>
+         
+             
+        
+       <div class="cl"></div>
+ 
+    
+    <!--列表-->
+    <div class="mart20"  id="pingjia">
+        <form method="post" action="<{ofunc type=url link="/shopcenter/staff_px_save/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/shopcenter/staffmanage"}>',this);">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%">  活动标题 </th>
+                <th width="10%">  开始时间 </th>
+                <th width="10%">  结束时间 </th>
+                <th width="10%">  支付方式 </th>
+                <th width="10%">  使用门店 </th>
+                <th width="10%">  员工人数 </th>
+                <th width="10%">  状态 </th>
+                <th width="10%">  备注 </th>
+
+               <!--  <th width="15%"> 操作</th> -->
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$list key=myid item=items}>          
+            <tr >
+                <td>
+                    <input type="hidden" name="id[]" value="<{$items['id']}>">
+                    <input type="text" name="px[]" id="px[]" value="<{$items['px']}>"  class='skey form-control' style='width:50px;'/>
+                
+                </td>
+                <td><{$items['name']}></td>
+                <td><{$items['applypost']}></td>
+                <td><{$items['tel']}></td>
+                <td>
+                
+                    <table class="select_option ">
+                        <{foreach from=$qrcodelist key=myid item=item}>
+                        <tr>
+                                <{if $item['cid'] != '' }>
+                                <td>
+                                        <{if $item['id'] == $items['id']   }>
+                                        <div class="data_text"> <{$item.sn}><span data-cid="<{$item['cid']}>" class="dele deleclick">x</span></div>
+                                        <{/if}>
+                                </td>
+                                <{else}>
+                                <td></td>
+                                <{/if}>
+                        </tr>
+                        <{/foreach}>
+            </table>
+                
+                </td>
+                <td><{$items['bcname']}></td>
+                <td><{if $items['status'] == 1}>启用<{else}>关闭<{/if}></td>
+                <td><{$items['remarks']}></td>
+                <td id="reload40">
+                   <span> <a  data-id="<{$items.id}>" class="tobinding" >设备绑定</a></span> /
+                   <span><a href="<{ofunc type=url link="/shopcenter/staff_add/id/<{$items['id']}>"}>">修改</a></span> /
+                   <span><a onclick="return remind(this);" href="<{ofunc type=url link="/shopcenter/delstaff/id/<{$items['id']}>/datatype/json"}>">删除</a></span> 
+                   <span><a onclick="return remind(this);" href="<{ofunc type=url link="/shopcenter/delstaff/id/<{$items['id']}>/datatype/json"}>">删除</a></span> 
+                   
+                </td>
+            </tr>
+            <{/foreach}>
+            <!--<tr>-->
+                <!--<td align="right" style=" padding-right:50px;" colspan="8"> <div class="show_page"><ul><{$list['pagecontent']}></ul></div></td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+              <div style="margin-top: 10px;"><input type="submit" name="button" id="button" value="更新排序" class='button  btn-prim'></div>
+       </form>
+        <div class="show_page mart10" style="font-size: 14px;"><ul><{$list['pagecontent']}></ul></div>
+    </div>
+
+    </div>
+
+
+
+</div>
+
+
+            <!------------新蹭绑定(弹出框)-------------->
+            <div class="showBg doorT" style="display: none">
+                <div class="show">
+                    <div class="showNav">
+                        <ul class="showSearch clearfix">
+                            <li>绑定手表设备</li>
+                            <div class="clear"></div>
+                        </ul>
+                        <span class="closeBg"></span>
+                    </div>
+                    <div class="showMain" >
+                        <table style="margin: auto" >
+                            <tr>
+                                <td>手表设备</td>
+                                <td>
+                                                                    <select class="form-control operator ajxget"  style="width:200px">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <!---------按钮部分------------->
+                    <div class="prceBtn marT15 mar20" style="text-align: center;">
+                        <a class="btn-a btn-prim  storeSet" id="storeSet" name="storeSet">确定</a>
+                        <a class="btn-a btnX btn-prim" style=" background:#F60;" id="resetA">取消</a>
+                    </div>
+                </div>
+            </div>
+            <!--end-->
+
+<script>
+    var sid = "<{$sid}>";
+    var id = '';
+
+    $('.tobinding').click(function(){
+        id =$(this).data('id');
+        $('.doorT').show();
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/getstaffoperator/datatype/json"}>',{'type':'get'});
+                
+        if(backinfo.flag == false){
+
+                        var html = '<option value="">请选择</option>';
+                        $.each(backinfo.content, function(){
+                        html+="<option  value="+this.sn+">"+this.sn+"</option>";
+                        });
+                    $('.ajxget').html(html);
+        }
+                
+        //console.log(html);
+    })
+
+    $('.closeBg, .btnX').click(function(){
+        $('.doorT').hide();
+    })
+
+    $('.storeSet').click(function(){
+
+
+        var  _sn =  $('.ajxget').val(); //console.log(_operator);
+               if(_sn==""){
+            alert("请选择");
+            return;
+        }
+
+        var _id = id;
+        //console.log(_sn,_id);
+
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/getoprtostaff/datatype/json"}>',{'sn':_sn,'id':_id});
+        if(backinfo.flag == true){
+
+            diaerror(backinfo.content);
+            window.setTimeout("window.location.reload()",1000);
+
+        }else{
+            diaerror(backinfo.content);
+            //location.reload();
+            window.setTimeout("window.location.reload()",1000);
+        }
+
+
+
+    });
+
+
+    function getTableValtoQRCode(sid,id){
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/createtablesqrc/datatype/json"}>',{'sid':sid,'id':id});
+        if(backinfo.flag == true){//console.log(backinfo);
+            window.open(backinfo.content);
+        }
+    }
+
+
+    $('.deleclick').click(function(){
+        var cid = $(this).data('cid');
+        //console.log(cid);
+
+        swal({
+            title: "确定删除手表设备吗？",
+            type: "warning",
+
+            showConfirmButton: true,
+            confirmButtonText: "确定",
+            showCancelButton: true,
+            cancelButtonText:'取消',
+            closeOnCancel: true,
+            closeOnConfirm: false
+        }, function(isConfirm){
+            if(isConfirm) {
+                var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/delstaffwatch/datatype/json"}>',{'id':cid});
+
+                if(backinfo.flag == true)
+                {
+                    swal({
+                        title: '删除成功',
+                        type: "success",
+
+
+                    });
+                    window.setTimeout("window.location.reload()",1000);
+                }else{
+                    swal({
+                        title: backinfo.content,
+                        type: "error",
+
+
+                    });
+                    //location.reload();
+                    window.setTimeout("window.location.reload()",1000);
+                }
+
+            }
+            else {
+
+            }
+        });
+
+    });
+
+</script>
+
+<{/block}>

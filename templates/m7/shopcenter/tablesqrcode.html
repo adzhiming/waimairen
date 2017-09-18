@@ -1,0 +1,54 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+    var mynomenu='basetables';
+</script>
+<{/block}>
+<{block name=extendcss}> 	
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/sweetalert.css" />
+<style>
+
+.qrCode_box{width: 340px;height:425px;border-radius:5px;border:1px solid #ddd;margin-top:30px;position: relative;}
+.qrCode_box>img{width: 100%;height: 100%;} .marLt{margin-left:120px;margin-top:30px;}
+.mark_qr{position: absolute;left: 0;bottom: 78px;width: 100%;text-align: center;}
+.mark_qr>img{border-radius: 6px;width: 150px;height: 150px;}
+.mark_num{position: absolute;left: 0;bottom: 35px;width: 100%;text-align: center;font-weight: bold;color: white}
+</style>
+<{/block}>
+
+<{block name=bodylist}>
+<div class="conWaiSet">
+        <div class="ibox float-e-margins">
+           <div class="ibox-title">
+           		 <h5 id="positionname">堂食二维码</h5>
+           </div>
+           <div class="ibox-content clearfix">
+  			<div class="">二维码图片</div>    
+                <div class="qrCode_box">
+                    <img src="/upload/qrcode/table/qrcode_bg.jpg" />
+                    <div class="mark_qr">
+                         <img src="<{$qrcode}>" id="imgshow2" />
+                    </div>
+                    <div class="mark_num">桌号：<{$table_name}></div>
+                </div>            
+                <button class="btn-a btn-prim marLt" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/downloadQrcode/id/<{$id}>/uname/<{$table_name}>"}>');" >下载二维码</button>                      
+            </div>
+	   <script>
+
+        function downloadQrcode(){
+            var _src = $('.file_img').find('img').attr('src');
+            var data = {'_src':_src};
+            var url = '<{ofunc type=url link="/shopcenter/downloadQrcode/random/@random@/datatype/json"}>'; 
+            var backdata = ajaxback(url,data); 
+            if(backdata.flag == false){ alert(111);
+                 alert(backdata.content);
+            }else{
+                alert(backdata.content);
+            }
+        }
+
+       </script>  
+
+<{/block}>

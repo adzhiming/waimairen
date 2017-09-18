@@ -1,0 +1,86 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<{/block}>
+<{block name=controlname}>分享优惠券展示信息列表<{/block}>
+<{block name=bodylist}>
+
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+    <div class="search">
+        <div class="search_content">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/card/module/sharejsinfo"}>">
+            <label>标题：</label>
+            <input type="text" name="title" value="<{$title}>" class="form-control mar-right">
+            <select name="type" class="form-control">
+                <option value="all">请选择优惠券展示类型</option>
+                <option value="2" <{if $type == '2'}>selected<{/if}>>下单成功分享优惠券类型</option>
+                <option value="3" <{if $type == '3'}>selected<{/if}>>推广优惠券类型</option>
+                <option value="4" <{if $type == '4'}>selected<{/if}>>关注微信领取优惠券类型</option>
+            </select>
+            <input type="submit" value="提交查询" class="button btn-prim">
+            </form>
+        </div>
+    </div>
+    <div class="tags">
+        <div id="tagscontent">
+            <div id="con_one_1">
+                <div class="table_td mart15">
+                    <form method="post" action="" onsubmit="return remind();" id="delform">
+                        <table class="list table table-bordered" name="table" id="table">
+                            <thead>
+                            <tr>
+                                <th width="40px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+                                <th>id</th>
+                                <th>类型</th>
+                                <th>标题</th>
+                                <th>分享图标</th>
+                                <th>简述</th>
+                                <th>展示大图</th>
+                                <th>背景色调</th>
+                                <th>活动规则背景色调</th>
+                                <th>排序</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{foreach from=$shareshowinfo item=items}>
+                            <tr class="s_out">
+                                <td><input type="checkbox" name="id[]" value="<{$items['id']}>"></td>
+                                <td><{$items['id']}></td>
+                                <td> <{$juantypename[$items['type']]}> </td>
+                                <td><{$items['title']}></td>
+                                <td><a href="<{$items['img']}>" target="_bank" ><img style="width:60px;" src="<{$items['img']}>" /></a></td>
+                                <td><{$items['describe']}></td>
+                                <td><a href="<{$items['bigimg']}>" target="_bank" ><img style="width:60px;" src="<{$items['bigimg']}>" /></a></td>
+                                <td><{$items['color']}></td>
+                                <td><{$items['actcolor']}></td>
+                                <td><{$items['orderid']}></td>
+                                <td>
+                                    <a href="<{ofunc type=url link="/adminpage/card/module/addsjsinfo/id/<{$items['id']}>"}>" class="fa fa-edit" title="编辑"></a>
+                                    <a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/card/module/delsjsinfo/id/<{$items['id']}>/datatype/json"}>" class="fa fa-trash" title="删除"></a>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="page_newc marT20">
+                        <div class="select_page">
+                            <a href="#" onclick="checkword(true);" class="color-f">全选</a> / <a href="#" onclick="checkword(false);" class="color-f">取消</a>
+                            <a onclick="return remindall(this);" href="<{ofunc type=url link="/adminpage/card/module/delsjsinfo/datatype/json"}>" class="button btn-prim">删除</a>
+                            <a href="<{ofunc type=url link="/adminpage/card/module/addsjsinfo"}>" class="button btn-prim">添加分享优惠券展示信息</a>
+                        </div>
+                    </div>
+                    <div class="show_page"><ul><{$pagecontent}></ul></div>
+                </div>
+
+                <div class="select_page mart15" style="color:red;width:800px;">
+                    <a style="color:red;width:800px;" href="jvascript:void(0);"  >温馨提示：如果同一种类型的优惠券展示有多条符合条件时候，则系统读取的是排序ID为最小的一种</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<{/block}>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>排号详情</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="/newstyle/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+</head>
+<body>
+<div class="mui-content marb50">
+    <div class="shop_Dbox">
+        <img src="<{$shopinfo['shophdimg']}>" class="shop_Dimg"/>
+        <div class="shop_Dtitle"><{$shopinfo['shopname']}></div>
+    </div>
+
+
+
+    <ul class="hxsdjz">
+        <li class="font16">还需要等<{$count}>桌，你的号码是</li>
+        <li class="font20"><{$ndhm['qhms']}></li>
+    </ul>
+        
+    <ul class="krpdxx">
+        <li>排队信息:</li>
+        <li><{$ndhm['name']}></li>
+        <li>已叫号至<{$yjh['qhms']}></li>
+        <li>你的前方有<{$count}>人在排队</li>
+    </ul>
+
+    <div class="mui-bar mui-bar-tab bg_while">
+        <div class="mui-table-view-cell mui-media">
+            <a href="#" class="font14">
+                <div class="mui-media-body mui-row">
+                    <div class=" mui-table-cell mui-ellipsis font14 mui-col-xs-11"  onclick="dolink('<{ofunc type=url link="/wxsite/choice"}>');"  >当前位置：<i class="homescreendw"></i><span  id="showareainfo"><{if $areaid > 0}><{$mapname}><{else}>定位地址信息...<{/if}></span><i class="fa fa-angle-right"></i></div>
+                    <div class="mui-table-cell mui-col-xs-1 mui-text-right">
+                        <span class="mui-h5"><i class="fa fa-refresh font20"></i></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+<script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/mui.min.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/jweixin-1.0.0.js"></script>  
+<script type="text/javascript">
+wx.config({
+    debug: false,
+    appId: '<{$signPackage['appId']}>',
+    timestamp: '<{$signPackage['timestamp']}>',
+    nonceStr: '<{$signPackage['nonceStr']}>',
+    signature: '<{$signPackage['signature']}>',
+    jsApiList: [
+      'checkJsApi',
+      'scanQRCode'
+    ]
+});
+function saoma(){
+	wx.scanQRCode({
+	    needResult: 1, //为 1 时，扫码返回的结果
+	    scanType: ["qrCode"], //指定扫二维码
+	    success: function (res) {
+	        if (res.errMsg === "scanQRCode:ok"){
+	        	var result = res.resultStr;
+	                location.href = result;
+	                return;
+	        }
+	    }
+	});
+}
+var can_show = true;
+var catid = <{$typeid|default:0}>;
+var order = 0;
+var qsjid = 0;
+var typeid = <{$typeid|default:0}>;
+var myaddress = '<{$myaddress}>';
+var search_input = '<{$search_input|default:''}>';
+var shopshowtype  = '<{$shopshowtype|default:'0'}>';
+var checknext = false;
+var lat = '<{$lat|default:0}>';
+var lng = '<{$lng|default:0}>';
+var addressname = '<{$addressname|default:''}>';
+var is_loading = false;
+var html5_config = {'showheader':true,'showfooter':true,'bodyscller':true,'Canfresh':true,'CanloadMore':true,'titilename':'外卖频道'}; 
+
+$(function(){ 
+    <{if !empty($lng) && !empty($lat) &&  !empty($addressname)  }>
+		$('#showareainfo').text(addressname);
+ 		loading();
+   <{else}>   	
+	 	getLocation(); 
+ 	//	$('#loading').show();
+    <{/if}>
+  
+});
+function getLocation()
+  {
+  	
+  if (navigator.geolocation)
+    { 
+       navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+   else{$('#showareainfo').text("浏览器不支持定位");loading();}
+  }
+
+function showPosition(position)
+{ 
+
+ $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location='+position.coords.latitude+','+position.coords.longitude+'&output=json&pois=0&coordtype=wgs84ll'); 
+  // $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location=23.036989,114.3679&output=json&pois=0&coordtype=wgs84ll'); 
+}
+
+function showError(error)
+{
+	$('#showareainfo').text("定位失败");
+ switch(error.code) 
+  {
+  	
+  case error.PERMISSION_DENIED:
+    //x.innerHTML="User denied the request for Geolocation."
+  //  $('#showareainfo').text("User denied the request for Geolocation.");
+    break;
+  case error.POSITION_UNAVAILABLE:
+   // x.innerHTML="Location information is unavailable."
+    //$('#showareainfo').text("Location information is unavailable.");
+    break;
+  case error.TIMEOUT:
+  //  x.innerHTML="The request to get user location timed out."
+  //$('#showareainfo').text("The request to get user location timed out.");
+    break;
+  case error.UNKNOWN_ERROR:
+   // x.innerHTML="An unknown error occurred."
+   //  $('#showareainfo').text("An unknown error occurred.");
+    break;
+  }
+  
+  loading();
+} 
+
+//加载页面函数
+function loading(){
+ 	if(typeof html5_config == 'undefined'){
+		alert('获取失败');
+	}else{ 
+	    
+		if(html5_config.bodyscller == true){
+ 			 setTimeout(function(){  
+				$('#wrapper').show();    
+				 //addfresh();
+				 
+			 },500);
+		}
+	 //	$('#loading').hide();
+		//loaddata();
+		
+	}
+}
+</script>
+</body>
+</html>

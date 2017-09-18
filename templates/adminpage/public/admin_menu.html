@@ -1,0 +1,51 @@
+	 
+    <{if $moduleparent > 0 }> 
+           <{load_data assign="moduleall" table="module" limit="20" orderby="id asc" where="id ='<{$moduleparent}>' or parent_id = '$moduleparent'" orderby="id asc"}> 
+          <{foreach from=$moduleall['list']   item=itv}>  
+          
+                <{load_data assign="menulist" table="menu" limit="20" orderby="id asc" where="moduleid ='<{$itv['id']}>' and `group` = <{$admininfo['group']}> and status=1" }> 
+
+                 <{foreach from=$menulist['list'] key=myid item=items}>   
+   	 	    	            	<li><div class="leftarrow"></div><a href="<{ofunc type=url link="/adminpage/<{$itv['name']}>/module/<{$items['name']}>"}>" <{if $Taction == $itv['name']&&$items['name'] == $tmodule}>class="on"<{/if}>><{$items['cnname']}></a></li>
+                 <{/foreach}>
+          <{/foreach}> 
+    <{else}>
+		<li <{if $Taction == 'adminindex'}>class="on"<{/if}>><div class="leftarrow"></div><a href="<{ofunc type=url link="/adminpage/adminindex/module/index"}>">首页概况</a></li> 
+           <{load_data assign="modelist" table="module" limit="20" orderby="id asc" where="install=1 and parent_id=0" }> 
+		   <{foreach from=$modelist['list'] key=myid item=items}>  
+		        <{load_data assign="defaultmenu" table="menu" type="one" where="moduleid='<{$items['id']}>' and `group` = '<{$admininfo['group']}>'" fileds="*" orderby="id asc" }> 
+		         <{if !empty($defaultmenu) &&  $items['name']!="other"}>
+
+			  	 	  <li <{if $Taction == $items['name']||$moduleparent == $items['id']}>class="on" <{/if}>>
+                                              <a href="<{if $items['cnname']=='用户管理'}> <{ofunc type=url link="/adminpage/member/module/memberlistshop"}> <{else}>#<{/if}>">
+			  	 	  	    <div class="lib ck<{$myid+1}>"></div>
+			  	 	  	    <div class="libtitle"><{$items['cnname']}></div>
+			  	 	  	 </a>
+			  	 	  	<ul class="nav-menu nav-second-level <{if <{$moduleid == $items['id']}>}> active_c <{/if}>">
+			  	 	  	    <{load_data assign="moduleall" table="module" limit="20" orderby="id asc" where="id ='<{$items['id']}>' or parent_id = '<{$items['id']}>'" orderby="id asc"}> 
+					          <{foreach from=$moduleall['list']   item=itv}>  
+					                <{load_data assign="menulist" table="menu" limit="20" orderby="id asc" where="moduleid ='<{$itv['id']}>' and `group` = <{$admininfo['group']}>  and status=1" }> 
+					                 <{foreach from=$menulist['list'] key=sec_myid item=sec_items}>   
+					   	 	    	            	<li><div class="leftarrow"></div><a href="<{ofunc type=url link="/adminpage/<{$itv['name']}>/module/<{$sec_items['name']}>"}>" <{if $Taction == $itv['name']&&$sec_items['name'] == $tmodule}>class="on"<{/if}> >  <{$sec_items['cnname']}> </a></li>
+					                 <{/foreach}>
+					          <{/foreach}>
+			  	 	  	 </ul>   
+			  	      </li>  
+			  	   <{/if}>
+		   <{/foreach}>
+   
+    <{/if}>
+
+	<script>
+
+		$('.nav-menu li').click(function(){
+//        var i = $(this).index();
+			$(this).find(".nav-second-level").stop().slideToggle();
+			$(this).siblings().find(".nav-second-level").stop().slideUp();
+		});
+		$('.active_c').slideDown()
+
+	</script>
+    
+  
+ 

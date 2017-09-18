@@ -1,0 +1,1132 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css"/>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/pertty/pertty.css" />
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/pertty/awesome-bootstrap-checkbox.css" />
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/pertty/swiper.min.css" />
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/ajaxfileupload.js"> </script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/public.js"></script>
+<script>
+    var mynomenu='noopsychePetty';
+</script>
+<{/block}>
+<{block name=extendcss}>
+
+<{/block}>
+<{block name=bodylist}>
+<style>
+
+    body{line-height: 20px;}
+    .checkbox{padding-left: 0;}
+    .ad_img{ float: right; margin-left: 20px;}
+</style>
+<div class="conWaiSet" style="font-size: 14px;">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">智能小二</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+
+        <div class="alertMsg mar20">
+            <p>温馨提示：</p>
+            <p>1、上传背景图片大小720*220效果最佳，格式仅支持JPG,PNG</p>
+            <p>2、广告图片大小670*200效果最佳，格式仅支持JPG,PNG</p>
+        </div>
+        <div class="petty">
+            <!----------left---------->
+            <div class="petty_l">
+                <div class="phoneTop"></div>
+                <div class="previewHead">
+                    <!--背景图-->
+                    <div style="position: relative;height: 220px;">
+                        <img src="<{$shopinfo['shophdimg']}>" class="xe_img" id="pet_show_bg"/>
+                        <div style="position: absolute;bottom: 0px;left: 0;padding: 6px 15px;background-color: rgba(255,255,255,.7);width: 100%;"><{$shopinfo['shopname']}></div>
+                    </div>
+                    <!--<div class="petty_box">-->
+                    <!--&lt;!&ndash;logo&ndash;&gt;-->
+                    <!--<div class="petty_logo">-->
+                    <!--<img src="<{$shopinfo['shoplogo']}>" />-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;name&ndash;&gt;-->
+                    <!--<div class="shopName"><span><{$shopinfo['shopname']}></span> &lt;!&ndash; - <span>暂无门店</span> &ndash;&gt;</div>-->
+                    <!--</div>-->
+                    <div class="xe_opacity">
+                        <!--菜单列表-->
+                        <ul class="xe_menu">
+                            <li id="call" <{if $shopinfo['is_yuding'] == 0}> style="display:none" <{/if}>>
+                            <div class="menu_box menu_bga">
+                                <span class="fa fa-wpforms"></span>
+                            </div>
+                            <div class="menu_title">预订</div>
+                            </li>
+
+                            <li id="Check"  <{if $shopinfo['is_waimai'] == 0}> style="display:none"  <{/if}>>
+                            <div class="menu_box menu_bgb">
+                                <span class="fa fa-motorcycle"></span>
+                            </div>
+                            <div class="menu_title">外卖</div>
+                            </li>
+
+                            <li id="t" <{if $shopinfo['is_tangshi'] == 0}>  style="display:none"  <{/if}>>
+                            <div class="menu_box  menu_bgc">
+                                <span class="fa fa-cutlery"></span>
+                            </div>
+                            <div class="menu_title">堂食</div>
+                            </li>
+                            <!--      <li>
+                                     <div class="menu_box menu_bgd">
+                                         <span class="fa fa-wpforms"></span>
+                                     </div>
+                                     <div class="menu_title">订单</div>
+                                 </li> -->
+
+                            <li id="remark" <{if $shopinfo['is_paihao'] == 0}> style="display:none"  <{/if}>>
+                            <div class="menu_box menu_bge">
+                                <span class="fa fa-calendar-o"></span>
+                            </div>
+                            <div class="menu_title">取号</div>
+                            </li>
+
+                        </ul>
+                        <!--wifi信息-->
+
+                        <div class="wifi_box" id="wifi" <{if $shopinfo['is_wifi'] == 0}> style="display:none"  <{/if}> >
+                        <div class="color_block left_pet" >
+                            <span class="color_a"><i class="fa fa-wifi"></i>WIFI<span class="wifi_lr">|</span></span><span><{$wifi[0]}></span>
+                            ：<span><{$wifi[1]}></span>
+                        </div>
+                        <a href="#" class="btn_p btn_succes mar15">复制密码</a>
+                    </div>
+
+                </div>
+            </div>
+            <!--基本信息展示-->
+            <div class="show_main_p">
+                <!--广告推广-->
+
+                <div id="ad_extend_show" <{if $shopinfo['is_ad'] == 0}>  style="display:none"  <{/if}>>
+                <div class="color_block padd4" >广告推广</div>
+                <div class="swiper-container swiper_box">
+                    <ul class="swiper-wrapper banner_box">
+                        <{if $ad1 != ''}>
+                        <li class="swiper-slide">
+                            <a href="<{$ad1['linkurl']}>">
+                                <img src="<{$ad1['img']}>" />
+                            </a>
+                        </li>
+                        <{/if}>
+                        <{if $ad2 != ''}>
+                        <li class="swiper-slide">
+                            <a href="<{$ad2['linkurl']}>">
+                                <img src="<{$ad2['img']}>" />
+                            </a>
+                        </li>
+                         <{/if}>
+                        <{if $ad3 != ''}>
+                        <li class="swiper-slide">
+                            <a href="<{$ad3['linkurl']}>">
+                                <img src="<{$ad3['img']}>" />
+                            </a>
+                        </li>
+                        <{/if}>
+                    </ul>
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination swiper_page"></div>
+                </div>
+                </div>
+
+            <!--会员推广-->
+            <div id="cmd_extend_show" <{if $shopinfo['is_member'] == 0}>  style="display:none"  <{/if}>>
+                <div class="color_block padd4" >会员推广</div>
+                <div class="tuig">
+                    <div class="color_block mem_le ellipsis"><i class="fa fa-diamond color_b"></i><span class="cmd_text_show">恭喜，您已经是会员了！</span></div>
+                    <a href="#" class="btn_p btn_succes">查看会员卡</a>
+                </div>
+            </div>
+            <!--热门活动-->
+            <div id="hot_activity_show" <{if $shopinfo['is_act'] == 0}>  style="display:none"  <{/if}>>
+            <div class="color_block padd4" >热门活动</div>
+            <ul class="hot clearfix">
+                <{if $ad4 != ''}>
+                <li style="display: block;">
+                    <a href="<{$ad4['linkurl']}>">
+                        <img src="<{$ad4['img']}>" />
+                    </a>
+                </li>
+                <{/if}>
+                <{if $ad5 != ''}>
+                <li style="display: block;">
+                    <a href="<{$ad5['linkurl']}>">
+                        <img src="<{$ad5['img']}>" />
+                    </a>
+                </li>
+                <{/if}>
+                <{if $ad6 != ''}>
+                <li style="display: block;">
+                    <a href="<{$ad6['linkurl']}>">
+                        <img src="<{$ad6['img']}>" />
+                    </a>
+                </li>
+                <{/if}>      
+            </ul>
+            <!--end-->
+            </div>
+        <!--本店优惠-->
+<!--         <div class="color_block padd4" id="store_title">本店优惠</div>
+        <div class="tuig discount">
+            <div class="color_block mem_le ellipsis"><i class="fa fa-tag color_b"></i><span class="cmd_text_show">请选择本店优惠！</span></div>
+            <a href="#" class="btn_p btn_succes">免费领取</a>
+        </div> -->
+        <!--今日特价-->
+
+        <div id="today_title" <{if $shopinfo['is_yh'] == 0}>  style="display:none"  <{/if}>>
+        <div class="color_block padd4" >本店优惠</div>
+        <ul class="today">
+            <li>
+                <div class="taday_l taday_bga">
+                    <div class="ellipsis">一元代金券</div>
+                    <div class="ellipsis">仅售：¥ <span>0.01</span></div>
+                    <a href="#" class="today_btn mart5">立即抢购</a>
+                </div>
+                <!--<div class="today_r">-->
+                <!--<div class="today_box">-->
+                <!--<div class="ellipsis">一元代金券</div>-->
+                <!--<div class="color_block mart5 ellipsis">仅售：¥ <span>0.01</span></div>-->
+                <!--<a href="#" class="today_btn">立即抢购</a>-->
+                <!--</div>-->
+                <!--</div>-->
+            </li>
+            <li>
+                <div class="taday_l taday_bgb">
+                    <div class="ellipsis">礼品商品券</div>
+                    <div class="ellipsis">仅售：¥ <span>0.01</span></div>
+                    <a href="#" class="today_btn mart5">立即抢购</a>
+                </div>
+            </li>
+            <li>
+                <div class="taday_l taday_bgc">
+                    <div class="ellipsis">商城通用券</div>
+                    <div class=" ellipsis">仅售：¥ <span>0.01</span></div>
+                    <a href="#" class="today_btn mart5">立即抢购</a>
+                </div>
+            </li>
+            <li>
+                <div class="taday_l  taday_bgd">
+                    <div class="ellipsis">测试礼品券</div>
+                    <div class="ellipsis">仅售：¥ <span>0.01</span></div>
+                    <a href="#" class="today_btn mart5">立即抢购</a>
+                </div>
+            </li>
+        </ul>
+        </div>
+    </div>
+</div>
+<!----------right---------->
+<div class="petty_r">
+    <div class="petty_title">背景图片</div>
+    <div class="bg_change">
+        背景图片：
+        <button type="button" class="btnX" id="use_muban">选用模板</button>
+        <button type="button" class="btnX btn-file">
+            <span>本地上传</span>
+            <!--<span class="fileChange">更换</span>-->
+            <input  id="imgFile2" data-type='2'  type="file" name="head" class="valid"  onchange="javascript:upload2();">
+        </button>
+    </div>
+    <div class="petty_title">功能设置</div>
+    <!--菜单设置-->
+    <div class="petty_set">
+        <ul class="petty_menu">
+            <li>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input id="menu_a" type="checkbox" name="menu_a" value="1"<{if $shopinfo['is_yuding']==1}> checked="" <{/if}>>
+                    <label for="menu_a">预订</label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input id="menu_b" type="checkbox" name="menu_a" value="2"<{if $shopinfo['is_waimai']==1}> checked="" <{/if}>>
+                    <label for="menu_b">外卖</label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input id="menu_c" type="checkbox" name="menu_a" value="3" <{if $shopinfo['is_tangshi']==1}> checked="" <{/if}>>
+                    <label for="menu_c">堂食</label>
+                </div>
+            </li>
+            <li>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input id="menu_d" type="checkbox" name="menu_a" value="4" <{if $shopinfo['is_paihao']==1}> checked="" <{/if}>>
+                    <label for="menu_d">取号</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--wifi设置-->
+    <div class="petty_set">
+        <ul class="petty_menu">
+            <li>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input id="wifi_set" type="checkbox" name="menu_a" value="5" <{if $shopinfo['is_wifi']==1}> checked="" <{/if}>>
+                    <label for="wifi_set">WIFI</label>
+                </div>
+            </li>
+            <li class="pet_set_r">请在<span class="pet_set_t" id="pet_wifi_set">WIFI设置</span>页面配置各门店WIFI账号和密码</li>
+        </ul>
+    </div>
+    <!--广告推广设置-->
+    <div class="petty_set">
+        <ul class="petty_menu">
+            <li>
+                <div class="checkbox checkbox-success checkbox-inline">
+                    <input id="ad_extend" type="checkbox" name="menu_a" value="6" <{if $shopinfo['is_ad']==1}> checked="" <{/if}>>
+                    <label for="ad_extend">广告推广</label>
+                </div>
+            </li>
+            <li class="pet_set_r">请填写以http://或https://开头的链接，否则将影响功能使用！</li>
+        </ul>
+        <!--广告1-->
+        <div id="ad_set" <{if $shopinfo['is_ad']==0}> style="display: none;" <{/if}> >
+        <form id="form_ad1"  action="<{ofunc type=url link="/other/adsupload/type/ad1"}>" method="POST" enctype="multipart/form-data">
+        <div class="set_content"   >
+            <div class="hot_show">
+                <div class="adItem adItemShow" style="display: block;">
+                    <div class="hot_door">
+                        <span class="hot_door_l">广告图片：</span>
+                        <button type="button" class="btnX btn-file">
+                            <span>上传图片</span>
+                            <!--<span class="fileChange">更换</span>-->
+                            <input data-type='1' type="file" name="ad1" class="valid" id="ad1" >
+                        </button>
+                        <{if $ad1 != ''}>
+                        <div id="ad_img1" class="ad_img"><img src="<{$ad1['img']}>" id="img1" width="120" height="60"></div>
+                        <{else}>
+                        <div id="ad_img1" class="ad_img" style="display: none;"><img src="" id="img1" width="120" height="60"></div>
+                        <{/if}>
+                    </div>
+                    <div class="hot_door mar15">
+                        <span class="hot_door_l">广告跳转URL：</span><input  name="urlad" type="text" placeholder="例如：可填写营销活动、微网页链接等" class="hot_text_inp" value="<{$ad1['linkurl']}>"/>
+                    </div>   
+                </div>
+            </div>
+            <div class="mar20 hot_text_r" >
+                <button type="button" class="hot_door_btn hot_add" id= 'upload_ad1'>确认</button>
+                <button type="button" class="btnX hot_delete" onclick="dolink('<{ofunc type=url link="/shopcenter/actimgdelete/type/ad1/random/@random@ "}>');" >删除</button>
+            </div>
+        </div>
+        </form>
+        <!--广告2-->
+        <form id="form_ad2"  action="<{ofunc type=url link="/other/adsupload/type/ad2"}>" method="POST" enctype="multipart/form-data">
+        <div class="set_content"   <{if $shopinfo['is_ad']==0}> style="display: none;" <{/if}> >
+            <div class="hot_show">
+                <div class="adItem adItemShow" style="display: block;">
+                    <div class="hot_door">
+                        <span class="hot_door_l">广告图片：</span>
+                        <button type="button" class="btnX btn-file">
+                            <span>上传图片</span>
+                            <!--<span class="fileChange">更换</span>-->
+                            <input data-type='1' type="file" name="ad2" class="valid" id="ad2">
+                        </button>
+                        <{if $ad2 != ''}>
+                        <div id="ad_img2" class="ad_img"><img src="<{$ad2['img']}>" id="img2" width="120" height="60"></div>
+                        <{else}>
+                        <div id="ad_img2" class="ad_img" style="display: none;"><img src="" id="img2" width="120" height="60"></div>
+                        <{/if}>
+                    </div>
+                    <div class="hot_door mar15">
+                        <span class="hot_door_l">广告跳转URL：</span><input  name="urlad" type="text" placeholder="例如：可填写营销活动、微网页链接等" class="hot_text_inp" value="<{$ad2['linkurl']}>"/>
+                    </div>
+                </div>
+            </div>
+            <div class="mar20 hot_text_r" >
+                <button type="button" class="hot_door_btn hot_add" id= 'upload_ad2'>确认</button>
+                <button type="button" class="btnX hot_delete" onclick="dolink('<{ofunc type=url link="/shopcenter/actimgdelete/type/ad2/random/@random@ "}>');" >删除</button>
+            </div>
+        </div>
+        </form>
+        <!--广告3-->
+        <form id="form_ad3"  action="<{ofunc type=url link="/other/adsupload/type/ad3"}>" method="POST" enctype="multipart/form-data">
+        <div class="set_content"  <{if $shopinfo['is_ad']==0}> style="display: none;" <{/if}> >
+            <div class="hot_show">
+                <div class="adItem adItemShow" style="display: block;">
+                    <div class="hot_door">
+                        <span class="hot_door_l">广告图片：</span>
+                        <button type="button" class="btnX btn-file">
+                            <span>上传图片</span>
+                            <!--<span class="fileChange">更换</span>-->
+                            <input data-type='1' type="file" name="ad3" class="valid"  id="ad3">
+                        </button>
+                        <{if $ad3 != ''}>
+                        <div id="ad_img3" class="ad_img"><img src="<{$ad3['img']}>" id="img3" width="120" height="60"></div>
+                        <{else}>
+                        <div id="ad_img3" class="ad_img" style="display: none;"><img src="" id="img3" width="120" height="60"></div>
+                        <{/if}>
+                    </div>
+                    <div class="hot_door mar15">
+                        <span class="hot_door_l">广告跳转URL：</span><input  name="urlad" type="text" placeholder="例如：可填写营销活动、微网页链接等" class="hot_text_inp" value="<{$ad3['linkurl']}>"/>
+                    </div>
+                </div>
+            </div>
+            <div class="mar20 hot_text_r" >
+                <button type="button" class="hot_door_btn hot_add" id= 'upload_ad3'>确认</button>
+                <button type="button" class="btnX hot_delete" onclick="dolink('<{ofunc type=url link="/shopcenter/actimgdelete/type/ad3/random/@random@ "}>');" >删除</button>
+            </div>
+        </div>
+        </form>
+        </div>
+
+    </div>
+<!--会员推广设置-->
+<div class="petty_set">
+    <ul class="petty_menu">
+        <li>
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input id="cmd_extend" type="checkbox" name="menu_a" value="7" checked="">
+                <label for="cmd_extend">会员推广</label>
+            </div>
+        </li>
+       <!--  <li class="pet_set_r">未配置会员主卡无法勾选，点击<a class="pet_set_t" href="#">这里</a>编辑</li> -->
+    </ul>
+ <!--    <div class="set_content" id="slogan">
+        宣传标语：<input type="text" id="cmd_slogan" value="" placeholder="恭喜，您已经是会员了！" maxlength="15" class="set_inp"/>
+    </div> -->
+</div>
+<!--热门活动设置-->
+<div class="petty_set">
+    <ul class="petty_menu">
+        <li>
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input id="hot_activity" type="checkbox" name="menu_a" value="10" <{if $shopinfo['is_act']==1}> checked="" <{/if}>>
+                <label for="hot_activity">热门活动</label>
+            </div>
+        </li>
+        <li class="pet_set_r">请填写以http://或https://开头的链接，否则将影响功能使用！</li>
+    </ul>
+    <div id="hot_activity_t" <{if $shopinfo['is_act']==0}> style="display: none;" <{/if}>>
+    <form id="form_act"  action="<{ofunc type=url link="/other/adsupload/type/ad4"}>" method="POST" enctype="multipart/form-data">
+        <div class="set_content" >
+            <div class="hot_show">
+                <div class="adItem adItemShow" style="display: block;">
+                    <div class="hot_door">
+                        <span class="hot_door_l">活动图片：</span>
+                        <button type="button" class="btnX btn-file">
+                            <span>上传图片</span>
+                            <!--<span class="fileChange">更换</span>-->
+                            <input type="file" name="ad4" class="valid" id="ad4">
+                        </button>
+                        <{if $ad4 != ''}>
+                        <div id="ad_img4" class="ad_img"><img src="<{$ad4['img']}>" id="img4" width="120" height="60"></div>
+                        <{else}>
+                        <div id="ad_img4" class="ad_img" style="display: none;"><img src="" id="img4" width="120" height="60"></div>
+                        <{/if}>
+                    </div>
+                    <div class="hot_door mar15">
+                        <span class="hot_door_l">活动跳转URL：</span><input type="text" name="urlad" placeholder="例如：可填写营销活动、微网页链接等" class="hot_text_inp" value="<{$ad4['linkurl']}>"/>
+                    </div>
+                </div>
+            </div>
+            <div class="mar20 hot_text_r" >
+                <button type="submit" class="hot_door_btn hot_add">确认</button>
+                <button type="button" class="btnX hot_delete" onclick="dolink('<{ofunc type=url link="/shopcenter/actimgdelete/type/ad4/random/@random@ "}>');" >删除</button>
+            </div>
+        </div>
+    </form>
+    <form id="form_act"  action="<{ofunc type=url link="/other/adsupload/type/ad5"}>" method="POST" enctype="multipart/form-data">
+        <div class="set_content" id="hot_activity_t" >
+            <div class="hot_show">
+                <div class="adItem adItemShow" style="display: block;">
+                    <div class="hot_door">
+                        <span class="hot_door_l">活动图片：</span>
+                        <button type="button" class="btnX btn-file">
+                            <span>上传图片</span>
+                            <!--<span class="fileChange">更换</span>-->
+                            <input type="file" name="ad5" class="valid" id="ad5">
+                        </button>
+                         <{if $ad5 != ''}>
+                        <div id="ad_img5" class="ad_img"><img src="<{$ad5['img']}>" id="img5" width="120" height="60"></div>
+                        <{else}>
+                        <div id="ad_img5" class="ad_img" style="display: none;"><img src="" id="img5" width="120" height="60"></div>
+                        <{/if}>
+                    </div>
+                    <div class="hot_door mar15">
+                        <span class="hot_door_l">活动跳转URL：</span><input type="text" name="urlad" placeholder="例如：可填写营销活动、微网页链接等" class="hot_text_inp" value="<{$ad5['linkurl']}>"/>
+                    </div>
+                </div>
+            </div>
+            <div class="mar20 hot_text_r" >
+                <button type="submit" class="hot_door_btn hot_add">确认</button>
+                <button type="button" class="btnX hot_delete" onclick="dolink('<{ofunc type=url link="/shopcenter/actimgdelete/type/ad5/random/@random@ "}>');" >删除</button>
+            </div>
+        </div>
+    </form>
+    <form id="form_act"  action="<{ofunc type=url link="/other/adsupload/type/ad6"}>" method="POST" enctype="multipart/form-data">
+        <div class="set_content"  >
+            <div class="hot_show">
+                <div class="adItem adItemShow" style="display: block;">
+                    <div class="hot_door">
+                        <span class="hot_door_l">活动图片：</span>
+                        <button type="button" class="btnX btn-file">
+                            <span>上传图片</span>
+                            <!--<span class="fileChange">更换</span>-->
+                            <input type="file" name="ad6" class="valid" id="file2">
+                        </button>
+                        <{if $ad6 != ''}>
+                        <div id="ad_img6" class="ad_img"><img src="<{$ad6['img']}>" id="img6" width="120" height="60"></div>
+                        <{else}>
+                        <div id="ad_img6" class="ad_img" style="display: none;"><img src="" id="img6" width="120" height="60"></div>
+                        <{/if}>
+                    </div>
+                    <div class="hot_door mar15">
+                        <span class="hot_door_l">活动跳转URL：</span><input type="text" name="urlad" placeholder="例如：可填写营销活动、微网页链接等" class="hot_text_inp" value="<{$ad6['linkurl']}>"/>
+                    </div>
+                </div>
+            </div>
+            <div class="mar20 hot_text_r" >
+                <button type="submit" class="hot_door_btn hot_add">确认</button>
+                <button type="button" class="btnX hot_delete" onclick="dolink('<{ofunc type=url link="/shopcenter/actimgdelete/type/ad4/random/@random@ "}>');" >删除</button>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+<!--本店优惠设置-->
+<!-- <div class="petty_set">
+    <ul class="petty_menu">
+        <li>
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input id="store_y" type="checkbox" name="menu_a" value="8" checked>
+                <label for="store_y">本店优惠</label>
+            </div>
+        </li>
+    </ul>
+     <ul class="set_content" id="store_set">
+    <li>
+        <span class="no_set">未设置</span>
+        <div class="set_btn_q">选择优惠券</div>
+    </li>
+    <li>
+        <span class="no_set">未设置</span>
+        <div class="set_btn_q">选择优惠券</div>
+    </li>
+    <li>
+        <span class="no_set">未设置</span>
+        <div class="set_btn_q">选择优惠券</div>
+    </li>
+    <li>
+        <span class="no_set">未设置</span>
+        <div class="set_btn_q">选择优惠券</div>
+    </li>
+</ul> 
+</div> -->
+<!--今日特价设置-->
+<div class="petty_set">
+    <ul class="petty_menu">
+        <li>
+            <div class="checkbox checkbox-success checkbox-inline">
+                <input id="today_t" type="checkbox" name="menu_a" value="9" <{if $shopinfo['is_yh']==1}> checked="" <{/if}>>
+                <label for="today_t">本店优惠</label>
+            </div>
+        </li>
+    </ul>
+   <!--  <ul class="set_content" id="today_set">
+       <li>
+           <span class="no_set">未设置</span>
+           <div class="set_btn_q">选择商品券</div>
+       </li>
+       <li>
+           <span class="no_set">未设置</span>
+           <div class="set_btn_q">选择商品券</div>
+       </li>
+       <li>
+           <span class="no_set">未设置</span>
+           <div class="set_btn_q">选择商品券</div>
+       </li>
+       <li>
+           <span class="no_set">未设置</span>
+           <div class="set_btn_q">选择商品券</div>
+       </li>
+   </ul> -->
+</div>
+<!--end-->
+</div>
+<!--end-->
+</div>
+<!--btn-->
+<!-- <div class="alertMsg text-align">
+    <button type="button" class="hot_door_btn">确定</button>
+</div> -->
+<!--end-->
+
+</div>
+<!--选用模板弹框-->
+<div class="commonAleat" id="mubanAleat">
+
+    <div class="alert_box">
+        <div class="alert_top">
+            <div class="alert_l">背景图片模板</div>
+            <div class="alert_r"><i class="fa fa-close close_down"></i></div>
+        </div>
+        <!--图片选择-->
+        <ul class="picul clearfix">
+            <li><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/pertty/banner_a.jpg" /></li>
+            <li><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/pertty/banner_b.jpg" /></li>
+            <li><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/pertty/banner_c.jpg" /></li>
+            <li><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/pertty/banner_d.jpg" /></li>
+            <li><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/pertty/banner_e.jpg" /></li>
+            <li><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/pertty/banner_f.jpg" /></li>
+        </ul>
+        <!--btn-->
+        <div class="text-align">
+            <button type="button" class="hot_door_btn" id="pet_sure">确定</button>
+            <button type="button" class="hot_door_btn close_down">取消</button>
+        </div>
+    </div>
+</div>
+<!--wifi弹框-->
+<div class="commonAleat" id="wifiSet">
+    <form action="<{ofunc type=url link="/shopcenter/noopsychePetty"}>" id="wifiForm" name="theform" method="post">
+    <div class="alert_box">
+        <div class="alert_top">
+            <div class="alert_l">WIFI设置</div>
+            <div class="alert_r"><i class="fa fa-close close_wifi"></i></div>
+        </div>
+        <!--WIFI设置-->
+        <div class="pet_wifi_alert">
+            <ul class="pet_uery">
+                <!--      <li>
+                       分公司：
+                       <select name="">
+                           <option value="1">全部</option>
+                           <option value="1">545</option>
+                       </select>
+                   </li>
+                   <li>
+                       门店：
+                       <select name="">
+                           <option value="1">全部</option>
+                           <option value="1">广州未莱信息科技有限公司</option>
+                       </select>
+                   </li>
+                   <li>
+                       <button type="button" class="hot_door_btn">查询</button>
+                   </li>-->
+            </ul>
+            <div class="pet_scroll">
+
+                <table class="tableWp">
+                    <thead>
+                    <tr>
+                        <!-- <td>分公司</td> -->
+                        <td>门店</td>
+                        <td>WIFI账号</td>
+                        <td>WIFI密码</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <!-- <td>545</td> -->
+                        <td><{$shopinfo['shopname']}></td>
+                        <td><input type="text" name="wifiname" value="<{$wifi[0]}>" maxlength="12" /></td>
+                        <td><input type="text" name="wifipassword" value="<{$wifi[1]}>" maxlength="12" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="refresh_box">
+                如果您有修改或新增门店，请<div class="refresh_btn"><i class="fa fa-refresh"></i> 刷新</div>
+            </div>
+        </div>
+        <!--btn-->
+        <div class="text-align">
+            <button type="submit" class="hot_door_btn">保存</button>
+        </div>
+    </div>
+    </form>
+</div>
+<!--优惠券弹框-->
+<div class="commonAleat" id="coupon">
+    <div class="alert_box" style="height: 350px;">
+        <div class="alert_top">
+            <div class="alert_l">选择优惠券</div>
+            <div class="alert_r"><i class="fa fa-close close_wifi"></i></div>
+        </div>
+        <!--WIFI设置-->
+        <div class="pet_wifi_alert">
+            <div class="pet_scroll mar15">
+                <table class="tableWp">
+                    <thead>
+                    <tr>
+                        <td>优惠券名称</td>
+                        <td>类型</td>
+                        <td>有效期</td>
+                        <td>卡包审核状态</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td colspan="4">没有优惠券选择~</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a href="#" class="add_pet_card">新增优惠券</a>
+            <div class="refresh_box">
+                如果您修改或新增优惠券，请<div class="refresh_btn"><i class="fa fa-refresh"></i> 刷新</div>
+            </div>
+        </div>
+        <!--btn-->
+        <div class="text-align">
+            <button type="button" class="hot_door_btn">保存</button>
+        </div>
+    </div>
+</div>
+<!--商品券弹框-->
+<div class="commonAleat" id="goodCoupon">
+    <div class="alert_box" style="height: 350px;">
+        <div class="alert_top">
+            <div class="alert_l">选择商品券</div>
+            <div class="alert_r"><i class="fa fa-close close_wifi"></i></div>
+        </div>
+        <!--WIFI设置-->
+        <div class="pet_wifi_alert">
+            <div class="pet_scroll mar15">
+                <table class="tableWp">
+                    <thead>
+                    <tr>
+                        <td>商品券名称</td>
+                        <td>类型</td>
+                        <td>有效期</td>
+                        <td>卡包审核状态</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td colspan="4">没有商品券选择~</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a href="#" class="add_pet_card">新增商品券</a>
+            <div class="refresh_box">
+                如果您修改或新增商品券，请<div class="refresh_btn"><i class="fa fa-refresh"></i> 刷新</div>
+            </div>
+        </div>
+        <!--btn-->
+        <div class="text-align">
+            <button type="button" class="hot_door_btn">保存</button>
+        </div>
+    </div>
+</div>
+<!--end-->
+</div>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/pertty/swiper.min.js"></script>
+<script>
+    /*************************************************上传by yanyh********************************************************************/
+
+    $('#upload_ad1').bind('click',function(){
+        $('#form_ad1').submit();
+    });
+    $('#upload_ad2').bind('click',function(){
+        $('#form_ad2').submit();
+    });
+    $('#upload_ad3').bind('click',function(){
+        $('#form_ad3').submit();
+    });
+
+    function upload2(){
+        var type = $('#imgFile2').data('type');
+        ajaxFileUpload(type);
+    }
+
+
+    function ajaxFileUpload(type)
+    {
+
+        if(type == 2){
+            imgFileID = 'imgFile2';
+            purl ='<{ofunc type=url link="/other/userupload/type/shophdimg/datatype/json"}>';
+        }else if(type == 1){
+            imgFileID = 'imgFile1';
+            purl ='<{ofunc type=url link="/other/userupload/type/shopad/datatype/json"}>';
+        }
+
+        $("#loading")
+                .ajaxStart(function(){
+                    $(this).show();
+                })
+                .ajaxComplete(function(){
+                    $(this).hide();
+                });
+
+        $.ajaxFileUpload
+        (
+
+                {
+                    url:purl,
+                    secureuri:false,
+                    fileElementId:imgFileID,
+                    dataType: 'json',
+                    data:{name:'logan', id:'id'},
+                    success: function (data, status)
+                    {
+                        if(typeof(data.error) != 'undefined')
+                        {
+                            if(data.error == false)
+                            {
+                                if(type ==2){
+                                    $('#pet_show_bg').attr('src',data.msg);
+                                    // $('#img').val(data.msg);
+                                    // $('#imgshow2').attr('src',data.msg);
+                                    // $('#imgshow2').show();
+                                }
+                                else
+                                {
+                                    $('#img').val(data.msg);
+                                    $('#imgshow').attr('src',data.msg);
+                                    $('#imgshow').show();
+                                }
+
+                            }else
+                            {
+                                alert(data.msg);
+                            }
+                        }else{
+                            alert(data);
+                        }
+                    },
+                    error: function (data, status, e)
+                    {
+                        alert(e);
+                    }
+                }
+        )
+
+        return false;
+
+    }
+    var dialogs ;
+    function uploads(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/other/userupload/func/uploadsucess/type/shoplogo"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucess(linkurl){
+        dialogs.close();
+        $('#img').val(linkurl);
+        $('#imgshow').attr('src',linkurl);
+        $('#imgshow').show();
+    }
+    function uploaderror(msg){
+        alert(msg);
+        dialogs.close();
+        uploads();
+    }
+    /*************************************************上传结束********************************************************************/
+    //    广告推广轮播图
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        loop : true
+    });
+    setInterval("swiper.slidePrev()", 5000);
+
+    //    选用模板弹框
+    $('#use_muban').click(function(){
+        $('#mubanAleat').show();
+    });
+
+    //    点击按钮关闭弹框
+    var detul =  $('#pet_show_bg').attr('src'); //  默认src
+    $('.close_down').click(function(){
+        $('#mubanAleat').hide();
+        $('#pet_show_bg').attr('src',detul);
+    });
+
+    //    点击背景图切换显示对应图片
+    $('.picul li').click(function(){
+        var _this = $(this).index();
+        var _src = $(this).find('img').attr('src');
+        $('.picul li').removeClass('active').eq(_this).addClass('active');
+        $('#pet_show_bg').attr('src',_src)
+    });
+
+    //    确定
+    $('#pet_sure').click(function(){
+        $('#mubanAleat').hide();
+        var _src = $('.picul li.active').find('img').attr('src');
+        var data = {'_src':_src};
+        var url = '<{ofunc type=url link="/shopcenter/changestatus/random/@random@/datatype/json"}>';
+        var backdata = ajaxback(url,data);
+        if(backdata.flag == false){
+            //alert(backdata.content);
+        }else{
+            alert(backdata.content);
+        }
+
+
+    });
+
+    //    显示wifi弹框
+    $('#pet_wifi_set').click(function(){
+        $('#wifiSet').show();
+    });
+
+    //    显示优惠券弹框
+    $('#store_set li .set_btn_q').click(function(){
+        $('#coupon').show();
+    });
+
+    //    显示商品券弹框
+    $('#today_set li .set_btn_q').click(function(){
+        $('#goodCoupon').show();
+    });
+
+    //    点击按钮关闭wifi/优惠券/商品券弹框
+    $('.close_wifi').click(function(){
+        $('.commonAleat').hide();
+    });
+
+    $('input[name="menu_a"]').click(function(){
+        var i = $(this).val();
+        if (i == 1){                     //   呼叫店员
+            //$('#call').toggle();
+            id   = 'call';
+            ids  = 'menu_a';
+            type = "yuding";
+            change(id,type);
+        }
+        if (i == 2){                    //    买单
+            //$('#Check').toggle();
+            id   = 'Check';
+            ids  = 'menu_b';
+            type = "waimai";
+            change(id,type);
+        }
+        if (i == 3){                    //    堂食
+            //$('#t').toggle();
+            id   = 't';
+            ids  = 'menu_c'
+            type = "tangshi";
+            change(id,type);
+        }
+        if (i == 4){                    //    点评
+            //$('#remark').toggle();
+            id   = 'remark';
+            ids  = 'menu_d';
+            type = "paihao";
+            change(id,type);
+        }
+        if (i == 5){                    //    wifi
+            //$('#wifi').toggle();
+            id   = 'wifi';
+            ids  = 'wifi_set';
+            type = "wifi";
+            change(id,type);
+        }
+        if (i == 6){                    //    广告推广
+            //$('#ad_extend_show').toggle();
+            id   = 'ad_extend_show';
+            ids  = 'ad_extend';
+            type = "ad";
+
+            if($('#'+ids).is(':checked')){
+                $('#ad_set').attr('style','display:block;');
+            }else{
+                $('#ad_set').attr('style','display:none;');
+            }
+            change(id,type);
+
+        }
+        if (i == 7){                    //    会员推广
+            //$('#cmd_extend_show,#slogan').toggle();
+            id   = 'cmd_extend_show';
+            ids  = 'cmd_extend';
+            type = "member";
+            change(id,type);
+        }
+        if (i == 8){                    //    本店优惠
+            $('.discount,#store_title,#store_set').toggle();
+        }
+        if (i == 9){                    //    今日特价
+            //$('.today,#today_title,#today_set').toggle();
+            id   = 'today_title';
+            ids  = 'today_t';
+            type = "yh";
+            change(id,type);
+        }
+        if (i == 10){                    //    热门活动
+            //$('#hot_activity_show,#hot_activity_t').toggle();
+            id   = 'hot_activity_show';
+            ids  = 'hot_activity';
+            type = "act";
+            if($('#'+ids).is(':checked')){
+                $('#hot_activity_t').attr('style','display:block;');
+            }else{
+                $('#hot_activity_t').attr('style','display:none;');
+            }
+            change(id,type);
+
+        }
+    });
+
+    function change(id,type){
+        if($('#'+ids).is(':checked')){
+            status = 1;
+            $('#'+id).attr('style','display:block;');
+        }else{
+            status = 0;
+            $('#'+id).attr('style','display:none;');
+        }
+        var data = {'type':type,'status':status};
+        var url = '<{ofunc type=url link="/shopcenter/changestatus/random/@random@/datatype/json"}>';
+        var backdata = ajaxback(url,data);
+        if(backdata.flag == false){
+            //alert(backdata.content);
+            //window.location.reload();
+        }else{
+            alert(backdata.content);
+        }
+    }
+
+
+    //    会员推广宣传标语
+    $('#cmd_slogan').keyup(function(){
+        var _value = $(this).val();
+        if(_value == ""){
+            title = "恭喜，您已经是会员了！"
+        }else{
+            title = _value;
+        }
+        $(".cmd_text_show").html(title)
+    });
+
+    //增加除对应广告及广告预览区
+    function addAdItem() {
+        //得到已经 显示的广告数量
+        var showAdNum = $(".adItemShow").length;
+        var $el = $(".adItem").eq(showAdNum);
+        $el.show();
+        $el.addClass("adItemShow");
+
+        //预览区显示对应广告
+        $(".hot li").eq(showAdNum).show();
+
+        //显示数量+1
+        showAdNum ++;
+
+        //如果已经显示了3个广告，则隐藏增加按钮
+        if(showAdNum ==3){
+            $(".hot_add").hide();
+        }
+        //如果显示了 2 -3个广告，则 显示删除按钮
+        if(showAdNum > 1) {
+            $(".hot_delete").show();
+        }
+    }
+
+    //删除对应广告及广告预览区
+    function deleteAd(obj) {
+        //已经显示的广告数量
+        var showAdNum = $(".adItemShow").length;
+
+        //隐藏预览区最后一张广告
+        $(".hot li").eq(showAdNum-1).hide().attr("src","");
+
+        //如果 显示了 2 - 3个广告，则删除最后一个广告
+        if(showAdNum > 1) {
+            $(".adItemShow:last").hide();
+            $(".adItemShow:last").removeClass("adItemShow");
+        }
+
+        //显示数量 -1
+        showAdNum --;
+
+        //如果 显示的广告少于3个 则显示增加按钮
+        if(showAdNum < 3){
+            $(".hot_add").show();
+        }
+
+        //如果只显示了1个广告，则删除按钮隐藏
+        // if(showAdNum == 1) {
+        //     $(".hot_delete").hide();
+        // }
+    }
+
+</script>
+
+<script> 
+// $(document).ready(function(){
+//   $("#ad_img1").hide();
+//   $("#ad_img2").hide();
+//   $("#ad_img3").hide();
+//   $("#ad_img4").hide();
+//   $("#ad_img5").hide();
+//   $("#ad_img6").hide();
+// });
+    
+$("#ad1").change(function(){
+ var objUrl = getObjectURL(this.files[0]) ;
+ console.log("objUrl = "+objUrl) ;
+ if (objUrl) {
+     $("#ad_img1").show();
+  $("#img1").attr("src", objUrl) ;
+ }
+}) ;
+$("#ad2").change(function(){
+ var objUrl = getObjectURL(this.files[0]) ;
+ console.log("objUrl = "+objUrl) ;
+ if (objUrl) {
+     $("#ad_img2").show();
+  $("#img2").attr("src", objUrl) ;
+ }
+}) ;
+$("#ad3").change(function(){
+ var objUrl = getObjectURL(this.files[0]) ;
+ console.log("objUrl = "+objUrl) ;
+ if (objUrl) {
+     $("#ad_img3").show();
+  $("#img3").attr("src", objUrl) ;
+ }
+}) ;
+$("#ad4").change(function(){
+ var objUrl = getObjectURL(this.files[0]) ;
+ console.log("objUrl = "+objUrl) ;
+ if (objUrl) {
+     $("#ad_img4").show();
+  $("#img4").attr("src", objUrl) ;
+ }
+}) ;
+$("#ad5").change(function(){
+ var objUrl = getObjectURL(this.files[0]) ;
+ console.log("objUrl = "+objUrl) ;
+ if (objUrl) {
+     $("#ad_img5").show();
+  $("#img5").attr("src", objUrl) ;
+ }
+}) ;
+$("#ad6").change(function(){
+ var objUrl = getObjectURL(this.files[0]) ;
+ console.log("objUrl = "+objUrl) ;
+ if (objUrl) {
+     $("#ad_img6").show();
+  $("#img6").attr("src", objUrl) ;
+ }
+}) ;
+
+//建立一個可存取到該file的url
+function getObjectURL(file) {
+ var url = null ; 
+ if (window.createObjectURL!=undefined) { // basic
+  url = window.createObjectURL(file) ;
+ } else if (window.URL!=undefined) { // mozilla(firefox)
+  url = window.URL.createObjectURL(file) ;
+ } else if (window.webkitURL!=undefined) { // webkit or chrome
+  url = window.webkitURL.createObjectURL(file) ;
+ }
+ return url ;
+}
+</script>
+
+<{/block}>

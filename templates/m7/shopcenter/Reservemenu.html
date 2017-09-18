@@ -1,0 +1,18 @@
+
+<div class="ordertjmenu" >
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/Reserve'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/Reserve"}>');">预订设置</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/Reserve_detail_setting'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/Reserve_detail_setting"}>');">预订详情设置</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/Reserve_order'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/Reserve_order"}>');">预订订单管理</button>
+</div>
+
+
+
+<script>
+    $(function(){
+        $(".waimaiset .jbset").click(function(){
+            $(this).css('background','#ec7501').siblings().css('background','');
+        });
+    });
+</script>
+       	 
+       		 

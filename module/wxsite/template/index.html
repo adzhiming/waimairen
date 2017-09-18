@@ -1,0 +1,469 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+  <{block name=extendcss}> 
+  <link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/weixinlunbo.css?">   
+  <script src="<{$siteurl}>/js/Swiper/idangerous.swiper.js"></script>     
+ <{/block}>
+ <{block name=loadinghide}><{/block}>
+
+<{block name=hearnav}>
+<div class="homescreenadd"   onclick="dolink('<{ofunc type=url link="/wxsite/choice"}>');"  ><i class="homescreendw"></i><span  id="showareainfo"><{if $areaid > 0}><{$mapname}><{else}>定位地址信息...<{/if}></span><i class="fa fa-angle-right"></i></div>
+<div class="homscrsear"  onclick="dolink('<{ofunc type=url link="/wxsite/search"}>');"   ><input style="    background-position: 3% center;" readonly type="text" placeholder="请输入店铺名、商品名"></div>
+<{/block}>
+ <{block name=sitetitle}><{$sitename}><{/block}>
+ <{block name=blockcontent}> 
+ <style>
+ 
+.zhengrefu{text-align:center; margin-top:-10px;} 
+ </style> 
+ 
+
+<!-- 通知 -->
+
+<{if !empty($notice) }>
+<div class="ordisprompt" style="background:#fff;display:none;" >
+ <ul>
+  <li class="noticeText">通知</li> 
+  <li id="gonggaoshow" style="margin-left:5px; float:left;  ">
+  <div id="marqueenotice"  onclick="dolink('<{ofunc type=url link="/wxsite/noticelist"}>');"  style="display:none;">
+  <marquee align="middle" behavior="scroll" loop="-1" scrollamount="4" width="100%"    direction="left"    ><{$notice['title']}></marquee>
+  </div>
+  <div id="notice"  onclick="dolink('<{ofunc type=url link="/wxsite/noticelist"}>');"  ><{$notice['title']}></div>
+  </li>
+ </ul>
+</div>
+<style>
+.ordisprompt{width:100%;position:fixed;bottom:48px;z-index:999;border-top:1px solid #C4C4C4;border-bottom:1px solid #C4C4C4;}
+.noticeText{font-size:12px!important;background:url(<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/wmr_index_notice.png) 1px 3px no-repeat;background-size:13px;padding:0px 4px 0px 14px;color:#ff5438 !important;font-size:12px;}
+.ordisprompt ul li {
+
+    float: left;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+  height:20px;
+}
+</style>
+<script>
+$(function(){
+  $(".ordisprompt").show();
+  var getscreenwidth = $(window).width();
+  var gongdongWidth = getscreenwidth-67;
+  $("#gonggaoshow").css('width',gongdongWidth+'px');
+  var gonggaoshow = Number( $("#notice").text().length )*16;
+  var screenwidth = document.body.clientWidth-20;
+  if( gonggaoshow >= screenwidth ){
+  
+    $("#marqueenotice").show();
+    $("#notice").hide();
+  }else{
+   
+    $("#marqueenotice").hide();
+    $("#notice").show();
+  }
+  
+      
+  
+});
+  
+     
+      
+</script>
+<{/if}>
+
+
+<div id="wrapper" class="swiper-containeraa" style="position:absolute;  display:none;width:100%;top:73px; overflow:hidden;">
+
+<div id="scroller" style="transition-property: transform; transform-origin: 0px 0px 0px; transform: translate(0px, 0px) translateZ(0px);">
+
+
+ <div class="swiper-scrollbar"></div> 
+<div  class="swiper-wrapper" >
+<div class="swiper-slide">
+<!--展示-->
+<div id="uprefuBox"><p class="refuImg"><img  src="/upload/images/wmrloading.gif"  ></p><p class="refuFang flipup" >下拉刷新...</p></div>
+
+
+<{load_data assign="advlist" table="adv"    fileds="*"  limit="5" where="advtype='weixinlb' and  module='<{$sitetemp}>' " }> 
+<{if !empty($advlist['list']) }>
+
+  <div class="device"> 
+  
+    <div class="swiper-container-lb" style="position: relative; ">
+      <div class="swiper-wrapper-lb">
+	  <{foreach from=$advlist['list'] item=items}>
+        <div class="swiper-slide-lb" ><a href="<{$items['linkurl']}>"><img data-src="<{$items['img']}>"  src="<{$items['img']}>" style="width:100%; height:114px;" alt=""></a></div>
+	  <{/foreach}>	
+       </div>
+    </div>
+    <div class="pagination"></div>
+  </div>
+  
+    <script>
+    var mySwiper = new Swiper('.swiper-container-lb',{
+ 	wrapperClass:'swiper-wrapper-lb', 
+	slideClass:'swiper-slide-lb',
+    pagination: '.pagination',
+    loop:false,
+	autoplay: 3000,
+	 mode : 'horizontal', // or 'vertical'
+    grabCursor: true,
+    paginationClickable: true 
+  });
+ $(function(){ 
+	var mainheight = $(window).height();//窗口高度
+	var mainwidth = $(window).width();//窗口宽度
+	$('.swiper-container-lb,.swiper-slide-lb,.swiper-slide-lb img').css('width',mainwidth+'px');
+	mySwiper.reInit();
+	mySwiper.swipeTo(0);
+  });
+  
+  </script>
+
+<style>
+
+.device {
+  width: 100%;
+  height: 114px;
+  background:#fff;
+   position: relative;
+ }
+.swiper-slide-lb{
+	height:114px;
+	 float:left;
+}.swiper-slide-lb img{
+	height:114px;
+	 
+}
+.swiper-container-lb {
+  height:114px;
+  width: 100%;
+}
+.content-slide {
+  padding: 20px;
+  color: #fff;
+}
+ 
+.pagination {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  bottom:0px;
+  width: 100%;
+  z-index:9999999;
+}
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius:50%;
+  background: #A1A1A1;
+   margin: 0 3px;
+  cursor: pointer;
+}
+.swiper-active-switch {
+  background: #66EAEA;
+}
+  </style>
+
+<{/if}>
+
+
+
+ 
+
+
+
+<!--分类部分-->
+<!-- <div class="categoryContainer" style="padding-top:10px;">
+ <ul>
+ <{foreach from=$moretypelist item=items}>
+  <li 
+	<{if $items['activity'] == 'waimai' }>  
+		onclick="dolink('<{ofunc type=url link="/wxsite/waimai/typeid/<{$items['param']}>"}>');"  
+	<{else if $items['activity'] == 'market'  }>  
+		onclick="dolink('<{ofunc type=url link="/wxsite/marketlist/typeid/<{$items['param']}>"}>');"  
+	<{else if $items['activity'] == 'lifehelp'  }>  
+		onclick="dolink('<{ofunc type=url link="/wxsite/lifeasslist"}>');"
+     <{else if $items['activity'] == 'shophui'  }>
+     onclick="dolink('<{ofunc type=url link="/wxsite/shophui"}>');"
+	<{/if}>
+>
+ <p><img src="<{$items['img']}>" data-src="<{$items['img']}>"    class="category_img"></p>
+ <p style="margin-top:-5px;"><span style="height:22px;line-height:22px;"><{$items['name']}></span> </p>
+ </li>
+ <{/foreach}>
+ 
+  <li onclick="dolink('<{ofunc type=url link="/wxsite/waimai"}>');"  >
+  <p><img data-src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/tb8.png"   src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/tb8.png" class="category_img"> </p>
+  <p style="margin-top:-5px;"><span style="height:22px;line-height:22px;">更多</span> </p>
+  </li>
+ </ul>
+</div> -->
+<!--展示-->
+
+ 
+<!-- 专题页 -->
+<!-- <div class="advertisement"> 
+<{foreach from=$ztylist key=key item=items}>
+ <ul class=""   style="width:<{$items['imgwidth']}>; height:<{$items['imgheight']}>px; border:none;"  onclick="dolink('<{ofunc type=url link="/wxsite/specialpage/id/<{$items['id']}>"}>');"    >
+  <li style="width:100%; height:<{$items['imgheight']}>px;">
+  <a href="javascript:void(0);"><img  style="width:100%; height:<{$items['imgheight']}>px;"  data-src="<{$items['indeximg']}>" src="<{$items['indeximg']}>"></a></li>
+ </ul>
+ <{/foreach}>
+ 
+</div> -->
+
+<div class="homscrbusinCon">
+ <div class="homscrbusintit"><h3>我的店铺</h3>
+     <a href="tel:<{$litel}>" class="telephone_ico">呼叫</a>
+ </div>
+    
+ 
+ 
+ <div class="<{if $mobilemodule == 1}>homscrbusinBox<{else}>homeNeashopBox<{/if}>">
+  <ul id="shoplist">
+   
+ 
+  </ul>
+ </div>
+ 
+ 
+<div  id="lodingmore"   class="downLoading "><div class="moreLoading"><i class="iconstartloading"></i><span>上拉更多...</span></div></div>
+   
+ 
+</div>
+ 
+<!-- 首页结束 -->
+ </div>
+ 
+
+ </div>
+</div>
+
+
+</div>
+<script>
+var can_show = true;
+ var catid = <{$typeid|default:0}>;
+var order = 0;
+var qsjid = 0;
+var typeid = <{$typeid|default:0}>;
+var myaddress = '<{$myaddress}>';
+var search_input = '<{$search_input|default:''}>';
+var shopshowtype  = '<{$shopshowtype|default:'0'}>';
+var checknext = false;
+var lat = '<{$lat|default:0}>';
+var lng = '<{$lng|default:0}>';
+var addressname = '<{$addressname|default:''}>';
+var is_loading = false;
+
+$(function(){ 
+  if(lng && lat && addressname){
+    $('#showareainfo').text(addressname);
+    loading();
+  }else{ 
+    getLocation(); 
+  }
+});
+function getLocation()
+  {
+  	
+  if (navigator.geolocation)
+    { 
+      navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+   else{$('#showareainfo').text("浏览器不支持定位");loading();}
+  }
+
+function showPosition(position)
+{ 
+ $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=DnDF9YImUcofVjhqwYToMxmFaTNaUWX0&callback=renderReverse&location='+position.coords.latitude+','+position.coords.longitude+'&output=json&pois=0&coordtype=wgs84ll');   
+  // $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location=23.036989,114.3679&output=json&pois=0&coordtype=wgs84ll'); 
+}
+function renderReverse(datas){
+	 if(datas.status == 0){  
+		lat = datas.result.location.lat;
+		lng = datas.result.location.lng;
+	    $('#showareainfo').text(datas.result.formatted_address); 
+		 $.ajax({
+           type: 'GET', 
+           url: '<{ofunc type=url link="/wxsite/saveloation/datatype/json"}>',
+           async:false,
+ 		  //	data: {'lat':23.036989,'lng':114.3679},
+		    data: {'lat':datas.result.location.lat,'lng':datas.result.location.lng,'addressname':datas.result.formatted_address},
+           dataType: 'json',success: function(content) { 
+          	//var info = JSON.parse(content);
+             // $(allobj).eq(i).find('.juliid').eq(0).text(content.msg);  
+             if(content.error == false){
+                 
+             	loading();
+             }else{
+             	  loading();// alert(content.msg);
+             }
+	    	  },
+           error: function(content) { 
+         
+              	loading();//alert('提交数据失败');
+	        }
+       });
+		
+		
+		
+		
+	 }else{
+	   loading();
+	   $('#showareainfo').text('定位失败');
+	 }
+ }
+  function showError(error)
+  {
+  	$('#showareainfo').text("定位失败");
+   switch(error.code) 
+    {
+    	
+    case error.PERMISSION_DENIED:
+      //x.innerHTML="User denied the request for Geolocation."
+    //  $('#showareainfo').text("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+     // x.innerHTML="Location information is unavailable."
+      //$('#showareainfo').text("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+    //  x.innerHTML="The request to get user location timed out."
+    //$('#showareainfo').text("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+     // x.innerHTML="An unknown error occurred."
+     //  $('#showareainfo').text("An unknown error occurred.");
+      break;
+    }
+    
+    loading();
+  } 
+  
+</script>
+ </script>
+<{/block}>
+<{block name=myScrolljs}>
+  <style>
+.swiper-containeraa { 
+    position: absolute;
+    z-index: 10;
+}
+.swiper-scrollbar { 
+	position: relative;
+	-ms-touch-action: none;
+	background: rgba(0,0,0,0.1)
+}
+.swiper-scrollbar-drag {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	background: rgba(0,0,0,0.5); 
+}
+.swiper-scrollbar-cursor-drag {
+	cursor: move;
+}
+</style>
+ 
+<script>
+var defaultSwiper; //默认的滚动控件名 
+var holdPosition = 0; 
+var maxposition = 0;
+var page =1;
+var pageend = false;
+var html5_config = {'showheader':true,'showfooter':true,'bodyscller':true,'Canfresh':true,'CanloadMore':true,'titilename':'外卖频道'}; 
+function freshpage(){//刷新函数 
+  page =1;
+  pageend = false;
+    $('#shoplist').html(''); 
+ 
+						 
+ 
+	var content = htmlback(siteurl+'/index.php?mid=<{$mid}>&ctrl=wxsite&action=indexshoplistdata',{'page':page});
+  	if(content.flag == false){
+ 	     $('#shoplist').append(content.content);    
+	}else{
+	    Tmsg('获取失败');
+	}  
+	 
+	// &lat='+lat+'&lng='+lng+'
+	$('#loading').hide(); 
+	hidefresh();
+    //setTimeout("hidefresh()",50);  
+}
+ 
+function loadmore(){ 
+	page = page+1;
+	   var content = htmlback(siteurl+'/index.php?mid=<{$mid}>&ctrl=wxsite&action=indexshoplistdata',{'page':page});
+		if(content.flag == false){
+		$('#lodingmore .moreLoading i').addClass('iconstartloading');
+	    $('#lodingmore .moreLoading i').removeClass('iconloading');
+	    $('#lodingmore .moreLoading i').removeClass('iconOverload');
+		$("#lodingmore span").text("上拉更多...");
+		   var getmoreContent =  $.trim(content.content); 
+		  
+  		   if( getmoreContent == ''  ){
+ 				pageend = true;
+				$('#lodingmore .moreLoading i').removeClass('iconstartloading');
+				$('#lodingmore .moreLoading i').removeClass('iconloading');
+				$('#lodingmore .moreLoading i').addClass('iconOverload');
+				$("#lodingmore span").text("加载完毕...");
+		   }else{
+				 $('#shoplist').append(content.content);
+		   }
+		  
+		}else{
+			pageend = true;
+			$('#lodingmore .moreLoading i').removeClass('iconstartloading');
+			$('#lodingmore .moreLoading i').removeClass('iconloading');
+	     	$('#lodingmore .moreLoading i').addClass('iconOverload');
+			$("#lodingmore span").text("加载完毕...");
+		}
+		//  setTimeout("hideloadmore()",500);  
+		hideloadmore();
+	
+} 
+  
+//加载页面函数
+function loading(){
+ 	if(typeof html5_config == 'undefined'){
+		alert('获取失败');
+	}else{ 
+	    
+		if(html5_config.bodyscller == true){
+ 			 setTimeout(function(){  
+				$('#wrapper').show();    
+				 addfresh();
+				 
+			 },500);
+		}
+	 //	$('#loading').hide();
+		//loaddata();
+		
+	}
+}  
+function htmlback(url,info)
+{
+	var backmessage = {'flag':true,'content':''};
+	$.ajax({
+       type: 'POST',
+       async:false,
+       url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+       data: info,
+      dataType: 'html',success: function(content) {  
+	   backmessage['flag'] = false;
+      	   backmessage['content'] = content; 
+		  },
+      error: function(content) { 
+      backmessage['content'] = '获取失败';
+	   }
+   });  
+   return backmessage;
+}
+
+</script>
+<style>
+ </style>
+ <{/block}>

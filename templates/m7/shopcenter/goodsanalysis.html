@@ -1,0 +1,249 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+
+<{block name=extendjs}>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.PrintArea.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="https://img.hcharts.cn/highcharts/highcharts-3d.js"></script>
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/public.js"></script>  
+<style type="text/css">
+    .dataStatic{ margin: auto; position: absolute;top: 50%; left: 50%; -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%); -moz-transform: translate(-50%,-50%); transform: translate(-50%,-50%); border: 1px solid #ccc;}
+    .findData{background-color: #2E4050;padding: 10px 15px;color: #fff;overflow: hidden;font-size: 15px}
+    .findData i{font-size:16px;cursor: pointer;}
+    #mapa{width: 800px;}
+</style>
+<script>
+    var mynomenu='baseordertj';
+</script>
+<{/block}>
+<{block name=bodylist}>
+<!--content right start-->
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">订单统计</h5>
+
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/order_tj_menu.html"}>
+        
+        <div class="orderTongji">
+            <!--<div class="sjser" style="font-weight:none;">商家订单统计查询</div>-->
+            <form action="<{ofunc type=url link="/shopcenter/goodsanalysis"}>" method="post" id="chafrom">
+            <div>
+      <span>年份 :
+      <select name="year" onchange="selectyear();" class="form-control">
+          <option selected="selected" value="0">所有</option>
+          <{section name=loop loop=$startyear step=1 max=10}>
+          <option value="<{$startyear-$smarty.section.loop.index}>"><{$startyear-$smarty.section.loop.index}></option>
+          <{/section}>
+      </select>
+      
+      </span>
+      <span id="showmonth">
+      	<!-- 月份：
+      <select name="month" onchange="selectmonth">
+      	<option selected="selected" value="">全年</option>
+        <option value="">1</option>
+        <option value="">2</option>
+        <option value="">3</option>
+        <option value="">4</option>
+      </select>  -->
+      </span>
+      <span id="showday">
+      	<!--日：
+      <select name="day">
+      	<option selected="selected" value="">全年</option>
+        <option value="">1</option>
+        <option value="">2</option>
+        <option value="">3</option>
+        <option value="">4</option>
+      </select>
+      -->
+      </span>
+                <span>菜品份数：<span class="ddnum"><{$allnum}>份</span></span>
+                <span>月份交易额：<span class="ddnum"><{$allsum}>元</span></span>
+                <span id="dosubmit" class="btn-a btn-prim">查询</span>
+                <!--<span class="tingjiSer curbtn" id="dosubmit"></span>-->
+            </div>
+            </form>
+        </div>
+        <div class="caidanSet mart10" style="width: 100%;">
+            <!--留言管理-->
+            <div  id="liuyan">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr> 
+                        <th>菜品名称</th>
+                        <th>数量(份)</th>
+                        <th>占总量比例(%)</th>
+                        <th>商品总价值(元)</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$list item=items}> 
+                    <{if $items['shopname'] != ''}>
+                    <tr> 
+                        <td><{$items['shopname']}></td>
+                        <td><{$items['shuliang']}></td>
+                        <td><{(($items['shuliang']/$allnum)*100)|string_format:'%.2f'}>%</td>
+                        <td><{$items['all_worth']}></td>
+                        <td id='qushi'  onclick="dolink('<{ofunc type=url link="/shopcenter/goodsanalysis/goodsid/<{$items['goodsid']}>/month/<{$month}>"}>');">查看趋势</td>
+                    </tr>
+                    <{/if}> 
+                    <{/foreach}>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!-- 查看趋势 -->
+    <div class="dataStatic" style="display: none;">
+       <div class="findData">
+            <div class="fl">查看趋势</div>
+            <i class="fr">x</i>
+        </div>
+         <div  id="mapa">
+    </div>
+    <input type="hidden" name="flag" id="flag" value='<{$flag}>'>
+
+
+</div>
+
+
+
+
+
+
+<!--content right end-->
+
+<script>
+
+$(function(){
+       flag = $('#flag').val();
+        if(flag == 1){
+            $('.dataStatic').show();
+        }else{
+            $('.dataStatic').hide();
+        }
+
+       $('#mapa').highcharts({
+              credits: { enabled: false},
+            chart: {
+        
+                type: 'line',
+     
+            },
+            title: {
+                text: '时间段统计',
+                x: 0 //center
+            },
+            subtitle: {
+                text: '<{$siteurl}>',
+                x:0
+            },
+            xAxis: {
+                categories: [<{$keys}>]
+            },
+            yAxis: {
+                title: {
+                    text: '销售数量 (份)'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +'日: '+ this.y +'(份)';
+                }
+            },
+        legend: {
+                itemStyle: {
+                    color: '#000000',
+                    fontWeight: 'inherit',
+                    fontFamily:'"Microsoft YaHei",Arial,Helvetica,sans-serif'
+                }
+            },
+            series: [{
+                name: '时间段销售',
+                data: [<{$vals}>]
+            }]
+        });
+
+ });
+
+
+    var nowyear = '<{$year}>';
+    var nowmonth = '<{$month}>';
+    $(function(){
+        $('#dosubmit').click(function(){
+            $('#chafrom').submit();
+        });
+        $("select[name='year']").val(nowyear);//find("option[text='"+nowyear+"']").attr("selected",true);
+        selectyear();
+    });
+
+    function selectyear(){
+        var nowyear = $("select[name='year']").find("option:selected").val();
+        if(nowyear == 0){
+            $('#showmonth').html('');
+            $('#showday').html('');
+        }else{
+            var htmls='月份: <select name="month" class="form-control"> <option selected="selected" value="0">本月</option>';
+            for(var i=1;i< 13;i++){
+                htmls+='<option value="'+i+'">'+i+'</option>';
+            }
+            htmls+='</select>';
+            $('#showmonth').html(htmls);
+            $("select[name='month']").val(nowmonth);
+            //  selectmonth();
+        }
+    }
+    function getDays(nowyear,nowmonth){
+        var y = nowyear;
+        var m = nowmonth;
+        if(m == 2){
+            return y % 4 == 0 ? 29 : 28;
+        }else if(m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12){
+            return 31;
+        }else{
+            return 30;
+        }
+    }
+
+    function qushi(goodsid){
+        var year  = $("select[name='year']").find("option:selected").val();
+        var month = $("select[name='month']").find("option:selected").val();
+        var data = {'goodsid':goodsid,'year':year,'month':month};
+        var url  = '<{ofunc type=url link="/shopcenter/ajaxqushi/random/@random@/datatype/json"}>'; 
+        var backdata = ajaxback(url,data); 
+        if(backdata.flag == false){
+            $('#keys').val(backdata.content[0]);
+            $('#vals').val(backdata.content[1]);
+        }else{
+            alert(backdata.content);
+        }
+
+    }
+    $('.fr').bind('click',function(){
+        $('#flag').val('');
+        $('.dataStatic').hide();
+
+    });
+ 
+   
+
+</script>
+
+
+
+<{/block}>

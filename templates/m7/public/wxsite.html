@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="MobileOptimized" content="320">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="HandheldFriendly" content="true">
+<meta name="author" content="johnye">
+<meta name="shenma-site-verification" content="f28da5e2e3fb6e2afd372a3eedfda998">
+<meta name="baidu-site-verification" content="eafwEzRbnz">
+<title><{block name=sitetitle}><{/block}></title> 
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/public1.css"> 
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/newweixin.css"> 
+  <link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/newcss/index.css">
+  <link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/newcss/font-awesome.min.css">
+    <link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/scrllo_function.css">
+
+ <{block name=extendcss}><{/block}>
+ <script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script> 
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/public.js"></script>  
+  <script src="<{$siteurl}>/templates/adminpage/public/js/allj.js"></script>  
+   <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/swipe.js"></script> 
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/iscroll.js"></script> 
+    <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/newiscroll.js"></script>  
+	    <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/scrllo_function.js"></script>  
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/jquery.cookie.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.lazyload.min.js" type="text/javascript" language="javascript"></script> 
+
+<{block name=extendjs}><{/block}>
+<script> 
+	var siteurl = "<{$siteurl}>";
+	var is_static ="<{$is_static}>";
+	var taction = "<{$Taction}>"; 
+$(function() { 
+$("img").lazyload({ 
+effect : "fadeIn" 
+}); 
+}); 
+</script>
+<{block name=loadinghide}>
+ <script>
+ 	$(function(){  		
+ 	   $('#loading').hide(); 
+  });
+  </script>
+<{/block}>
+<{block name=myScrolljs}>
+<script> 
+		var myScroll;
+		
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'a' && target.tagName != 'span')
+				e.preventDefault();
+		}
+	});
+	 
+
+}
+$(function(){ 
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+});
+</script>
+<{/block}>
+ 
+
+ 
+</head>
+<body> 
+<style>
+.page-app{ background:#f0f0f0;}
+body{background:#f0f0f0;}
+ #loading{text-align:center; wdith:80px; height:90px; margin-left:-40px; margin-top:-45px;  position:absolute;top:50%;left:50%;z-index:99999999; }
+#loading .refuImg{  padding: 0px; margin: 0px;  height: 56px;}
+#loading .refuImg img{    width: 50px; height: 50px;  margin-top: 3px;}
+#loading .refuFang{width: 80px;font-size: 12px; height: 20px; line-height: 20px; padding: 0px;  margin: 0px auto; 
+   margin-bottom:3px; color:#323233; text-align: center;}
+</style>
+ <!-- <div class="loadingbox"><section class="ffffbox"><div class="loadingpice"></div></section></div> -->
+ <div id="loading"  style="display: block;">
+	<p class="refuImg"><img   src="/upload/images/wmrloading.gif"  ></p>
+	<p class="refuFang" >努力加载中...</p>
+</div>
+ 
+<!-- <div id="hallist">  -->
+	<{block name=hearnav}><header   id="header"><div class="return"></div> 标题 </header><{/block}>
+	
+	<{block name=blockcontent}>  
+  <{/block}> 
+ <!--底部-->
+
+ <{block name=footer}>
+<!--底部-->
+     <div class="bottom-bar-warp">
+        <div class="bottom-bar" id="bottom-bar">
+            <div class="bbar-btn tap-click" onclick="dolink('<{ofunc type=url link="/wxsite/index"}>');"  ><i  class="icon icon_home"></i><div class="text" style="margin-top:-8px;">首页</div></div>
+            <div class="bbar-btn tap-click" onclick="dolink('<{ofunc type=url link="/wxsite/order"}>');" ><i class="icon icon_user"></i><div class="text" style="margin-top:-8px;">我的订单</div></div>
+     
+            <!-- <div class="bbar-btn tap-click" onclick="dolink('<{ofunc type=url link="/wxsite/togethersay"}>');"  ><i class="icon icon_order"></i><div class="text" style="margin-top:-8px;">一起说</div></div> -->
+            <div class="bbar-btn"  onclick="dolink('<{ofunc type=url link="/wxsite/member"}>');"><i class="icon icon_phone" style="margin-top: 8px;"></i></a><a class="text"  style="margin-top:-10px;">个人中心</div>
+        </div>
+    </div>
+<{/block}>
+
+   
+<!-- </div> -->
+
+<script>
+	$(function(){
+		if( taction  == 'index' ){		
+			$(".icon_home").next().css('color','#ff5438');
+			$(".icon_home").css('backgroundPosition','0px -23px');		
+		}
+		if( taction  == 'member' ){		
+			$(".icon_phone").next().css('color','#ff5438');
+			$(".icon_phone").css('backgroundPosition','-92px -23px');		
+		}
+		if( taction  == 'order' ){		
+			$(".icon_user").next().css('color','#ff5438');
+			$(".icon_user").css('backgroundPosition','-23px -23px');		
+		}
+			if( taction  == 'togethersay' ){		
+			$(".icon_order").next().css('color','#ff5438');
+			$(".icon_order").css('backgroundPosition','-69px -23px');		
+		}
+	});
+</script>
+ 
+  
+</body>
+</html>
+ 

@@ -1,0 +1,148 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}>  
+ <{/block}>
+ <{block name=myScrolljs}>
+<script> 
+var scroll1, scroll2;
+function loaded() { 
+	scroll1 = new iScroll('wrapper',{
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA'){
+				e.preventDefault();
+				}
+		}
+	});   
+ }
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=hearnav}>
+<div class="toptitCon">
+ <div class="toptitBox">
+  <div class="toptitL"><i></i></div>
+  <div class="toptitC"><h3>账户信息</h3></div>
+ </div>
+</div>
+<{/block}>
+<{block name=sitetitle}>账户信息<{/block}>
+ <{block name=blockcontent}>   
+ <div id="wrapper" style="top:40px;">
+	<div id="scroller">
+	
+	
+<!--------信息进度-------->
+<div class="processCon">
+ <i class="pro_02"></i>
+ <span class="proaL">商家资料</span>
+ <span class="proaC proaA">账户信息</span>
+ <span class="proaR">网站审核</span>
+</div>
+ 
+ 
+<!--------填写信息-------->
+<div class="mesefillinfo">
+ <ul>
+  <li><span>登录帐号：</span><input type="text" id="username" value="" placeholder="请输入登录账号"></li>
+  <li><span>登录密码：</span><input type="password"  id="pwd" value="" placeholder="请输入登录密码"></li>
+  <li><span>确认密码：</span><input type="password"  id="repwd" value="" placeholder="请确认密码"></li>
+ </ul>
+</div>
+<!--------确认支付-------->
+<div class="mesedete" style="margin-top:20px; margin-bottom:20px;"><input type="button" onclick="nextSub();" value="提交申请"></div>
+	
+	
+	
+  </div>
+</div> 
+
+  
+<script>
+
+function nextSub(){
+	 
+		  $('#loading').show();
+		 
+		url = siteurl+'/index.php?ctrl=wxsite&action=saveshop&datatype=json&random=@random@';
+     	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+        $.ajax({         //script定义
+                 url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+                 dataType: "json",
+                 async:true,
+                 data:{'maphone':'<{$shopphone}>','shopname':'<{$shopname}>','shopaddress':'<{$shopaddress}>','shoptype':'<{$shoptype}>','shoplicense':'<{$shoplicense}>','username':$("#username").val(),
+				 'password':$("#pwd").val(),'password2':$("#repwd").val(),'subtype':2,'laiyuan':1},
+                 success:function(content) { 
+                 	if(content.error ==  false){
+					
+		
+							Tmsg('提交成功，请等待管理员审核');
+							$('.closegb').live("click", function() {   
+								 $('.popup').slideToggle('slow',function(){$('#mask').remove();$('.popup').remove();}); 
+								 window.location.href=  siteurl+'/index.php?ctrl=wxsite&action=shangjiaresult&shopid='+content.msg ;
+								 
+							});
+											 
+							
+                 	}else{
+                 		Tmsg(content.msg);
+                 	}
+                  	$('#loading').toggle();
+                 
+                 },
+                 error:function(){
+                  $('#loading').toggle();
+                 }
+        }); 
+		// setTimeout("myyanchi()", 500 ); 
+	  $('#loading').show();
+}
+
+
+function  sjruzhu(){
+	
+		
+		  $('#loading').show();
+		 
+		url = siteurl+'/index.php?ctrl=wxsite&action=saveshangjia&datatype=json&random=@random@';
+     	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+        $.ajax({         //script定义
+                 url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+                 dataType: "json",
+                 async:true,
+                 data:{'username':$("#username").val(),'mobile':$("#mobile").val(),'qq':$('#qq').val(),'resname':$('#resname').val(),'addr':$('#addr').val(),'Captcha':$('#Captcha').val(),'regagree':$('#regagree').val()},
+                 success:function(content) { 
+                 	if(content.error ==  false){
+					
+				
+							Tmsg('提交成功，请等待管理员审核');
+							$('.closegb').live("click", function() {   
+								 $('.popup').slideToggle('slow',function(){$('#mask').remove();$('.popup').remove();}); 
+								 window.location.href=  siteurl+'/index.php?ctrl=wxsite&action=shopSettled' ;
+								 
+							});
+							
+						
+							
+                 	}else{
+                 		Tmsg(content.msg);
+                 	}
+                  	$('#loading').toggle();
+                 
+                 },
+                 error:function(){
+                  $('#loading').toggle();
+                 }
+        }); 
+		// setTimeout("myyanchi()", 500 ); 
+	  $('#loading').show();
+     	
+
+}
+</script>
+ 
+<{/block}>

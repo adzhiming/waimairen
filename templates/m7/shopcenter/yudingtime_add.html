@@ -1,0 +1,190 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='yudingtime_add';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname"><{if empty($cxinfo)}>添加<{else}>编辑<{/if}>可预订时间段</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/Reservemenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/yudingtime_save/datatype/json"}>">
+        <div class="jutiSet">
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>状态</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="radio" class="radio"  name="status"   value="0" <{if $cxinfo['status'] == 0}>checked<{/if}> />有效
+                    <input type="radio" class="radio" name="status"   value="1" <{if $cxinfo['status'] == 1}>checked<{/if}> />无效
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+        <{if empty($cxinfo)}>
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>时间段：</span>
+                </div>
+                <div class="xuanze_right">
+                   <input placeholder="开始时间" class="form-control" type="text" name="start_booktime[]" id="start_booktime[]" value=""  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                   -<input placeholder="结束时间" class="form-control" type="text" name="end_booktime[]" id="end_booktime[]" value=""  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                <div style="margin-left:400px; margin-top: -25px; float: left;"><a href="javascript:" onclick="addbz();">增加</a></div>
+                </div>
+                
+                <div class="cl"></div>
+             </div>
+            <div id="addtime"></div>
+        <{else}>
+             <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>时间段：</span>
+                </div>
+                <div class="xuanze_right">
+                   <input placeholder="开始时间" class="form-control" type="text" name="start_booktime" id="start_booktime" value="<{$cxinfo['start_booktime']|date_format:"%H:%M"}>"  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                   -<input placeholder="结束时间" class="form-control" type="text" name="end_booktime" id="end_booktime" value="<{$cxinfo['end_booktime']|date_format:"%H:%M"}>"  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                </div>
+                <div class="cl"></div>
+             </div>
+        <{/if}>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>桌台区域：</span>
+                </div>
+                <div class="dianpu_right">
+                    <select name="table_area" id="table_area" class="form-control">
+                        <option value="0">请选择</option>
+                        <{foreach from=$table_area_list item=items}>
+                          <option value="<{$items['table_area']}>"  <{if $items['table_area'] == $cxinfo['table_area']}> selected="selected" <{/if}> ><{$items['table_area']}></option>
+                        <{/foreach}>
+                    </select>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>桌台类型：</span>
+                </div>
+                <div class="dianpu_right">
+                    <select name="table_type" id="table_type" class="form-control">
+                        <option value="0" >请选择</option>
+                        <{foreach from=$table_type_list item=items}>
+                          <option value="<{$items['table_type']}>"  <{if $items['table_type'] == $cxinfo['table_type']}> selected="selected" <{/if}> ><{$items['table_type']}>人桌</option>
+                        <{/foreach}>
+                    </select>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+<!--            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>可预订桌台总量：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input placeholder="请填写数量" type="text" style="width:100px; float:left;" id="reserve_num" name="reserve_num" value="<{$cxinfo['reserve_num']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>-->
+            
+<!--            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>需预付金额：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input placeholder="请填写金额" type="text" style="width:100px; float:left;" id="bookpay" name="bookpay" value="<{$cxinfo['bookpay']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>-->
+            
+            <div class="cl"></div>
+
+            <input name="action" type="hidden" value="ok" />
+            <input type="hidden" name="id" value="<{$cxinfo['id']}>">
+            <input type="hidden" name="shopid" id="shopid" value="<{$shopid}>">
+            <input type="hidden" name="mid" id="mid"  value="<{$mid}>">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >点击提交</div>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        //var id = '<{$cxinfo['id']}>';
+        
+        subform("<{ofunc type=url link='/shopcenter/Reserve'}>",$('#loginForm'));
+    });
+
+
+
+    $('#table_area').change(function(){
+        var table_area = $('#table_area').val();
+        var mid     = $('#mid').val();
+        var shopid     = $('#shopid').val(); 
+        var data = {'table_area':table_area,'mid':mid,'shopid':shopid};
+        var url = '<{ofunc type=url link="/shopcenter/getpreordertable/random/@random@/datatype/json"}>'; 
+        var backdata = ajaxback(url,data); 
+     
+        if(backdata.flag == false){
+            
+            var html = '<option value="0">请选择</option>';
+      
+            $.each(backdata.content, function(){
+                $('#table_type option').remove();
+                html+="<option  value="+this.table_type+">"+this.table_type+"人桌</option>";
+            });
+            $('#table_type').append(html); 
+        }else{
+            alert(backdata.content);
+        }
+    });
+    
+    
+ 
+    function addbz(){
+        var i=1;
+        var htmldata='<div class="serxuanze" id="'+i+'"><div class="xuanze_left"><span>时间段：</span></div><div class="xuanze_right">';
+            htmldata+='<input  type="text" placeholder="开始时间" class="form-control" type="text" name="start_booktime[]" id="start_booktime[]" onFocus="WdatePicker({ dateFmt: \'HH:mm\' });" />';
+            htmldata+=' -<input placeholder="结束时间" class="form-control" type="text" name="end_booktime[]" id="end_booktime[]"  onFocus="WdatePicker({ dateFmt: \'HH:mm\' });" />';
+            htmldata+='</div><a href="javascript:" onclick="$(this).parent().remove();"><div style="margin-left:465px; margin-top: -25px; float: left;font-size: 12px">删除</div></a><div class="cl"></div></div>';
+            
+           $('#addtime').append(htmldata);
+    }
+   
+
+</script>
+
+<{/block}>

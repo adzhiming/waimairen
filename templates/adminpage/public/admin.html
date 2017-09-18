@@ -1,0 +1,167 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-Language" content="zh-CN">
+	<meta content="all" name="robots">
+	<meta name="description" content="">
+	<meta content="" name="keywords">
+	<title>后台管理中心 </title>
+	<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/admin1.css">
+	<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/font-awesome.min.css">
+	<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.js" type="text/javascript" language="javascript"></script>
+	<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/public.js" type="text/javascript" language="javascript"></script>
+	<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/artDialog.js?skin=blue"></script>
+	<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/template.min.js" type="text/javascript" language="javascript"></script>
+	<{block name=extendjs}><{/block}>
+	<script>
+		var menu = null;
+		var siteurl = "<{$siteurl}>";
+		var is_static ="<{$is_static}>";
+		if(screen.width > 1359){
+
+			$('.newtop').css('width',screen.width);
+			$('.newmain').css('width',screen.width);
+			$('.newfoot').css('width',screen.width);
+		}
+
+	</script>
+</head>
+<body>
+<div id="cat_zhe" class="cart_zhe" style="display:none;"></div>
+<div id="cat_tj" class="cart_out_cat" style="display:none;"> 数据提交中..</div>
+
+<!--<div class="newtop">-->
+	<!--<div class="newadddiv">-->
+		<!--<div class="newlogo">-->
+			<!--<div class="imglogo"><a href="<{$siteurl}>" target="_blank"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/logo.png"> </a></div>-->
+		<!--</div>-->
+		<!--<div class="newtopnav">-->
+			<!--<ul>-->
+				<!--<{include file="<{$tempdir}>/public/admin_module.html"}>-->
+				<!--<ul>-->
+
+		<!--</div>-->
+	<!--</div>-->
+<!--</div>-->
+<style>
+	.tip-t li{float: left;}
+	.use-t li{float: right;color: #fff;}
+	.use-t li a{color: #2f90bb;}
+	.tip-t li:nth-child(1){width: 30%;}
+	.tip-t li:nth-child(2){width: 40%;}
+	.tip-t li i{font-weight: 600;font-style: inherit;}
+	.tip-t li span{font-size: 12px;}
+	.color-v{color: #37C5EE;}
+	.color-b{color: red;}
+	.use-t li:not(:first-child){margin-right:20px; }
+	.name-t{color: #fff;text-align: left;padding-left:20px;}
+	.title-name { height: 70px; line-height: 70px; color: #fff; font-size: 24px; text-align: center; }
+	.meb-box { margin-bottom: 10px; padding-bottom: 10px; padding-right: 10px; overflow: hidden;}
+</style>
+<!-- 提示导航-->
+<div class="newmain">
+	<div style="padding: 0 20px;">
+		<div class="ibox float-e-margins" style="margin-top: 4px;">
+			<div class="ibox-title">
+				<ul class="tip-t">
+					<li><i>今天是：</i><span class="color-v"><{$smarty.now|date_format:"%Y-%m-%d"}></span></li>
+					<li><i>您现在的位置是：</i><span id="positionname2" class="color-v">网站首页</span></li>
+					<li><i>订单提醒：</i><span class="color-b">您今天有 <span><{$tjdata['dayworder']}></span> 个订单待审核</span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- 主内容区-->
+	<div class="newmain_all">
+		<!-- 主内左区-->
+		<div class="left_content">
+			<!-- 主内左区用户信息-->
+			<div class="userinfo">
+				<div class="title-name"><img src="<{$siteurl}>/newstyle/images/super_logo.png" style="width: 200px;"></div>
+				<p class="name-t"><{$admininfo['username']}></p>
+				<div class="meb-box">
+					<ul class="use-t">
+						<li><a href="<{ofunc type=url link="/member/adminloginout"}>" class="out" style="color: #2f90bb;">退出</a></li>
+						<li><a onClick="modifypwd();" href="#">修改密码</a></li>
+						<!--<li></li>-->
+					</ul>
+				</div>
+			</div>
+			<!-- 主内左区导航条-->
+			<div class="left_nav">
+				<ul class="nav-menu">
+					<{include file="<{$tempdir}>/public/admin_menu.html"}>
+					<!--<li style="text-align:center;"><a href="<{$siteurl}>" style="color:#0076cf;" target="_blank">返回网站首页</a></li>-->
+				</ul>
+			</div>
+			<div class="left_navend">
+			</div>
+			<!-- 主内左区天气预报-->
+			<div class="weather" id="weatherinfo" style="display:none;">
+				<div class="todayweacher">
+					<div class="weacher_left">
+						<div id="wtoday_img"> </div>
+						<div><span id="wcity" style="padding-right:5px;"></span><span id="wqihou"></span></div>
+					</div>
+					<div class="weacher_right" id="wwendu">
+
+					</div>
+				</div>
+				<div style="clear:both;">
+					<div class="tom">
+						<div id="tom_1" class="tom_img"></div>
+						<div class="tom_wendu" id="tom_day"></div>
+						<div class="tom_wendu" id="tom_wendu"></div>
+
+					</div>
+					<div class="tom">
+						<div id="tom_tom" class="tom_img"></div>
+						<div class="tom_wendu" id="tom_tday"></div>
+						<div class="tom_wendu" id="tom_twendu"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div class="right_content">
+			<div class="show_content_m">
+				<!--<div class="show_content_m_ti">-->
+				<!--<div class="showtop_t" ></div>-->
+				<!--</div>-->
+				<div class="ibox float-e-margins" id="hide">
+					<div class="ibox-title">
+						<h5 id="positionname"><{block name=controlname}><{/block}></h5>
+						<!--<div class="ibox-tools">-->
+						<!--<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>-->
+						<!--</div>-->
+					</div>
+				</div>
+			</div>
+			<div class="ibox-content clearfix" id="hide_a">	<{block name=bodylist}><{/block}>
+				<div class="show_content_m_t3"></div>
+				<!-- show_content_m结束-->
+			</div>
+			<!-- right_content 结束-->
+		</div>
+		<!-- newmain_all 结束-->
+	</div>
+	<!--newmain 结束-->
+
+	<div style="clear:both;"></div>
+	<div class="newfoot">Copyright @ Weilay Technology</div>
+</div>
+<script>
+	$(function(){
+		$('.show_page a').wrap('<li></li>');
+		$('.show_page').find('.current').eq(0).parent().css({'background':'#f60'});
+	});
+	function limitalert(){
+		//diaerror("您暂无权限设置,如有疑问请联系QQ：375952873  Tel：18538930577");
+	}
+</script>
+</body>
+</html>
+
+
+
+
+

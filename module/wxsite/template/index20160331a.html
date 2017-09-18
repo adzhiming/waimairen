@@ -1,0 +1,525 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+  <{block name=extendcss}> 
+  <link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/weixinlunbo.css">   
+  <script src="<{$siteurl}>/js/Swiper/idangerous.swiper.js"></script>      
+<link rel="stylesheet"  href="<{$siteurl}>/js/Swiper/idangerous.swiper.css">   
+ <{/block}>
+ <{block name=loadinghide}><{/block}>
+
+<{block name=hearnav}>
+<div class="homescreenadd"   onclick="dolink('<{ofunc type=url link="/wxsite/choice"}>');"  ><i class="homescreendw"></i><span  id="showareainfo"><{if $areaid > 0}><{$mapname}><{else}>定位地址信息...<{/if}></span><i class="fa fa-angle-right"></i></div>
+<div class="homscrsear"  onclick="dolink('<{ofunc type=url link="/wxsite/search"}>');"   ><input style="    background-position: 3% center;" readonly type="text" placeholder="请输入店铺名、商品名"></div>
+<{/block}>
+ <{block name=sitetitle}><{$sitename}><{/block}>
+ <{block name=blockcontent}> 
+ <style>
+#uprefuBox{text-align:center; margin-top:-80px; display:none; }
+#uprefuBox .flipup {
+    background:url(<{$siteurl}>/upload/images/wmrload-up-icon.png) left center no-repeat;
+}
+#uprefuBox .flipdown {
+    background:url(<{$siteurl}>/upload/images/wmrload-down-icon.png) left center no-repeat;
+}
+#uprefuBox .refuImg{  padding: 0px; margin: 0px;  height: 56px;}
+#uprefuBox .refuImg img{    width: 50px; height: 50px;  margin-top: 3px;}
+#uprefuBox .refuFang{width: 60px;font-size: 12px; height: 20px; line-height: 20px; padding: 0px;  margin: 0px auto;   padding-left:6px; 
+ background-size:6px 10px; margin-bottom:3px; color:#323233; text-align: center;}
+.shuaxining{font-size: 12px;color:#323233; text-align: center;} 
+.wmrrefuimg{  padding: 0px; margin: 0px;  height: 30px;}
+.wmrrefuimg img{      animation: mymove 2s infinite linear; -webkit-animation: mymove 1.5s infinite linear;  width: 30px; height: 30px;  margin-top:-5px;}
+.zhengrefu{text-align:center; margin-top:-10px;} 
+ </style> 
+ 
+
+<div id="wrapper" class="swiper-containeraa" style="position:absolute;  display:none;width:100%;top:73px; overflow:hidden;">
+ <div class="swiper-scrollbar"></div> 
+<div  class="swiper-wrapper" >
+<div class="swiper-slide">
+<!--展示-->
+
+
+
+<{load_data assign="advlist" table="adv"    fileds="*"  limit="5" where="advtype='weixinlb' and  module='<{$sitetemp}>' " }> 
+<{if !empty($advlist['list']) }>
+
+  <div class="device"> 
+  
+    <div class="swiper-container-lb" style="position: relative; ">
+      <div class="swiper-wrapper-lb">
+	  <{foreach from=$advlist['list'] item=items}>
+        <div class="swiper-slide-lb" ><a href="<{$items['linkurl']}>"><img src="<{$items['img']}>" style="width:100%; height:114px;" alt=""></a></div>
+	  <{/foreach}>	
+       </div>
+    </div>
+    <div class="pagination"></div>
+  </div>
+  
+  
+
+<style>
+
+.device {
+  width: 100%;
+  height: 114px;
+  background:#fff;
+   position: relative;
+ }
+.swiper-slide-lb{
+	height:114px;
+	 float:left;
+}.swiper-slide-lb img{
+	height:114px;
+	 
+}
+.swiper-container-lb {
+  height:114px;
+  width: 100%;
+}
+.content-slide {
+  padding: 20px;
+  color: #fff;
+}
+ 
+.pagination {
+  position: absolute;
+  left: 0;
+  text-align: center;
+  bottom:0px;
+  width: 100%;
+  z-index:9999999;
+}
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius:50%;
+  background: #A1A1A1;
+   margin: 0 3px;
+  cursor: pointer;
+}
+.swiper-active-switch {
+  background: #FD5959;
+}
+  </style>
+
+<{/if}>
+
+
+
+ 
+<!-- 通知 -->
+<{load_data assign="notice" table="information"  type="one"  fileds="*"  limit="1" where="type=1"  orderby="orderid asc"  }> 
+<{if !empty($notice) }>
+<div class="ordisprompt" style="background:#fff;display:none;" >
+ <ul>
+  <li class="noticeText">通知</li> 
+  <li id="gonggaoshow" style="margin-left:5px; float:left;  ">
+  <div id="marqueenotice"  onclick="dolink('<{ofunc type=url link="/wxsite/noticelist"}>');"  style="display:none;">
+  <marquee align="middle" behavior="scroll" loop="-1" scrollamount="4" width="100%"    direction="left"    ><{$notice['title']}></marquee>
+  </div>
+  <div id="notice"  onclick="dolink('<{ofunc type=url link="/wxsite/noticelist"}>');"  ><{$notice['title']}></div>
+  </li>
+ </ul>
+</div>
+<style>
+.noticeText{font-size:12px!important;background:url(<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/wmr_index_notice.png) 1px 3px no-repeat #ff6e6e;background-size:13px;padding:0px 4px 0px 14px;color:#fff;font-size:12px;}
+.ordisprompt ul li {
+
+    float: left;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+	height:20px;
+}
+</style>
+<script>
+$(function(){
+	$(".ordisprompt").show();
+	var getscreenwidth = $(window).width();
+	var gongdongWidth = getscreenwidth-67;
+	$("#gonggaoshow").css('width',gongdongWidth+'px');
+	var gonggaoshow = Number( $("#notice").text().length )*16;
+	var screenwidth = document.body.clientWidth-20;
+	if( gonggaoshow >= screenwidth ){
+  
+		$("#marqueenotice").show();
+		$("#notice").hide();
+	}else{
+	 
+		$("#marqueenotice").hide();
+		$("#notice").show();
+	}
+	
+	    
+	
+});
+  
+		 
+ 	    
+</script>
+<{/if}>
+
+
+<!--分类部分-->
+<div class="categoryContainer">
+ <ul>
+ <{foreach from=$moretypelist item=items}>
+  <li 
+	<{if $items['activity'] == 'waimai' }>  
+		onclick="dolink('<{ofunc type=url link="/wxsite/waimai/typeid/<{$items['param']}>"}>');"  
+	<{else if $items['activity'] == 'market'  }>  
+		onclick="dolink('<{ofunc type=url link="/wxsite/marketlist/typeid/<{$items['param']}>"}>');"  
+	<{else if $items['activity'] == 'lifehelp'  }>  
+		onclick="dolink('<{ofunc type=url link="/wxsite/lifeasslist"}>');"  
+	<{/if}>
+>
+	<a><img src="<{$items['img']}>"  class="category_img"><span><{$items['name']}></span></a>
+ </li>
+ <{/foreach}>
+ 
+  <li onclick="dolink('<{ofunc type=url link="/wxsite/waimai"}>');"  ><a><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/tb8.png" class="category_img"><span>更多</span></a></li>
+ </ul>
+</div>
+<!--展示-->
+
+ 
+<!-- 专题页 -->
+<div class="advertisement"> 
+<{foreach from=$ztylist key=key item=items}>
+ <ul class="adver"   style="width:<{$items['imgwidth']}>; height:<{$items['imgheight']}>px; border:none;"  onclick="dolink('<{ofunc type=url link="/wxsite/specialpage/id/<{$items['id']}>"}>');"    >
+  <li style="width:100%; height:<{$items['imgheight']}>px;">
+  <a href="javascript:void(0);"><img  style="width:100%; height:<{$items['imgheight']}>px;" src="<{$items['indeximg']}>"></a></li>
+ </ul>
+ <{/foreach}>
+ 
+</div>
+
+<div class="homscrbusinCon">
+ <div class="homscrbusintit"><h3>附近商家</h3></div>
+ 
+ 
+ <div class="homscrbusinBox">
+  <ul id="shoplist">
+   
+ 
+  </ul>
+ </div>
+ 
+ 
+<div  id="lodingmore"  class="downLoading "><div class="moreLoading"><i class="iconloading"></i><span>正在加载...</span></div></div>
+   
+ 
+</div>
+ 
+<!---------------------------------------------------------------------------首页结束----------------------------------------------------------------------------------->
+ </div>
+ 
+
+ </div>
+</div>
+
+
+
+<script>
+var can_show = true;
+ var catid = <{$typeid|default:0}>;
+var order = 0;
+var qsjid = 0;
+var typeid = <{$typeid|default:0}>;
+var myaddress = '<{$myaddress}>';
+var search_input = '<{$search_input}>';
+var shopshowtype  = '<{$shopshowtype}>';
+var checknext = false;
+var lat = '<{$lat|default:0}>';
+var lng = '<{$lng|default:0}>';
+var addressname = '<{$addressname|default:''}>';
+var is_loading = false;
+
+$(function(){ 
+    <{if !empty($lng) && !empty($lat) &&  !empty($addressname)  }>
+		$('#showareainfo').text(addressname);
+ 		loading();
+   <{else}>   	
+	 	getLocation(); 
+	//	$('#loading').show();
+    <{/if}>
+  
+});
+function getLocation()
+  {
+  	
+  if (navigator.geolocation)
+    { 
+       navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+   else{$('#showareainfo').text("浏览器不支持定位");loading();}
+  }
+
+function showPosition(position)
+{ 
+ 
+ $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location='+position.coords.latitude+','+position.coords.longitude+'&output=json&pois=0&coordtype=wgs84ll'); 
+  // $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location=23.036989,114.3679&output=json&pois=0&coordtype=wgs84ll'); 
+}
+function renderReverse(datas){
+ 
+	 if(datas.status == 0){  
+	 
+	    $('#showareainfo').text(datas.result.formatted_address); 
+		 $.ajax({
+           type: 'GET', 
+           url: '<{ofunc type=url link="/wxsite/saveloation/datatype/json"}>',
+           async:false,
+ 		  //	data: {'lat':23.036989,'lng':114.3679},
+		    data: {'lat':datas.result.location.lat,'lng':datas.result.location.lng,'addressname':datas.result.formatted_address},
+           dataType: 'json',success: function(content) { 
+          	//var info = JSON.parse(content);
+             // $(allobj).eq(i).find('.juliid').eq(0).text(content.msg);  
+             if(content.error == false){
+                 
+             	loading();
+             }else{
+             	  loading();// alert(content.msg);
+             }
+	    	  },
+           error: function(content) { 
+         
+              	loading();//alert('提交数据失败');
+	        }
+       });
+		
+		
+		
+		
+	 }else{
+	   loading();
+	   $('#showareainfo').text('定位失败');
+	 }
+ }
+  function showError(error)
+  {
+  	$('#showareainfo').text("定位失败");
+   switch(error.code) 
+    {
+    	
+    case error.PERMISSION_DENIED:
+      //x.innerHTML="User denied the request for Geolocation."
+    //  $('#showareainfo').text("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+     // x.innerHTML="Location information is unavailable."
+      //$('#showareainfo').text("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+    //  x.innerHTML="The request to get user location timed out."
+    //$('#showareainfo').text("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+     // x.innerHTML="An unknown error occurred."
+     //  $('#showareainfo').text("An unknown error occurred.");
+      break;
+    }
+    
+    loading();
+  } 
+  
+</script>
+ </script>
+<{/block}>
+<{block name=myScrolljs}>
+  <style>
+.swiper-containeraa { 
+    position: absolute;
+    z-index: 10;
+}
+.swiper-scrollbar { 
+	position: relative;
+	-ms-touch-action: none;
+	background: rgba(0,0,0,0.1)
+}
+.swiper-scrollbar-drag {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	background: rgba(0,0,0,0.5); 
+}
+.swiper-scrollbar-cursor-drag {
+	cursor: move;
+}
+</style>
+ 
+<script>
+var defaultSwiper; //默认的滚动控件名 
+var page =1;
+var pageend = false;
+var html5_config = {'showheader':true,'showfooter':true,'bodyscller':true,'Canfresh':true,'CanloadMore':true,'titilename':'外卖频道'}; 
+function freshpage(){//刷新函数 
+  page =1;
+  pageend = false;
+    $('#shoplist').html(''); 
+	var content = htmlback(siteurl+'/index.php?ctrl=wxsite&action=indexshoplistdata','');
+  	if(content.flag == false){
+ 	     $('#shoplist').append(content.content);    
+	}else{
+	    Tmsg('xxxx');
+	}  
+	$('#loading').hide(); 
+    setTimeout("hidefresh()",50);  
+}
+function loadmore(){ 
+	page = page+1;
+	   var content = htmlback(siteurl+'/index.php?ctrl=wxsite&action=indexshoplistdata',{'page':page});
+		if(content.flag == false){
+		$('#lodingmore .moreLoading i').addClass('iconloading');
+	    $('#lodingmore .moreLoading i').removeClass('iconOverload');
+		$("#lodingmore span").text("加载中...");
+		   var getmoreContent =  $.trim(content.content); 
+ 		   if( getmoreContent == ''  ){
+ 				pageend = true;
+				$('#lodingmore .moreLoading i').removeClass('iconloading');
+				$('#lodingmore .moreLoading i').addClass('iconOverload');
+				$("#lodingmore span").text("加载完毕...");
+		   }else{
+				 $('#shoplist').append(content.content);
+		   }
+			
+			 
+		}else{
+			pageend = true;
+			$('#lodingmore .moreLoading i').removeClass('iconloading');
+	     	$('#lodingmore .moreLoading i').addClass('iconOverload');
+			$("#lodingmore span").text("加载完毕...");
+		}
+		  setTimeout("hideloadmore()",500);  
+  
+	
+} 
+//加载页面函数
+function loading(){
+ 	if(typeof html5_config == 'undefined'){
+		alert('获取失败');
+	}else{ 
+	    
+		if(html5_config.bodyscller == true){
+ 			 setTimeout(function(){  
+				$('#wrapper').show();    
+				 addfresh();
+				 
+			 },500);
+		}
+	 //	$('#loading').hide();
+		//loaddata();
+		
+	}
+}
+function addfresh(){
+ 
+	defaultSwiper = new Swiper('.swiper-containeraa',{
+    scrollContainer: true,
+	mode:'vertical',  
+	slidesPerView:'auto', 
+	freeMode:true, 
+	resistance:false,
+    scrollbar: {
+      container: '.swiper-scrollbar'
+    },
+	onTouchStart: function(e) {
+	  holdPosition = 0; 
+	  maxposition = 0;
+	},
+	 onResistanceBefore: function(s, pos){
+	//touches.start = 
+      holdPosition = pos;
+	  if( $("#uprefuBox").length == 0 ){
+		defaultSwiper.prependSlide(' <div id="uprefuBox"><p class="refuImg"><img   src="/upload/images/wmrloading.gif"  ></p><p class="refuFang flipup" >下拉刷新...</p></div>');
+		}
+	  $("#uprefuBox").show();
+	  if(holdPosition >= 50 ){
+		$('#uprefuBox .refuFang').addClass('flipup');
+		$('#uprefuBox .refuFang').removeClass('flipdown');
+		$('#uprefuBox .refuFang').text('松开刷新');
+	  }else{ 
+		$('#uprefuBox .refuFang').addClass('flipdown');
+		$('#uprefuBox .refuFang').removeClass('flipup');
+		$('#uprefuBox .refuFang').text('下拉刷新...');
+	  }
+     },
+    onResistanceAfter: function(s,pos){ 
+	   maxposition =pos; 
+ 	   if(html5_config.CanloadMore == true &&  maxposition > 32 ){
+		   if(pageend == false){
+			   $('#lodingmore').show();
+			   defaultSwiper.reInit();
+				defaultSwiper.params.onlyExternal=true;  
+				setTimeout("loadmore()",50); 
+			}	
+	   }		
+	}, 
+    onTouchEnd: function(e,pos){//pos
+	
+	 
+	   if(holdPosition > 0){ 
+		 
+	      if(html5_config.Canfresh == true){
+			  $("#uprefuBox").remove();
+			  defaultSwiper.setWrapperTranslate(0,10,0);
+			  defaultSwiper.params.onlyExternal=true;  
+			  $("#uprefuBox").hide();
+			  defaultSwiper.prependSlide('<div class="preloader swiper-slide" id="showheader"  ><div class="zhengrefu"><p class="shuaxining">刷新中...</p><p class="wmrrefuimg"><img   src="/upload/images/wmrrefuimg.png" ></p></div></div>');
+		      
+			  setTimeout("freshpage()",200); 
+			   
+		  } 
+	   } 
+    }
+  });
+  //自动加载刷新
+ //  defaultSwiper.setWrapperTranslate(0,50,0);
+   defaultSwiper.params.onlyExternal=true; 
+ //  defaultSwiper.prependSlide('<div class="preloader swiper-slide" id="showheader"  ><div class="zhengrefu"><p class="shuaxining">刷新中...</p><p  class="wmrrefuimg"><img   src="/upload/images/wmrrefuimg.png"  ></p></div></div>');
+   freshpage();
+   
+}
+function hidefresh() {  
+	
+	defaultSwiper.reInit();
+	$('#showheader').remove();
+	defaultSwiper.setWrapperTranslate(0,0,0);
+	defaultSwiper.params.onlyExternal=false;  
+	defaultSwiper.updateActiveSlide(0); 
+}  
+    
+function hideloadmore(){  
+ 	//$('#lodingmore').hide(); 	
+	defaultSwiper.reInit();
+	defaultSwiper.params.onlyExternal=false;
+	defaultSwiper.updateActiveSlide(0);  
+} 
+function htmlback(url,info)
+{
+	var backmessage = {'flag':true,'content':''};
+	$.ajax({
+       type: 'POST',
+       async:false,
+       url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+       data: info,
+      dataType: 'html',success: function(content) {  
+	   backmessage['flag'] = false;
+      	   backmessage['content'] = content; 
+		  },
+      error: function(content) { 
+      backmessage['content'] = '数据获取失败';
+	   }
+   });  
+   return backmessage;
+}
+</script>
+<style>
+.downLoading{ display:none;height:32px;  line-height:32px;width:100%;background:#F0F0F0;   padding-top:3px;   text-align:center; margin:0 auto;}
+.downLoading span{ float:left;   height:30px; line-height:30px;color:#5F5F5F; font-size:14px;}
+.downLoading .moreLoading{ width:110px; margin:0 auto;}
+.downLoading i{ float:left;width:30px; height:30px;  }
+.downLoading .iconloading{background:url(<{$siteurl}>/upload/images/wmrrefuimg.png) left center no-repeat; background-size:30px; animation: mymove 2s infinite linear; -webkit-animation: mymove 1.5s infinite linear; }
+.downLoading .iconOverload{background:url(<{$siteurl}>/upload/images/wmrloadover.png) left center no-repeat; background-size:25px; }
+</style>
+ <{/block}>

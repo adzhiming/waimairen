@@ -1,0 +1,117 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js?"></script>
+<script>
+    var mynomenu='baseask';
+</script>
+<style>
+    .show_page ul li a.current{color: #fff;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+
+
+<!---content right start--->
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">评价管理</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <div class="messageset clearfix">
+<!--            <div class="fl btn-a btn-prim" onclick="openlink('<{ofunc type=url link="/shopcenter/shopask"}>');"><span >留言管理</span></div>-->
+         <div class="fl btn-a btn-prim" style="margin-left: 30px;" onclick="openlink('<{ofunc type=url link="/shopcenter/comment"}>');"> <span >评价管理</span> </div>
+    </div>
+
+    <!---评价管理----->
+    <div class="mart20"  id="pingjia">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="15%"> 订单编号 </th>
+                <th width="15%"> 商品名称 </th>
+                <th width="10%"> 时间 </th>
+                <th width="20%"> 评价内容 </th>
+                <th width="5%"> 评分 </th>
+                <th width="10%"> 留言回复 </th>
+                <th width="10%"> 回复时间 </th>
+                <th width="15%"> 操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{load_data assign="list" table="comment" showpage="true" where="shopid = <{$shopinfo['id']}>"  orderby = "id desc"}>
+            <{foreach from=$list['list'] item=items}>
+            <{load_data assign="goodsinfo" table="orderdet" type="one" where="id='<{$items['orderdetid']}>'" fileds="goodsname" }>
+            <{load_data assign="orderinfo" table="order" type="one" where="id='<{$items['orderid']}>'" fileds="dno" }>
+            <tr >
+                <td><{$orderinfo['dno']}></td>
+                <td><{$goodsinfo['goodsname']}></td>
+                <td><{$items['addtime']|date_format:"%Y-%m-%d"}></td>
+                <td><{$items['content']}></td>
+                <td><{$items['point']}></td>
+                <td><{$items['replycontent']}></td>
+                <td><{if $items['replytime'] != 0}><{$items['replytime']|date_format:"%Y-%m-%d %H:%M:%S"}><{/if}></td>
+                <td id="reload40">
+                    <{if empty($items['replycontent'])}><span><a href="#" onclick="reask('<{$items['id']}>',this);">回复</a></span><{/if}> /
+                    <{if $items['is_show'] == 0}><span><a onclick="return remind(this);" data="" href="<{ofunc type=url link="/shopcenter/showcommlist/id/<{$items['id']}>/datatype/json"}>">取消展示</a></span>
+                    <{else}>
+                    <span><a onclick="return remind(this);"  data="" href="<{ofunc type=url link="/shopcenter/showcommlist/id/<{$items['id']}>/datatype/json"}>">展示</a></span><{/if}>
+                </td>
+            </tr>
+            <{/foreach}>
+            <!--<tr>-->
+                <!--<td align="right" style=" padding-right:50px;" colspan="8"> <div class="show_page"><ul><{$list['pagecontent']}></ul></div></td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+        <div class="show_page " style="font-size: 14px;">
+            <ul><{$list['pagecontent']}></ul>
+        </div>
+    </div>
+
+
+<!---content right end--->
+<script>
+    $(function(){
+        $('.show_page a').wrap('<li></li>');
+        $('.show_page').find('.current').eq(0).parent().css({'background':'#ffff'});
+    });
+
+</script>
+<div id="askback" style="display:none;">
+
+    <div>
+        <table border="0" cellspacing="1" cellpadding="4" class="list" name="table" id="table" width="100%">
+            <tbody>
+
+            <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='ffffff';" bgcolor="ffffff">
+
+                <td><textarea name="askback" style="height:70px;width:200px"></textarea></td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="blank20"></div>
+    <input type="hidden" name="askbackid" id="askbackid" value="" class="skey" style="width:150px;">
+    <input type="submit" value="确认提交" class="button">
+
+</div>
+<script>
+    var dialogs ;
+    function reask(ids,obj){
+        var formurl = '<{ofunc type=url link="/shopcenter/backcomment/datatype/json"}>';
+        $('#askbackid').val(ids);
+        var showcontent = '<form method="post" name="form1" action="'+formurl+'" onsubmit="return subform(\'<{ofunc type=url link="/shopcenter/comment"}>\',this);">'
+
+        showcontent += $('#askback').html();
+        showcontent +='</form>';
+        var dialog =  art.dialog({
+            title:'留言回复',
+            id:'comment',
+            content: showcontent
+        });
+    }
+
+</script>
+<{/block}>

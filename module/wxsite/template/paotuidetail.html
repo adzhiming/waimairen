@@ -1,0 +1,110 @@
+<{extends file="<{$tempdir}>/public/wxsite.html"}>
+<{block name=extendcss}>
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/order.css">
+<{/block}>
+<{block name=extendjs}>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/template.min.js"></script>
+ 
+<{/block}>
+<{block name=myScrolljs}>
+<script>
+    var myScroll;
+    function loaded() {
+        myScroll = new iScroll('wrapper', {
+            useTransform: false,
+            hScrollbar:false,
+            vScrollbar:false,
+            bounce:false,
+            onBeforeScrollStart: function (e) {
+                var target = e.target;
+                while (target.nodeType != 1) target = target.parentNode;
+
+                if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA' )
+                    e.preventDefault();
+            }
+        });
+    }
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=hearnav}>
+<div class="toptitCon">
+    <div class="toptitBox addressbox">
+        <div class="toptitL"><i></i></div>
+        <div class="toptitC"><h3>跑腿详情</h3></div>
+    </div>
+</div>
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=blockcontent}>
+<style>
+    .liststyle1 li .colomns {
+        /*text-align: center;*/
+        height: auto;
+        line-height: 43px;
+    }
+    .colomns{
+        width:50%;
+        font-size:14px;
+    }
+	.redfont{color: #FF6E6E;}
+</style>
+<div id="wrapper" style="top:40px;">
+    <div id="scroller">
+        <div>
+
+            <section class="listselect">
+
+                <ul class="liststyle1" id="orderlist">
+                  
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">下单时间</div>
+                        <div class="colomns wd2 redfont"><{$detail['addtime']}></div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">订单状态</div>
+                        <div class="colomns wd2 redfont" >
+                            <{if $detail['status'] == 0}>处理中<{/if}>
+                            <{if $detail['status'] == 1}>已审核,待发货<{/if}>
+                            <{if $detail['status'] == 2}>已发货<{/if}>
+                            <{if $detail['status'] == 3}>已完成<{/if}>
+                            <{if $detail['status'] == 4}>关闭<{/if}>
+                        </div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">总重量</div>
+                        <div class="colomns wd2 redfont"><{$detail['ptkg']}>kg</div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">距离</div>
+                        <div class="colomns wd2 redfont"><{$detail['ptkm']}>km</div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">公斤金额</div>
+                        <div class="colomns wd2 redfont">￥<{$detail['allkgcost']}></div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">千米金额</div>
+                        <div class="colomns wd2 redfont">￥<{$detail['allkmcost']}></div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">小费</div>
+                        <div class="colomns wd2 redfont">￥<{$detail['farecost']}></div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">总金额</div>
+                        <div class="colomns wd2 redfont">￥<{$detail['allcost']}></div>
+                    </li>
+                    <li class="list box_inline">
+                        <div class="colomns wd2" style="font-size:16px;color: #333333;text-align:left;margin-left:3px;">跑腿需求</div>
+                        <div class="colomns wd2 redfont"><{$detail['content']}></div>
+                    </li>
+                </ul>
+            </section>
+
+
+        </div>
+    </div>
+</div>
+<{/block}>

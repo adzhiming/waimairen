@@ -1,0 +1,82 @@
+<{if !empty($orderlist) }>
+ <{foreach from=$orderlist item=items }>
+ 				 
+				 
+				 
+				 
+				 	<div class="editordercon" style="position:relative;"> 	
+				 	 <div class="editordertit">  
+				 	  <ul> 
+				 	   <!--<{if $items['is_goshop'] == '0'}>-->
+				 	   <li><i></i><{$items['shopname']}>(外卖)</li>
+				 	   <!--<{elseif $items['is_goshop'] == '1' }>--> 
+				 	   <li><i></i><{$items['shopname']}>(堂食)</li> 
+				 	   <!--<{elseif $items['is_goshop'] == '2'}>-->
+				 	   <li><i></i><{$items['shopname']}>(预订)</li> 
+				 	   <!--<{/if}>-->
+				 	   <li class="editordright"><span class="editorfoncol"><{$items['orderwuliustatus']}></span></li> 
+				 	  </ul> 
+				 	 </div> 
+				 	 <a href="<{ofunc type=url link="/wxsite/ordershow/orderid/<{$items['id']}>"}>"> 
+ 				 	 <div class="editorderbox" > 
+				 	  <ul> 
+				<{if $items['shoplogo'] == '' }>	  
+ 					 	   <li><img src="<{$shoplogo}>"></li> 
+				<{else}>
+					 	   <li><img src="<{$items['shoplogo']}>"></li> 
+				<{/if}>
+				 	   <li> 
+				 		<ul> 
+				 		 <li><span>￥<{$items['allcost']}></span></li> 
+				 		 <li><{$items['addtime']}></li> 
+ 				<{if $items['pstype'] == 0 }>
+					 		 <li>由<{$sitename}>提供优质服务</li> 					
+				<{else}>
+					 		 <li>由商家提供优质服务</li> 
+				<{/if}>
+				 		</ul> 
+				 	   </li> 
+ 				 	  </ul> 
+				 	 </div> 
+				 	 </a> 
+		<{if $items['status'] < 4 && $items['status'] > 0}>
+ 				 	 <div class="editorderbut"> 
+				 	  <div><div   class="editordinp1"    ></div></div>
+				 	  <ul> 
+				<{if $items['status'] == 2 }>
+ 					 	   <li><div   class="editordinp1"  onclick="acceptorder(<{$items['id']}>);" >确认收货</div></li> 
+				<{/if}>
+				<{if $items['status'] == 3 && $items['is_acceptorder'] == 1 && $items['is_ping'] == 0  }>
+ 					 	 <a href="<{ofunc type=url link="/wxsite/commentorder/orderid/<{$items['id']}>"}>"> 
+					 	   <li><div   class="editordinp1"   >评价订单</div></li> 
+					 	  </a> 
+				<{/if}>				
+	 		<{if $items['is_goshop'] == 0}>
+				<{if $items['shoptype'] == 1}> 
+					 	<a href="<{ofunc type=url link="/wxsite/shopshow/typelx/mk/id/<{$items['shopid']}>"}>"> 
+				<{else}>
+						<a href="<{ofunc type=url link="/wxsite/shopshow/typelx/wm/id/<{$items['shopid']}>"}>"> 
+				<{/if}>		
+			<{elseif $items['is_goshop'] == 1}>
+				<a href="<{ofunc type=url link="/wxsite/shopshow/typelx/yd/id/<{$items['shopid']}>"}>/tableid/<{$items['tableid']}>"> 
+			<{elseif $items['is_goshop'] == 2}>
+				<a href="<{ofunc type=url link="/wxsite/shoppreorder/id/<{$items['shopid']}>"}>"> 
+			<{/if}>		
+				<li><div   class="editordinp2"   >再来一单</div></li> 
+			</a> 
+	
+				 	  </ul> 
+				 	 </div> 
+				
+		<{else}>
+		
+			
+			 	<div   class="shanchuedit"  onclick="delorder(<{$items['id']}>);"  >删除</div> 
+		
+		
+		<{/if}>			 
+				 	</div>
+				 
+				 
+	<{/foreach}>
+ <{/if}>

@@ -1,0 +1,48 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/template.min.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/ajaxfileupload.js"> </script>
+<script>
+    var mynomenu='lineupmanage';
+</script>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">排号设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/lineupmenu.html"}>
+        <!--<div class="cl"></div>-->
+        
+        <div class="lineup_main">
+            <div class="btn-d btn-prim-phsz"><a href="<{ofunc type=url link="/shopcenter/phsz_add"}>">新建排号设置</a></div>
+        </div>
+        
+        <ul class="lineup_main">
+            
+            <{load_data assign="list" table="table_phsz"   fileds="*" limit="100" where="shopid = <{$shopid}> and mid=<{$mid}> order by px asc"}> 
+                <{foreach from=$list['list'] key=myid item=items}>  
+                    <a href="<{ofunc type=url link="/shopcenter/phsz_add/id/<{$items['id']}>"}>">
+                      <li class="btn-e btn-prim-phsz2"><span class="phrs2"><{$items['dlname']}></span> <span class="jrz2"><{if $items['status'] == 1 && ( date("H:i",time()) ge $items['starttime']|date_format:"H:i" && date("H:i",time()) le $items['endtime']|date_format:"H:i")}>开启中<{elseif $items['status'] == 1 && ( date("H:i",time()) lt $items['starttime']|date_format:"H:i" || date("H:i",time()) gt $items['endtime']|date_format:"H:i")}>休息中<{else}>未开启<{/if}></span></li>
+                       <!--<span><{$items['starttime']|date_format:"H:i"}></span>    <span><{$items['endtime']|date_format:"H:i"}></span>-->
+                    <!--
+                        如果当前时间小于开店时间，证明还没有开店，显示休息中。如果当前时间大于结束时间，显示休息中。
+                        如果当前时间大于或等于开店时间，那么就证明在营业时间，显示开启中。如果当前时间小于结束时间，那么就是开启中
+                     -->
+                    </a>
+               <{/foreach}>
+        </ul>
+        
+    </div>
+    
+
+    
+</div>
+
+<{/block}>

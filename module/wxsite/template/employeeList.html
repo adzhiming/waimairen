@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>赏金排行榜</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/reward/style.css">
+    <script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+    <style>
+        html,body{height: 100%;padding: 3%;}
+        .textEdit{font-size: 1.6em;padding: 2% 0;}
+    </style>
+</head>
+<body>
+<div class="textEdit bgcolor2">排行榜</div>
+<div class="whileBox">
+    <div class="scollBox">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>昵称</th>
+                    <th>评分</th>
+                    <th>赏金</th>
+                </tr>
+            </thead>
+            <tbody>
+              <{foreach from=$recordList item='info' key='k'}>
+                <tr>
+                  <td><{$k+1}></td>
+                  <td><div class="text_hide"><{$info.Operator}></div></td>
+                  <td><{$info.start}></td>
+                  <td><{$info.tfee}></td>
+                </tr>
+             <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="fixedFoot">
+    <ul class="fiexdList">
+        <li><a href="<{ofunc type=url link='/wxsite/employeeList/sn/'}><{$sn}>">小二排行</a></li>
+        <li><a href="<{ofunc type=url link='/wxsite/rankingList/sn/'}><{$sn}>">打赏排行</a></li>
+        <li><a href="<{ofunc type=url link='/wxsite/playRecord/sn/'}><{$sn}> ">打赏记录</a></li>
+    </ul>
+</div>
+<script>
+$(function(){
+	 var scollBox  = $(".scollBox").innerHeight();
+     if (scollBox <= $('table').height() ){
+         $('.scollBox').css('overflow','scroll');
+     }
+})
+</script>
+</body>
+</html>

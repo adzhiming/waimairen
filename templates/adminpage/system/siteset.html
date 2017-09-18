@@ -1,0 +1,194 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<{/block}>
+<{block name=controlname}>网站设置<{/block}>
+<{block name=bodylist}>
+
+<div>
+    <div id="tagscontent">
+        <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/system/module/saveset/datatype/json"}>" onsubmit="return subform('',this);">
+        <div class="mart15">
+            <table border="0" cellspacing="2" cellpadding="4" class="list tableList" name="table" id="table">
+                <tbody>
+                <tr>
+                    <td class="left">网站名称</td>
+                    <td><input type="text" name="sitename" id="sitename" value="<{$sitename}>" class="skey form-control" ></td>
+                </tr>
+<!--                 <tr>
+                    <td class="left">网站SEO描述</td>
+                    <td><input type="text" name="description" id="description" value="<{$description}>" class="skey form-control"></td>
+                </tr>
+               <tr>
+                    <td class="left">网站SEO关键字</td>
+                    <td><input type="text" name="keywords" id="keywords" value="<{$keywords}>" class="skey form-control"></td>
+                </tr>-->
+
+              <!--   <tr>
+                    <td class="left">备案号</td>
+                    <td><input type="text" name="beian" id="beian" value="<{$beian}>" class="skey form-control"></td>
+                </tr> -->
+                <tr>
+                    <td class="left">客服电话</td>
+                    <td><input type="text" name="litel" id="litel" value="<{$litel}>" class="skey form-control"></td>
+                </tr>
+
+            <!--     <tr>
+                    <td class="left">佣金比例</td>
+                    <td><input type="text" name="yjin" id="yjin" value="<{$yjin}>" class="skey form-control"> <span class="color-gg">（整数,例如：5 表示佣金比例为订单总金额的5%）</span></td>
+                </tr> -->
+                <tr>
+                    <td class="left">网站默认城市</td>
+                    <td><input type="text" name="cityname" id="cityname" value="<{$cityname}>" class="skey form-control"></td>
+                </tr>
+<!-- 
+                <tr>
+                    <td class="left">网站公告</td>
+                    <td><textarea name="notice" class="form-control form-width"><{$notice}></textarea></td>
+                </tr> -->
+<!--                <tr>
+                    <td class="left">默认用户头像</td>
+                    <td>
+                        <input type="hidden" name="userlogo" id="userlogo" value="<{$userlogo}>">
+                        <img src="<{$userlogo}>" class="img-style" id="imgshow"  <{if  empty($userlogo)}> style="display:none;"<{/if}>>
+                        <span onclick="uploads();" class="button-1 btn-prim mart30">上传图片</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">默认店铺头像</td>
+                    <td>
+                        <input type="hidden" name="shoplogo" id="shoplogo" value="<{$shoplogo}>">
+                        <img src="<{$shoplogo}>" class="img-style" id="imgshows" <{if  empty($shoplogo)}> style="display:none;"<{/if}>>
+                        <span onclick="uploadm();" class="button-1 btn-prim mart30">上传图片</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">网站logo</td>
+                    <td>
+                        <input type="hidden" name="sitelogo" id="sitelogo" value="<{$sitelogo}>">
+                        <img src="<{$sitelogo}>" class="img-style" id="imgshowc" <{if  empty($sitelogo)}> style="display:none;"<{/if}>>
+                        <span onclick="uploadc();" class="button-1 btn-prim mart30">上传图片</span>
+                    </td>
+                </tr>-->
+          <!--       <tr>
+                    <td class="left">手机站LOGO<br>(建议大小:100*85)</td>
+                    <td>
+                        <input type="hidden" name="html5logo" id="html5logo" value="<{$html5logo}>" >
+                        <img src="<{$html5logo}>" class="img-style" id="html5logoshow" <{if  empty($html5logo)}> style="display:none;"<{/if}>>
+                        <span onclick="uploadk();" class="button-1 btn-prim mart30">上传图片</span>
+                    </td>
+                </tr> -->
+              <!--    <tr>
+                    <td class="left">网站meta数据</td>
+                    <td><textarea name="metadata" class="form-control form-width"><{$metadata|stripslashes}></textarea></td>
+                </tr>
+               <tr>
+                    <td class="left">统计代码</td>
+                    <td><textarea name="footerdata" class="form-control form-width"><{$footerdata|stripslashes}></textarea></td>
+                </tr>
+                <tr>
+                    <td class="left">百度key</td>
+                    <td><input type="text" name="baidumapkey" id="baidumapkey" value="<{$baidumapkey}>" class="skey form-control"></td>
+                </tr>
+                <tr>
+                    <td class="left">百度secret</td>
+                    <td><input type="text" name="baidumapsecret" id="baidumapsecret" value="<{$baidumapsecret}>" class="skey form-control"></td>
+                </tr>
+
+                <tr>
+                <td class="left">百度LNG默认城市坐标</td>
+                <td>
+                    <input type="text" name="baidulng" id="baidulng" value="<{$baidulng|default:'0'}>" class="skey form-control">
+                </td>
+                </tr>
+                <tr>
+                    <td class="left">百度lat默认城市坐标</td>
+                    <td>
+                        <input type="text" name="baidulat" id="baidulat" value="<{$baidulat|default:'0'}>" class="skey form-control">
+                    </td>
+                </tr> -->
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="确认提交" class="button btn-prim marT20"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <input type="hidden" name="tijiao" id="tijiao" value="do">
+        <input type="hidden" name="saction" id="saction" value="siteset">
+        </form>
+    </div>
+
+
+</div>
+
+<script>
+    var dialogs ;
+    function uploads(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucess"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucess(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploads();
+        }else{
+            dialogs.close();
+            $('#userlogo').val(linkurl);
+            $('#imgshow').attr('src',linkurl);
+            $('#imgshow').show();
+        }
+    }
+    function uploadm(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucessm"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucessm(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploadm();
+        }else{
+            dialogs.close();
+            $('#shoplogo').val(linkurl);
+            $('#imgshows').attr('src',linkurl);
+            $('#imgshows').show();
+        }
+    }
+    function uploadc(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucessc"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucessc(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploadc();
+        }else{
+            dialogs.close();
+            $('#sitelogo').val(linkurl);
+            $('#imgshowc').attr('src',linkurl);
+            $('#imgshowc').show();
+        }
+    }
+    function uploadk(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucessk"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucessk(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploadk();
+        }else{
+            dialogs.close();
+            $('#html5logo').val(linkurl);
+            $('#html5logoshow').attr('src',linkurl);
+            $('#html5logoshow').show();
+        }
+    }
+
+</script>
+<!--newmain 结束-->
+<{/block}>

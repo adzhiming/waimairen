@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>404页面</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <style>
+        *{margin: 0;padding: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+        html {font-size: 10px;  -webkit-tap-highlight-color: rgba(0,0,0,0); font-family: sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}
+        body{font-family: 'Microsoft YaHei',Arial,Helvetica,sans-serif; font-size: 13px; color: #676a6c; overflow-x: hidden;height: 100%;background-color: #f3f3f4;}
+        .middle-box h1 {font-size: 170px; margin-top: 20px; font-weight: 100;}.middle-box {max-width: 400px; z-index: 100; margin: 0 auto; padding-top: 40px;text-align: center;}
+        h1,h3{line-height: 1.1; font-family: inherit;margin-bottom: 10px;}  .middle-box h3{font-weight: 600;font-size: 16px;margin-top: 5px; }
+        .btn-primary { background-color: #1ab394; border-color: #1ab394; color: #FFF; margin-top: 15px;text-decoration: none;cursor: pointer;}
+        .btn { display: inline-block; padding: 6px 12px;font-size: 14px;font-weight: 400;line-height: 1.42857143; text-align: center; border: 1px solid transparent; border-radius: 4px;}
+        @-webkit-keyframes fadeIn { 0% {opacity: 0 } 100% { opacity: 1 }} @-moz-keyframes fadeIn { 0% {opacity: 0 } 100% { opacity: 1 }}
+        @keyframes fadeIn {0% {opacity: 0 }100% {opacity: 1 }} .fadeIn { -webkit-animation: fadeIn 1s; animation: fadeIn 1s; -moz-animation: fadeIn 1s;}
+    </style>
+            <script>
+          $(function () {
+            $("#hd_referrer").val(document.referrer);
+          });
+ 
+          function referurl() {
+            var ref = $("#hd_referrer").val();
+            if (ref != "" && ref != "undefined") {
+              location.href = ref;
+            }
+            else {
+              location.href = history.back(-2); 
+            }
+          }
+        </script>
+</head>
+
+<body>
+
+<div class="middle-box fadeIn">
+    <h1>404</h1>
+    <h3 class="font-bold">页面未找到！</h3>
+    <div class="error-desc">
+        抱歉，页面好像去火星了~
+        <form class="form-inline " role="form">
+             <input id="hd_referrer" type="hidden" />
+            <a href="javascript:void(0)" onclick="javascript:history.back(-1);" class="btn btn-primary">返回上一级</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

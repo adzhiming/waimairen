@@ -1,0 +1,44 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+
+<{block name=controlname}>添加会员组<{/block}>
+<{block name=bodylist}>
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+    <div class="tags">
+        <{load_data assign="info" table="group" where="`id`=$id"  type="one"}>
+        <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/member/module/savegroup/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/adminpage/member/module/grouplist"}>',this);">
+            <div>
+                <table class="list tableList" name="table" id="table" >
+                    <tbody>
+                    <tr>
+                        <td class="left">会员组名称</td>
+                        <td><input type="text" name="name" id="name" value="<{$info['name']|default:''}>" class="skey form-control" ></td>
+                    </tr>
+                    <tr>
+                        <td class="left" valign="top">会员组类型</td>
+                        <td>
+                            <input type="radio" name="type"  value="1" <{if $info['type'] == 'admin'}>checked<{/if}>> 后台会员组  <input type="radio" name="type" class="marl30" value="2" <{if $info['type'] != 'admin'}>checked<{/if}>> 前台会员组
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="确认提交" class="button btn-prim mart15"></td>
+                    </tr>
+                    <input type="hidden" name="id" id="id" value="<{$info['id']}>" >
+                    </tbody>
+                </table>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="blank20"></div>
+
+</div>
+<div class="clear"></div>
+
+<script>
+    function checkword(flag) {
+        $("input[name='limit[]']").attr("checked",flag);
+    }
+</script>
+<{/block}>

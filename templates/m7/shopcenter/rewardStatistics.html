@@ -1,0 +1,370 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=bodylist}>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='home';
+</script>
+<!--content right start-->
+<style>
+    .ibox-content{min-height: inherit;margin-bottom: 0;padding: 15px 20px 20px;}
+    input,button,textarea{font-family:'Microsoft YaHei',Arial,Helvetica,sans-serif;}
+
+    .homeList li{float: left;width: 23.5%;}
+    .homeList li:not(:last-child){margin-right: 2%;}
+    .label {font-size:10px; font-weight:600; padding:1px 8px; text-shadow:none; border-radius: .25em; }
+    .pull-right { float: right!important; }
+    .label-primary {background-color:#1ab394;color:#FFF }
+    .label-success { background-color:#1c84c6; color:#FFF }
+    .label-danger { background-color:#ed5565; color:#FFF }
+    .label-info {background-color:#23c6c8; color:#FFF }
+    .no-margins{margin: 0 0 5px;font-size: 30px;font-weight: 100;}
+    .small,small { font-size: 85%; }
+    .text-navy {color:#1ab394 }
+    .text-success { color:#1c84c6 }
+    .text-info { color:#23c6c8 }
+    .text-danger {color:#ed5565}
+    .font-bold{font-weight: 600;font-size: 14px;}
+    .mart25{margin-top: 25px;}
+    .mart15{margin-top: 15px;}
+    .marl20{margin-left: 20px;}
+    .dataTitle{font-size: 14px;font-weight: 600;margin-right: 15px;}
+    .data_tj li{padding: 15px 0;}
+    .data_tj li:not(:last-child){border-right: 1px solid #ddd;}
+    .data_tj_t{font-size: 24px;font-weight: 100;}
+    .type_pie li{width: 49%;float: left;}
+    .type_pie li:not(:last-child){margin-right: 2%;}
+    #orderType,#payStyle{height: 350px;}
+
+    .cssBox{ display: -moz-box; display: -webkit-box; display:box; display: -ms-flexbox; }
+    .flex{ -moz-box-flex:1; -webkit-box-flex:1; box-flex:1; -ms-flex:1;}
+
+</style>
+ 
+ 
+    <!--数据列表-->
+    <div class="ibox float-e-margins mart25">
+        <div class="ibox-title">
+            <h5>统计列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="mart15">
+                <div class="search_content">
+                    <form method="post" name="form1" action="<{ofunc type=url link="/shopcenter/rewardStatistics"}>">
+                        <span class="dataTitle">时间范围</span>             
+                         <input class="datefmt form-control" type="text" name="StartDate" id="StartDate" value="<{$StartDate}>"  onFocus="WdatePicker({isShowClear:false,readOnly:true});" />
+                        到
+                        <input class="datefmt form-control" type="text" name="EndDate" id="EndDate" value="<{$EndDate}>"  onFocus="WdatePicker({isShowClear:false,readOnly:true});" />
+                        <input type="hidden" name="operator" id="operator" value="<{$operator}>" />
+                        <input type="submit" value="提交查询"  id = 'tj' class="btn-a btn-prim marl20">
+                       <!--  <input type="button" value="发送今日销售统计" id ='today' class="btn-a label-danger marl20"> -->
+                    </form>
+                </div>
+            </div>
+            <table class="table table-bordered mart25">
+                <thead>
+                <tr>
+                    <th>操作员</th>
+                    <th>日期</th>
+                    <th>打赏金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--<{foreach from =$info item=account}>-->
+                <tr>
+                    <td><{$account.Operator}></td>
+                    <td><{$account.time}></td>
+                    <td><{$account.fee}></td>
+                </tr>
+                <!--<{/foreach}>-->
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+     
+</div>
+
+<!--content right end-->
+<script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="https://img.hcharts.cn/highcharts/highcharts-3d.js"></script>
+<script>
+    
+    $('#today').live('click',function(){    
+        var t = getNowFormatDate(); 
+        $('#starttime').attr('value',t);
+        $('#endtime').attr('value',' ');
+        $('#tj').click();
+
+    });
+
+    $(function () {
+    
+       //   各种支付类型比例
+        //var wm = <{$a}>;
+        $('#orderType').highcharts({
+            credits: { enabled: false},
+            colors: ['#87CEFA','#1AB394','#23C6C8','#ED5565'],
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            title: {
+                text: '各种支付类型比例',
+                style:{"fontFamily":"'Microsoft YaHei',Arial,Helvetica,sans-serif"}
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    },
+                    showInLegend: true
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                floating: true,
+                align: 'left',
+                verticalAlign: 'top',
+                itemMarginBottom: 5,
+                squareSymbol: false,
+                symbolWidth: 20,
+                symbolRadius: 3,
+                x: 0,
+                y: 0,
+                itemStyle: {
+                    color: '#000000',
+                    fontWeight: 'inherit',
+                    fontFamily:'"Microsoft YaHei",Arial,Helvetica,sans-serif'
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '各种支付类型下单比例',
+                data: [
+                    ['堂食',<{$dtNum_percent}>],
+                    ['外卖',<{$wmNum_percent}>],
+                    // {
+                    //  name: '快餐',
+                    //  y: 0,
+                    //  sliced: true,
+                    //  selected: true
+                    // },
+                    ['预订',<{$ydNum_percent}>]
+                ]
+            }]
+        });
+
+        //   各种支付方式收入比例
+
+        $('#payStyle').highcharts({
+            credits: { enabled: false},
+            colors: ['#87CEFA','#51C332','#FF7F50','#ED5565'],
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            title: {
+                text: '各种支付方式收入比例',
+                style:{"fontFamily":"'Microsoft YaHei',Arial,Helvetica,sans-serif"}
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    },
+                    showInLegend: true
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                floating: true,
+                align: 'left',
+                verticalAlign: 'top',
+                itemMarginBottom: 5,
+                squareSymbol: false,
+                symbolWidth: 20,
+                symbolRadius: 3,
+                x: 0,
+                y: 0,
+                itemStyle: {
+                    color: '#000000',
+                fontWeight: 'inherit',
+                fontFamily:'"Microsoft YaHei",Arial,Helvetica,sans-serif'
+            }
+            },
+            series: [{
+                type: 'pie',
+                name: '各种支付方式收入下单比例',
+                data: [
+                    // ['支付宝支付',<{$alipayNum_percent}>],
+                    {
+                        name: '微信支付',
+                        y: <{$wxpayNum_percent}>,
+                        sliced: true,
+                        selected: true
+                    },
+                    ['会员卡支付', <{$cartpayNum_percent}>],
+                    // ['余额支付', <{$yepayNum_percent}>]
+                ]
+            }]
+        });
+
+        //  月份交易额柱状图
+        $('#month').highcharts({
+            credits: { enabled: false},
+            chart: {
+                type: 'column',
+                options3d: {
+                    enabled: true,
+                    alpha: 3,
+                    beta: 4,
+                    depth: 20,
+                    viewDistance: 25
+                }
+            },
+            title: {
+                text: '月份交易额柱状图',
+                style:{"fontFamily":"'Microsoft YaHei',Arial,Helvetica,sans-serif"}
+            },
+//          subtitle: {
+//              text: '可通过滑动下方滑块测试'
+//          },
+            legend: {
+                itemStyle: {
+                    color: '#000000',
+                    fontWeight: 'inherit',
+                    fontFamily:'"Microsoft YaHei",Arial,Helvetica,sans-serif'
+                }
+            },
+            tooltip: {
+                valueSuffix: '万元'
+            },
+            plotOptions: {
+                column: {
+                    depth: 25
+                }
+            },
+            xAxis: {
+                categories: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+            },
+            yAxis: {
+                title: {
+                    text: '金额：万元'
+                },
+                labels: {
+                    formatter: function() {
+                        return this.value
+                    }
+                }
+            },
+            series: [{
+                name:'交易额',
+                data: [<{$month_money}>]
+            }]
+        });
+
+
+
+        //  商品销售销售量/    销售额图
+        $('#goodTop').highcharts({
+            credits: { enabled: false},
+            colors: ['#87CEFA','#51C332'],
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '商品销售量/   销售额图'
+            },
+//          subtitle: {
+//              text: '数据来源: WorldClimate.com'
+//          },
+            xAxis: {
+                categories: [
+                    '一月',
+                    '二月',
+                    '三月',
+                    '四月',
+                    '五月',
+                    '六月',
+                    '七月',
+                    '八月',
+                    '九月',
+                    '十月',
+                    '十一月',
+                    '十二月'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '数量/金额'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: '销售量',
+                data: [<{$month_goodscount}>]
+            }, {
+                name: '销售额',
+                data: [<{$month_goodsmoney}>]
+            }]
+        });
+
+
+    });
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = year + seperator1 + month + seperator1 + strDate;
+    //var predata     = year + seperator1 + month + seperator1 + (strDate-1);
+    return currentdate;
+}
+
+</script>
+<{/block}>

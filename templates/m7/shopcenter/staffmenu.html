@@ -1,0 +1,22 @@
+
+<div class="ordertjmenu" >
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/staffmanage'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/staffmanage"}>');">员工管理</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/staff_add'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/staff_add"}>');">新建员工</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/staff_post'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/staff_post"}>');">岗位管理</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/attendancesetting'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/attendancesetting"}>');">考勤设置</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/punchrecording'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/punchrecording"}>');">打卡记录</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/attendancesetting'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/rewardSet"}>');">打赏设置</button>
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/punchrecording'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/midRewardStatistics"}>');">打赏统计</button>
+</div>
+
+
+
+<script>
+    $(function(){
+        $(".waimaiset .jbset").click(function(){
+            $(this).css('background','#ec7501').siblings().css('background','');
+        });
+    });
+</script>
+       	 
+       		 

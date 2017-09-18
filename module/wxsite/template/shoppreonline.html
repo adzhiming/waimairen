@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>在线预订</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+    <style>
+        .mui-radio input[type=radio]:before {font-size: 24px;}
+        .mui-radio input[type=radio] {top: 7px;}
+        .mui-content{margin-bottom: 70px;}
+    </style>
+</head>
+<body>
+<div class="mui-content">
+
+    <ul class="yd_tab clearfix mui-row">
+        <a href="<{ofunc type=url link="/wxsite/shoppreonline"}>"><li class="mui-col-xs-6 active">现在预订</li></a>
+        <a href="<{ofunc type=url link="/wxsite/shoppreonlined"}>"><li class="mui-col-xs-6">已预订</li></a>
+    </ul>
+    <form action="<{ofunc type=url link="/wxsite/premakeorder"}>" id="ydForm" name="theform" method="post">
+        <ul class="mui-table-view2 function mart15 ">
+          
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-flag color_z"></i>区域：</div>
+                    <div class="flex ">
+                        <select name="yd_area" id="yd_area">
+                            <option value="0">请选择</option>
+                            <!--<{foreach from=$prearea key=key item=area}>-->
+                            <option value="<{$area['table_area']}>"><{$area['table_area']}></option>
+                            <!--<{/foreach}>-->
+                        </select>
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-user color_z"></i>类型：</div>
+                    <div class="flex ">
+                        <select name="yd_type" id="yd_type">
+                            <option value="0">请选择</option>
+                        </select>
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li>
+         <!--    <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-calendar color_z"></i>日期：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="请选择" id="yd_data" name="yd_date" value="">
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li> -->
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-calendar color_z"></i>日期：</div>
+                    <div class="flex">
+                        <select name="yd_date" id="yd_date">
+                            <option value="0">请选择</option>
+                            <!--<{foreach from=$yd_date key=key item=date}>-->
+                            <option value="<{$date}>"><{$date}></option>
+                            <!--<{/foreach}>-->
+                        </select>
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-clock-o color_z"></i>时间：</div>
+                    <div class="flex">
+                        <select name="yd_time" id="yd_time">
+                            <option value="0">请选择</option>
+                        </select>
+                        <i class="fa fa-caret-down icon_s"></i>
+                    </div>
+                </div>
+            </li>
+         <!--    <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-user color_z"></i>人数：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="有多少小伙伴呢" id="yd_num" name="yd_num">
+                    </div>
+                </div>
+            </li> -->
+        </ul>
+        <ul class="mui-table-view2 function mart15">
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-tag color_z"></i>姓名：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="您的大名" id="yd_name" name="yd_name">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-phone color_z"></i>手机：</div>
+                    <div class="flex">
+                        <input type="text" placeholder="给个联系方式呗" id="yd_phone" name="yd_phone">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="cssBox justify">
+                    <div class="label_w"><i class="fa fa-venus-mars color_z"></i>性别：</div>
+                    <div class="flex">
+                        <div class="mui-row">
+                            <div class="mui-col-xs-6">
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>男</label>
+                                    <input name="sex" type="radio" value="1" checked>
+                                </div>
+                            </div>
+                            <div class="mui-col-xs-6">
+                                <div class="mui-input-row mui-radio mui-left">
+                                    <label>女</label>
+                                    <input name="sex" type="radio" value="2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="mui-table-view2 function mart15">
+            <li>
+                <div class="cssBox">
+                    <div class="label_w" style="padding-top: 10px;"><i class="fa fa-sticky-note-o color_z"></i>备注：</div>
+                    <div class="flex">
+                        <textarea name="remark" id="" cols="30" rows="2" placeholder="请把你想说的告诉我们喔"></textarea>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <!--btn-->
+        <div class=" mui-row mui-text-center">
+<!--            <div class="mui-col-xs-6">
+                <a href="shoppingCart.html"><button type="button" class="table_btn">我要点餐</button></a>
+            </div>-->
+<div class="mui-col-xs-6" style="margin-left:25%; margin-top: 5%;">
+                <input type="hidden" name="shopid" id="shopid" value="<{$shopid}>">
+                <input type="hidden" name="mid" id="mid"  value="<{$mid}>">
+                <input type="hidden" name="tableid" id="tableid"  value="">
+                <input type="hidden" name="bookpay" id="bookpay"  value="">
+                <button type="submit" class="table_btn" id="yd_sub">提交预订</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--底部导航-->
+<nav class="mui-bar mui-bar-tab">
+    <a class="mui-tab-item" href="<{ofunc type=url link="/wxsite/shoppreorder"}>">
+        <span class="mui-icon fa fa-home"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a class="mui-tab-item mui-active" href="<{ofunc type=url link="/wxsite/shoppreonline"}>">
+        <span class="mui-icon fa fa-comments"></span>
+        <span class="mui-tab-label">在线预订</span>
+    </a>
+    <a class="mui-tab-item" href="tel:18380384137">
+        <!--fa fa-cog 设置-->
+        <span class="mui-icon fa fa-phone"></span>
+        <span class="mui-tab-label">电话预订</span>
+    </a>
+    <a class="mui-tab-item" href="<{ofunc type=url link="/wxsite/shopbaidumap/position/<{$position}>/addr/<{$address}>"}>">
+        <!--fa fa-cog 设置-->
+        <span class="mui-icon fa fa-map-marker"></span>
+        <span class="mui-tab-label">商家导航</span>
+    </a>
+</nav>
+
+<script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/layer/laydate/laydate.js"></script>
+<script src="<{$siteurl}>/newstyle/js/layer/layer.min.js"></script>
+<script src="<{$siteurl}>/templates/adminpage/public/js/allj.js"></script>
+<script>
+
+    $('#yd_area').change(function(){
+        var yd_area = $('#yd_area').val();
+        var mid     = $('#mid').val();
+        var shopid     = $('#shopid').val(); 
+        var data = {'yd_area':yd_area,'mid':mid,'shopid':shopid};
+        var url = '<{ofunc type=url link="/wxsite/getpreordertable/random/@random@/datatype/json"}>'; 
+        var backdata = ajaxback(url,data); 
+        if(backdata.flag == false){
+            
+            var html = '<option value="选择品牌">请选择</option>';
+      
+            $.each(backdata.content, function(){
+                $('#yd_type option').remove();
+                html+="<option  value="+this.table_type+">"+this.table_type+"人桌</option>";
+            });
+            $('#yd_type').append(html); 
+        }else{
+            alert(backdata.content);
+        }
+    });
+
+    $('#yd_type').change(function(){
+        var yd_type = $('#yd_type').val();
+        var mid     = $('#mid').val();
+        var shopid     = $('#shopid').val();
+        var data = {'yd_type':yd_type,'mid':mid,'shopid':shopid};
+        var url = '<{ofunc type=url link="/wxsite/getpreordertime/random/@random@/datatype/json"}>'; 
+        var backdata = ajaxback(url,data); 
+        if(backdata.flag == false){
+            var html = '<option value="0">请选择</option>';
+            $.each(backdata.content, function(k,v){  
+                $('#yd_time option').remove();
+                html+="<option  value="+v+">"+v+"</option>";
+            });
+            $('#yd_time').append(html); 
+        }else{
+            alert(backdata.content);
+        }
+    });
+
+    $('#yd_time').change(function(){
+        var yd_area = $('#yd_area').val();
+        var yd_type = $('#yd_type').val();
+        var mid     = $('#mid').val();
+        var shopid     = $('#shopid').val();
+
+        var today_date = getNowFormatDate();//当前日期
+        var timenum    = "<{$timenum}>";
+        var yd_time    = $('#yd_time').val();
+        var yd_date    = $('#yd_date').val();
+        var click_date = yd_date+" "+yd_time; //点击日期
+     
+        var click_unix = get_unix_time(click_date);//日期转换时间戳
+        var today_unix = get_unix_time(today_date);//日期转换时间戳
+        var is_pass    = click_unix - today_unix;
+
+        if(is_pass < timenum*3600){
+            if(timenum == 0){
+                alert("请提前预订！"); 
+            }else{
+                alert("请提前"+timenum+"小时预订！");    
+            }
+            $('#yd_time').val('');
+        } 
+
+        var data = {'yd_area':yd_area,'yd_type':yd_type,'click_unix':click_unix,'mid':mid,'shopid':shopid};
+        var url = '<{ofunc type=url link="/wxsite/is_ydopen/random/@random@/datatype/json"}>'; 
+        var backdata = ajaxback(url,data); 
+        if(backdata.flag == false){
+            $('#tableid').val(backdata.content[0]);
+            $('#bookpay').val(backdata.content[1]);
+            $('#yd_sub').removeAttr("disabled");
+           // alert(backdata.content);
+        }else{
+            alert(backdata.content);
+            $('#yd_time').val("");
+            $('#yd_sub').attr('disabled',"true"); 
+        }
+    });
+    //当前日期
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+        return currentdate;
+    } 
+    //日期转换时间戳
+    function get_unix_time(dateStr)
+    {
+        var newstr = dateStr.replace(/-/g,'/'); 
+        var date =  new Date(newstr); 
+        var time_str = date.getTime().toString();
+        return time_str.substr(0, 10);
+    }
+
+    $('#yd_sub').click(function(e) {    
+        var yd_area =$("#yd_area").find("option:selected").text();
+        var yd_type =$("#yd_type").find("option:selected").text();
+        var yd_date =$("#yd_date").find("option:selected").text();
+        var yd_time =$("#yd_time").find("option:selected").text(); 
+        var yd_name = $('#yd_name').val();
+        var yd_phone = $('#yd_phone').val();
+        var phoneReg =/^0?(13[0-9]|15[012356789]|18[0-9]|17[0-9])[0-9]{8}$/;
+
+        if(yd_area == '请选择'){
+            layer.msg('请选择区域~');
+            return false;
+        }else if(yd_type == '请选择'){
+            layer.msg('请选择类型~~');
+            return false;
+        } else if(yd_date == '请选择'){
+            layer.msg('请选择日期~');
+            return false;
+        }else if(yd_time == '请选择'|| yd_time == ''){
+            layer.msg('请选择时间~');
+            return false;
+        }else if(yd_name == ''){
+            layer.msg('请填写您的名字~');
+            return false;
+        }else if(yd_phone == ''){
+            layer.msg('请填写您的手机号~');
+            return false;
+        }else if(!phoneReg.test(yd_phone)){
+            layer.msg('请输入正确的手机号码~');
+            return false;
+        }else if(idCard == ''){
+            layer.msg('请填写您的证件号码~');
+            return false;
+        }
+        else{
+
+        }
+    });
+
+   //    底部导航
+    $('.mui-bar-tab a').on('touchstart', function () {
+        var i = $(this).index();
+        $(".mui-bar-tab a").removeClass('mui-active').eq(i).addClass('mui-active');
+    });
+
+    // $(function() {
+    //     //    日期
+    //     laydate.skin('molv');
+    //     var start = {
+    //         elem: "#yd_data",
+    //         format: "YYYY-MM-DD",
+    //         min: laydate.now(),//设定最小日期为当前日期
+    //         max: "2099-06-16", //最大日期
+    //         istime: true,
+    //         istoday: false,
+    //     };
+    //     laydate(start);
+    // });
+</script>
+</body>
+</html>

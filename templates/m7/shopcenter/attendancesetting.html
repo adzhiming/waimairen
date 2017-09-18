@@ -1,0 +1,144 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+	var mynomenu='staffmanage';
+</script>
+<{/block}>
+<{block name=extendcss}>
+
+<{/block}>
+
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">考勤设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/staffmenu.html"}>
+        
+       <div class="cl"></div>
+       
+       <ul class="reserve_option" style=" margin-left: 71%; width: 500px;">
+           <li style="width: 330px;">
+<!--               <input type="checkbox" name="is_name" id="is_scanhitcard" value="<{$cxinfo['is_scanhitcard']}>" <{if $cxinfo['is_scanhitcard'] == 1}> checked="echecked" <{/if}>  >支持扫码打卡-->
+               <input type="checkbox" name="is_name" id="is_longhitcard" value="<{$cxinfo['is_longhitcard']}>" <{if $cxinfo['is_longhitcard'] == 1}> checked="echecked" <{/if}>  >支持远程打卡
+               <input type="text" style="width:80px; height: 25px;"  id="hitcarddistance" name="hitcarddistance" value="<{$cxinfo['hitcarddistance']}>" class="form-control" placeholder="如：50" />米
+           </li>
+            <li> <a href="<{ofunc type=url link="/shopcenter/worktime_add"}>">新建工作时间段</a></li>
+        </ul>
+  
+    
+    <!---列表----->
+    <div class="mart20"  id="pingjia">
+        <form method="post" action="<{ofunc type=url link="/shopcenter/worktime_px_save/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/shopcenter/attendancesetting"}>',this);">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%">  排序 </th>
+                <th width="10%">  班次名称 </th>
+                <th width="10%"> 工作时间段 </th>
+<!--                <th width="10%"> 上班提前签到时间(分钟) </th>
+                <th width="10%"> 下班延后结束签退时间(分钟) </th>-->
+                <th width="10%"> 适用岗位 </th>
+                <th width="10%"> 状态 </th>
+
+                <th width="15%"> 操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$list key=myid item=items}> 	        
+            <tr >
+                <td>
+                    <input type="hidden" name="id[]" value="<{$items['id']}>">
+                    <input type="text" name="px[]" id="px[]" value="<{$items['px']}>"  class='skey form-control' style='width:50px;'/>
+                
+                </td>
+                <td><{$items['name']}></td>
+                <td><{$items['worktime']}></td>
+<!--                <td><{$items['upsignin']}></td>
+                <td><{$items['downsignin']}></td>-->
+                <td><{$items['applypost']}></td>
+                <td> <{if $items['status'] == 1}>启用<{else}>关闭<{/if}></td>
+                <td id="reload40">
+                   <span><a href="<{ofunc type=url link="/shopcenter/worktime_add/id/<{$items['id']}>"}>">修改</a></span> /
+                   <span><a onclick="return remind(this);" href="<{ofunc type=url link="/shopcenter/delworktime/id/<{$items['id']}>/datatype/json"}>">删除</a></span> 
+                   
+                </td>
+            </tr>
+            <{/foreach}>
+            <!--<tr>-->
+                <!--<td align="right" style=" padding-right:50px;" colspan="8"> <div class="show_page"><ul><{$list['pagecontent']}></ul></div></td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+              <div style="margin-top: 10px;"><input type="submit" name="button" id="button" value="更新排序" class='button  btn-prim'></div>
+       </form>
+        <div class="show_page mart10" style="font-size: 14px;"><ul><{$list['pagecontent']}></ul></div>
+    </div>
+
+    </div>
+
+</div>
+<script>
+    $('input[name="is_name"]').click(function(){
+//        var is_scanhitcard     = $('#is_scanhitcard').val();
+        var is_longhitcard     = $('#is_longhitcard').val();
+        
+        
+//        if($('#is_scanhitcard').is(':checked')){
+//            is_scanhitcard = 1;
+//        }else{
+//            is_scanhitcard = 0;
+//        }
+        
+        if($('#is_longhitcard').is(':checked')){
+            is_longhitcard = 1;
+        }else{
+            is_longhitcard = 0;
+        }
+        
+        //alert(is_scanhitcard);
+//        var data = {'is_scanhitcard':is_scanhitcard,'is_longhitcard':is_longhitcard};
+//        var url = '<{ofunc type=url link="/shopcenter/changeattendancesetting/random/@random@/datatype/json"}>';
+//        var backdata = ajaxback(url,data);
+//        if(backdata.flag == false){
+//            //alert(backdata.content);
+//            //window.location.reload();
+//        }else{
+//            alert(backdata.content);
+//        }
+        var data = {'is_longhitcard':is_longhitcard};
+        var url = '<{ofunc type=url link="/shopcenter/changeattendancesetting/random/@random@/datatype/json"}>';
+        var backdata = ajaxback(url,data);
+        if(backdata.flag == false){
+            //alert(backdata.content);
+            //window.location.reload();
+        }else{
+            alert(backdata.content);
+        }
+    });
+    
+    $('input[name="hitcarddistance"]').blur(function(){
+        var hitcarddistance     = $('#hitcarddistance').val();
+
+        var data = {'hitcarddistance':hitcarddistance};
+        var url = '<{ofunc type=url link="/shopcenter/changeattendancesetting/random/@random@/datatype/json"}>';
+        var backdata = ajaxback(url,data);
+        if(backdata.flag == false){
+            //alert(backdata.content);
+            //window.location.reload();
+        }else{
+            alert(backdata.content);
+        }
+
+    });
+        
+</script>
+
+<{/block}>

@@ -1,0 +1,245 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script src="<{$siteurl}>/js/kindeditor/kindeditor.js" type="text/javascript" language="javascript"></script>
+
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/ajaxfileupload.js"> </script>
+
+<{/block}>
+<{block name=controlname}>添加/编辑分享优惠券展示信息<{/block}>
+<{block name=bodylist}>
+<{load_data assign="info" table="juanshowinfo" where="`id`=$id"  type="one"}>
+<div class="tags">
+	<div id="tagscontent">
+		<form method="post" id="formForm" name="form1" action="<{ofunc type=url link="/adminpage/card/module/savejuanshowinfo/datatype/json"}>" onsubmit="return subformMM('<{ofunc type=url link="/adminpage/card/module/sharejsinfo"}>',this);">
+		<div class="mert15">
+			<table class="list tableList" name="table" id="table">
+				<tbody>
+				<tr class="show_1">
+					<td class="left">优惠券展示信息类型</td>
+					<td>
+						<select name="type" class="form-control" >
+							<option   value="0">请选择优惠券展示信息类型</option>
+							<option  <{if $info['type'] == 2  }> selected <{/if}> value="2">下单成功分享优惠券展示信息</option>
+							<option  <{if $info['type'] == 3  }> selected <{/if}>  value="3">推广优惠券展示信息</option>
+							<option  <{if $info['type'] == 4  }> selected <{/if}>  value="4">首次关注微信领取优惠券信息</option>
+							<select>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">标题</td>
+					<td><input type="text" name="title" id="title" value="<{$info['title']}>" class="form-control" style="width:500px;" ></td>
+				</tr>
+				<tr>
+					<td class="left">分享展示图标</td>
+					<td>
+						<img src="<{$info['img']}>" width="136" height="130"  id="imgshow" <{if  empty($info['img'])}> style="display:none;"<{/if}> />
+						<input type="hidden" name="img" id="img" value="<{$info['img']}>">
+						<div id="div-headpicUpload" style="display:block;margin-top: 15px;">
+							<form id="form1" name="form1" method="post"  enctype="multipart/form-data" target="ifr-headpic-upload" onsubmit="return checkImagetype('1');">
+								<div class="">
+									<input name="head" type="file" id="imgFile" style="margin-left:0;" name="imgFile" onchange="$('#input1').val($(this).val())"  class="button btn-gray">
+									<input id="submitImg" type="button" value="上传" class="button-1 btn-prim" >
+								</div>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">描述</td>
+					<td><input type="text" name="describe" id="describe" value="<{$info['describe']}>" class="skey form-control" style="width:500px;" ></td>
+				</tr>
+				<tr>
+					<td class="left">领取优惠券页面头部展示大图</td>
+					<td>
+						<img src="<{$info['bigimg']}>" width="320" height="130"  id="imgshow2" <{if  empty($info['bigimg'])}> style="display:none;"<{/if}> />
+						<input type="hidden" name="bigimg" id="bigimg" value="<{$info['bigimg']}>" >
+						<div id="div-headpicUpload" style="display:block; margin-top: 15px;">
+							<form id="form1" name="form1" method="post"  enctype="multipart/form-data" target="ifr-headpic-upload" onsubmit="return checkImagetype('1');">
+								<div class="">
+									<input name="head" type="file" id="imgFile2" style="margin-left:0;" name="imgFile2" onchange="$('#input1').val($(this).val())"  class="button btn-gray">
+									<input id="submitImg2" type="button" value="上传" class="button-1 btn-prim">
+								</div>
+							</form>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">领取优惠券页面背景色</td>
+					<td><input type="text" name="color" id="color" value="<{$info['color']}>" class="form-control" style="width:150px;" ><span class="color-gg">（请填写色系值，比如：#FF3F26 ）</span></td>
+				</tr>
+				<tr>
+					<td class="left">领取优惠券页面活动规则背景色</td>
+					<td><input type="text" name="actcolor" id="actcolor" value="<{$info['actcolor']}>" class="form-control" style="width:150px;" ><span class="color-gg">（请填写色系值，比如：#FF8C7D）</span></td>
+				</tr>
+				<tr>
+					<td class="left">活动规则</td>
+					<td>
+						<div class='nop'><script>KE.show({id:'content',allowFileManager : true,imageUploadJson:'<{ofunc type=url link="/other/saveupload"}>',fileManagerJson:'<{ofunc type=url link="/other/saveupload"}>',items:['source','|', 'justifyleft', 'justifycenter', 'justifyright','justifyfull', 'insertorderedlist', 'insertunorderedlist', '|', 'fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold','italic', 'underline', 'removeformat', '|', 'image', 'advtable', 'hr','link', 'unlink']});</script><textarea name="content" id="content" style='width:550px; height:260px;'><{$info['avtrule']}></textarea></div>
+					</td>
+				</tr>
+				<input type="hidden" name="uid" id="uid" value="<{$info['id']}>">
+				<tr>
+					<td class="left">排序</td>
+					<td><input type="text" name="orderid" id="orderid" value="<{$info['orderid']}>" class="form-control" style="width:100px;" ></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input id="submitShi11" type="submit" value="确认提交" class="button btn-prim mart15"></td>
+				</tr>
+				<input type="hidden" name="id"   value="<{$info['id']}>">
+				</tbody>
+			</table>
+		</div>
+		</form>
+	</div>
+</div>
+<script>
+	$("#submitShi").bind('click',function(){
+
+	});
+	function subformMM(newurl,obj)
+	{
+		var content =  KE.util.getData('content') ;
+		$("#content").val(content);
+//	$("#formForm").submit();
+
+		$('#cat_zhe').toggle();
+		$('#cat_tj').toggle();
+		var url = $(obj).attr('action');
+		$.ajax({
+			type: 'post',
+			async:true,
+			data:$(obj).serialize(),
+			url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+			dataType: 'json',success: function(content) {
+				$('#cat_zhe').toggle();
+				$('#cat_tj').toggle();
+				if(content.error == false){
+
+					diasucces(content.msg,newurl);
+				}else{
+
+					if(content.error == true)
+					{
+						diaerror(content.msg);
+					}else{
+						diaerror(content);
+					}
+				}
+			},
+			error: function(content) {
+				$('#cat_zhe').toggle();
+				$('#cat_tj').toggle();
+				diaerror('鏁版嵁鑾峰彇澶辫触');
+			}
+		});
+
+		return false;
+	}
+	$('#submitImg').click(function(){
+		ajaxFileUpload();
+	});
+	function ajaxFileUpload()
+	{
+		$("#loading")
+				.ajaxStart(function(){
+					$(this).show();
+				})
+				.ajaxComplete(function(){
+					$(this).hide();
+				});
+
+		$.ajaxFileUpload
+		(
+				{
+					url:'<{ofunc type=url link="/adminpage/card/module/juanupload/datatype/json"}>',
+					secureuri:false,
+					fileElementId:'imgFile',
+					dataType: 'json',
+					data:{name:'logan', id:'id'},
+					success: function (data, status)
+					{
+						if(typeof(data.error) != 'undefined')
+						{
+							if(data.error == false)
+							{
+
+								$('#img').val(data.msg);
+								$('#imgshow').attr('src',data.msg);
+								$('#img').val(data.msg);
+								$('#imgshow').show();
+							}else
+							{
+								alert(data.msg);
+							}
+						}else{
+							alert(data);
+						}
+					},
+					error: function (data, status, e)
+					{
+						alert(e);
+					}
+				}
+		)
+
+		return false;
+
+	}
+
+
+
+	$('#submitImg2').click(function(){
+		ajaxFileUpload2();
+	});
+	function ajaxFileUpload2()
+	{
+		$("#loading")
+				.ajaxStart(function(){
+					$(this).show();
+				})
+				.ajaxComplete(function(){
+					$(this).hide();
+				});
+
+		$.ajaxFileUpload
+		(
+				{
+					url:'<{ofunc type=url link="/adminpage/card/module/juanupload/datatype/json"}>',
+					secureuri:false,
+					fileElementId:'imgFile2',
+					dataType: 'json',
+					data:{name:'logan', id:'id'},
+					success: function (data, status)
+					{
+						if(typeof(data.error) != 'undefined')
+						{
+							if(data.error == false)
+							{
+
+								$('#bigimg').val(data.msg);
+								$('#imgshow2').attr('src',data.msg);
+								$('#bigimg').val(data.msg);
+								$('#imgshow2').show();
+							}else
+							{
+								alert(data.msg);
+							}
+						}else{
+							alert(data);
+						}
+					},
+					error: function (data, status, e)
+					{
+						alert(e);
+					}
+				}
+		)
+
+		return false;
+
+	}
+
+
+</script>
+<{/block}>

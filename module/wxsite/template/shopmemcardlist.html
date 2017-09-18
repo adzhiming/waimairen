@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>优惠券列表</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css"/>
+	
+</head>
+<body>
+
+<div class="color_block padd4 cssBox justify">
+<div class="font14">会员卡</div>
+</div>
+
+<ul class="clearfix">
+<{foreach from=$membercardlist item=coupon}>
+<li class="pos_r">
+    <img src="<{$coupon['bgpath']}>" class="center-block cirle_radius" height="120" width="100%"/>
+    <a data-id="<{$coupon['id']}>" class="couponitem">
+    <div class="card_box">
+        <div class="mui-pull-left card_logo">
+            <img src="<{$coupon['logopath']}>"/>
+        </div>
+        <div class="mui-pull-left card_name">
+            <p><{$coupon['name']}></p>
+            <p class="font14"></p>
+        </div>
+    </div>
+    <div class="card_boxa">
+        <div class="mui-pull-right"><{$coupon['end_timestamp']}></div>
+    </div>
+    </a>
+</li>
+<{/foreach}>
+</ul>
+<script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/jweixin-1.0.0.js"></script>  
+<script>
+$(function(){	
+	var wxOk = false;
+		wx.config({
+		    debug: false,
+		    appId: '<{$signPackage['appId']}>',
+		    timestamp: '<{$signPackage['timestamp']}>',
+		    nonceStr: '<{$signPackage['nonceStr']}>',
+		    signature: '<{$signPackage['signature']}>',
+		    jsApiList: [
+						'addCard',
+						'openCard',
+		    ]
+		});
+		wx.ready(function(){
+			wxOk = true;
+		});
+	
+	function userGetCoupon(couponid) {
+	  url ='<{ofunc type=url link="/wxsite/userGetCoupon/random/@random@/datatype/json"}>';
+ 	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+       $.ajax({      
+             url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+             dataType: "json",
+             method:"POST",
+             async:true,
+             data:{shopid:"<{$shopid}>", couponid:couponid},
+             success:function(content) { 
+             	if(content.error ==  false){
+             		var  data = content.msg;
+             		var card_member_id = data.card_member_id;
+
+             		wx.addCard({
+    					cardList:[{
+    						cardId: data.cardid, 
+    						cardExt: data.cardExt
+    					}],
+    		        	success: function (res) {
+    		        	    var cardList = res.cardList; // 添加的卡券列表信息
+    		        	    uupdateUserGetCoupon(card_member_id);
+    			        }
+    			    });
+             	}else{
+             		alert(content.msg);
+             	}
+
+             
+             },
+             error:function(){
+            	 alert("网络异常");
+             }
+       }); 
+	}
+	function uupdateUserGetCoupon(card_member_id) {		
+		  url ='<{ofunc type=url link="/wxsite/uupdateUserGetCoupon/random/@random@/datatype/json"}>';
+	 	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+	       $.ajax({      
+	             url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+	             dataType: "json",
+	             method:"POST",
+	             async:true,
+	             data:{shopid:"<{$shopid}>", card_member_id:card_member_id},
+	             success:function(content) { 
+	             	if(content.error ==  false){
+			        	//alert("领取成功");
+	             	}else{
+	             		alert(content.msg);
+	             	}
+
+	             
+	             },
+	             error:function(){
+	            	 alert("网络异常");
+	             }
+	       }); 
+	}
+	
+   	$(".couponitem").click(function(){
+   		if (!wxOk) {
+   			alert("微信初始化失败，请重试");
+   			return false;
+   		}
+		var url = "{:U('adverTimeLog')}";
+		var id = $(this).data("id");
+		userGetCoupon(id);
+   	});
+       
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+ <{extends file="<{$tempdir}>/public/admin.html"}> 
+ <{block name=extendjs}>
+ <script src="<{$siteurl}>/js/kindeditor/kindeditor.js" type="text/javascript" language="javascript"></script>
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script> 
+ <{/block}>
+ <{block name=controlname}>网站信息<{/block}>
+ <{block name=bodylist}> 
+  
+<div class="homePageMainCon">
+	<div class="homePageMainBox">
+		<div class="homePageMain">
+			<div class="homePageMainTop dlsxx_head_bg">
+				<h2>代理商信息</h2>
+				<span>AGENT INFORMATION</span>
+			</div>
+			<div class="homePageMainBot">
+				<div class="homePageMainHepo"><img src="<{$admininfo['logo']|default:'/templates/areaadminpage/public/images/001.png'}>"></div>
+				<div class="homePageMainInfo">
+					<h3><{$admininfo['username']}></h3>
+					<ul>
+						<li>代理区域:  <{foreach from=$arealist item=items }><{$items['name']}>&nbsp;&nbsp;&nbsp;<{/foreach}></li>
+						<li>版本所有:  郑州光合科技有限公司</li>
+						<li>官方网站:  www.waimairen.com</li>
+					</ul>
+				</div>
+			</div> 
+		</div>
+		<div class="homePageMain">
+			<div class="homePageMainTop sjtj_head_bg">
+				<h2>数据统计</h2>
+				<span>DATA STATISTICS</span>
+			</div>
+			<div class="homePageMainBot">
+				<div class="homePageMainOrd">
+					<ul>
+						<li><b class="fonCol_hoOr"><{$tjdata['dayallorder']}></b><span>今日总订单</span></li>
+						<li><b><{$tjdata['monthallorder']}></b><span>本月已完成订单</span></li>
+						<li><b><{$tjdata['allorder']}></b><span>已完成订单总量</span></li>
+						<li><b><{$tjdata['onlineshop']}></b><span>代理区域商家</span></li>
+						<li><b><{$tjdata['psymember']}></b><span>配送员数量</span></li>
+						<li><b><{$tjdata['marketg']}></b><span>商品数量</span></li>
+					</ul>
+				</div>
+			</div> 
+		</div>
+	</div>
+</div>  
+ <{/block}>

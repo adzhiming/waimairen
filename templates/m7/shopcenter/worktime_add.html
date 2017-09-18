@@ -1,0 +1,125 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='staffmanage';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname"><{if empty($cxinfo)}>新建<{else}>编辑<{/if}>工作时间段</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/staffmenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/worktime_save/datatype/json"}>">
+        <div class="jutiSet">
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>工作时间段名称：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="workname" name="workname" value="<{$cxinfo['name']}>" class="form-control" placeholder="请输入工作时间段名称" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>工作时间：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input placeholder="开始时间" class="form-control" type="text" value="<{$startworktime}>" name="starttime" id="starttime"  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                   至 <input placeholder="结束时间" class="form-control" type="text" value="<{$endworktime}>" name="endtime" id="endtime"  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+<!--            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>上班提前签到时间：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <span style="float:left;"><input type="text" style="width:187px; "  id="upsignin" name="upsignin" value="<{$cxinfo['upsignin']}>" class="form-control" placeholder="请输入数字,如：60" /></span><span class="tip-r">分钟</span>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span style="line-height:16px;">下班延后结束签退时间：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <span style="float:left;"><input type="text" style="width:187px; "  id="downsignin" name="downsignin" value="<{$cxinfo['downsignin']}>" class="form-control" placeholder="请输入数字,如：60" /></span><span class="tip-r">分钟</span>
+                </div>
+                <div class="cl"></div>
+            </div>-->
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>适用岗位：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <{foreach from=$catlist key=myid item=items}> 
+                    <input type="checkbox" name="applypost[]" id="applypost[]" value="<{$items['name']}>" <{if $items['flag'] == 1 }> checked="echecked" <{/if}>  ><{$items['name']}>
+                    <{/foreach}>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>状态：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="radio"   name="status"   value="1" <{if $cxinfo['status'] == 1 || !$cxinfo['status']}>checked="echecked"<{/if}>/>启用
+                    <input type="radio"  name="status"   value="0" <{if $cxinfo['status'] == 0}>checked="echecked"<{/if}>/>关闭
+
+                </div>
+                <div class="cl"></div>
+            </div>
+
+            <input name="action" type="hidden" value="ok" />
+            <input type="hidden" name="cxid" value="<{$cxinfo['id']}>">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >保存</div>   <div style="margin-left:20px;" class="btn-a btn-prim" onclick="openlink('<{ofunc type=url link="/shopcenter/worktime_add"}>');">取消</div>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        subform("<{ofunc type=url link='/shopcenter/attendancesetting'}>",$('#loginForm'));
+    });
+
+
+</script>
+
+<{/block}>

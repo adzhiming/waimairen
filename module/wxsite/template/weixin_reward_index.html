@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>赞赏殷勤的<{$empInfo['applypost']}></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/reward/style.css">
+    <style>
+       /*  html,body{height: 100%;} */
+    </style>
+</head>
+<body>
+
+<div class="bgBox">
+    <div class="box">
+        <img src="<{$siteurl}>/newstyle/images/reward/zhutu.png"/>
+    </div>
+     <form action="<{ofunc type=url link='/wxsite/weixin_reward'}>" method="post" id="theForm" name="theForm">
+	    <div class="box1">
+<!--             <div class="box3 boxAlign">
+                <ul class="flex msg_m">
+                    <li class="ellipsis">
+                    <if condition="$name.position neq ''">
+                        <{$empInfo['applypost']}>：
+                    </if>
+                        <{$empInfo['name']}>
+                    </li> -->
+              <!--       <if condition="$name.wechat_no neq ''">
+                       <li class="ellipsis">微信号：<{$empInfo['wechat_no']}></li>
+                    </if> -->
+<!--                     <if condition="$name.phone neq ''">
+                       <li class="ellipsis">手机号： <{$empInfo['tel']}></li>
+                    </if>
+                </ul>
+                <div class="erwm_box">
+                    <if condition="$name.wechat_qrcode neq ''">
+                        <img src="<{$empInfo['wechat_qrcode']}>">
+                    </if>
+                </div>
+            </div> -->
+            <div class="fuwu-name">
+                <h3>为您服务的小二:<{$empInfo['name']}></h3>
+                <p>小二需要支持，您满意的话请支持！</p>
+            </div>
+
+
+
+	        <!--<div class="textEdit bgcolor">为您服务的{$name.position}：<span>{$name.name}</span></div>-->
+	        <ul class="btnList">
+	            <li class="dz"><img src="<{$siteurl}>/newstyle/images/reward/z.png" ></li>
+	            <li class="ds"><img src="<{$siteurl}>/newstyle/images/reward/s.png" ></li>
+	        </ul>
+	        <input type="hidden" name="sn" id="sn" value='<{$sn}>'>
+	        <input type="hidden" name="payment_no" id="payment_no" value='<{$payment_no}>'>
+	        <input type="hidden" name="Ctype" id="Ctype" >
+	    </div>
+
+    </form>
+    <div style="height:100px;"></div>
+    <div class="box2-box">
+        <div>
+            <p>为您服务的小二:<{$empInfo['name']}></p>
+            <p>微信号：<{$empInfo['wechat_no']}></p>
+            <p>手机号：<{$empInfo['tel']}></p>
+        </div>
+        <div>
+            <if condition="$name.wechat_qrcode neq ''">
+                <img src="<{$empInfo['wechat_qrcode']}>">
+            </if>
+        </div>
+    </div>
+
+
+</div>
+<script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+<script>
+
+    //   全局loading
+    function showLoading() {
+        var loading = '<div class="fixdPo" >' +
+                '<div class="center-vel">'+
+                '<img src="http://eat.banklay.cn/newstyle/images/reward/loading13.gif" />'+
+                '</br><h5 style="color:#fff;">'  + '请稍等...' + '</h5>'+
+                '</div>'+
+                '</div>'
+        $('body').append(loading);
+    }
+
+    function hideLoading() {
+        $('#globalLoading').remove();
+    }
+
+/*     $(".box").click(function(){
+        showLoading()
+    }); */
+    
+    $('.dz').click(function(){
+    	$("#Ctype").val('dz')
+    	$('#theForm').submit()
+    })
+    $('.ds').click(function(){
+    	$("#Ctype").val('ds')
+    	$('#theForm').submit()
+    })
+</script>
+</body>
+</html>

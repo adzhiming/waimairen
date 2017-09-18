@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>排号屏幕地址 - <{$sitename}></title>
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/base.css?">
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/phpmdz.css">
+    <style>
+        html,body{background:url(<{$cxinfo['imggb_url']}>) no-repeat;background-size: 100% 100%;}
+    </style>
+    <!--<script language="JavaScript">
+    function myrefresh()
+    {
+       window.location.reload();
+    }
+    setTimeout('myrefresh()',3000); //指定3秒刷新一次
+    </script> -->
+</head>
+
+<body>
+
+<div class="line_box">
+    <div class="box">
+        <!--title-->
+        <div class="line_t"><{$cxinfo['title']}></div>
+        <!--列表-->
+        <ul class="lineUp">
+            <{foreach from=$list key=myid item=items}>
+            <li>
+                <div class="line_l"><{$items['dlname']}></div>
+                <div class="line_r">下一位：<span> <{if empty($items['qhms']['qhms']) }> 无 <{else}> <{$items['qhms']['qhms']}> <{/if}></span></div>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+    <!--扫码-->
+    <div class="box mar25">
+        <div class="box_s">
+            <img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/shys.png" />
+        </div>
+        <div class="box_s">
+            <img src="<{$wxqrimg}>" />
+        </div>
+    </div>
+    <!--end-->
+</div>
+
+<!--<div class="main">-->
+    <!--<div class="bigtitle"><{$cxinfo['title']}></div>-->
+    <!--<ul class="dqph_content">-->
+        <!--<{foreach from=$list key=myid item=items}>-->
+        <!--<li><span class="jrz"><{$items['dlname']}></span> <span class="next">下一位：-->
+                             <!--<{if empty($items['qhms']['qhms']) }> 无 <{else}> <{$items['qhms']['qhms']}> <{/if}>-->
+            <!--&lt;!&ndash;                         <{foreach from=$items['sanjiguide'] item=itv}>-->
+                                     <!--<{$itv['qhms']}>-->
+                               <!--<{if $itv['qhms'] }>无<{else}><{$itv['qhms']}><{/if}>-->
+                                     <!--<{/foreach}>&ndash;&gt;-->
+            <!--</span>-->
+        <!--</li>-->
+        <!--<{/foreach}>-->
+    <!--</ul>-->
+
+    <!--<div class="bottom_content">-->
+        <!--<div class="bottom_left"><{$cxinfo['bottom_wz']}></div>-->
+        <!--<div class="bottom_right"><img src="<{$cxinfo['wxqrimg']}>" width="130" height="130"></img></div>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+</body>
+</html>

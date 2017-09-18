@@ -1,0 +1,141 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='lineupmanage';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname"><{if empty($cxinfo)}>添加<{else}>编辑<{/if}>排号设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/lineupmenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/phsz_save/datatype/json"}>">
+        <div class="jutiSet">
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>队列名称：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="dlname" name="dlname" value="<{$cxinfo['dlname']}>" class="form-control" placeholder="例如:1/2号桌" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span style="line-height:20px;">客人数量少于等于<br>多少人排入此队列：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="text" style="width:387px; "  id="krslsy" name="krslsy" value="<{$cxinfo['krslsy']}>" class="form-control" placeholder="例如:2" /><span class="tip-r" style="line-height:18px;">设置为自动排号时，当排号用餐的人数少于等于此人数时，系统将自动为排号客户分配此队列</span>
+                </div>
+                <div class="cl"></div>
+            </div>
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>营业时间：</span>
+                </div>
+                <div class="xuanze_right">
+                    <input class="form-control" type="text" name="starttime" id="starttime" value="<{$cxinfo['starttime']|date_format:"H:i"}>"  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                    至 <input class="form-control" type="text" name="endtime" id="endtime" value="<{$cxinfo['endtime']|date_format:"H:i"}>"  onFocus="WdatePicker({ dateFmt: 'HH:mm' });" />
+                </div>
+                <div class="cl"></div>
+            </div>
+
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>队列编号前缀：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input type="text" style="width:387px; float:left;" id="dlphqz" name="dlphqz" value="<{$cxinfo['dlphqz']}>"  class="form-control" placeholder="例如:C-" />
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>提前通知人数：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input type="text" style="width:387px; float:left;" id="tqtzrs" name="tqtzrs" value="<{$cxinfo['tqtzrs']}>"  class="form-control"/><span class="tip-r">队列有状态变更时，提前通知的人数</span>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>是否启用：</span>
+                </div>
+                <div class="line-size">
+                    <input type="radio" class="radio"   name="status"   value="1" <{if $cxinfo['status'] == 1}>checked<{/if}>/>是 <input type="radio" class="radio"  name="status"   value="0" <{if $cxinfo['status'] == 0}>checked<{/if}>/>否
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>排序：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input type="text" style="width:387px; float:left;" id="px" name="px" value="<{$cxinfo['px']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="cl"></div>
+
+            <input name="action" type="hidden" value="ok" />
+            <input type="hidden" name="cxid" value="<{$cxinfo['id']}>">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >点击提交</div>
+                    <{if $cxinfo['id']}>
+                     <div class="del_btn_div btn-a btn-prim" style=" background: #CCC; margin-left: 20px;"><a onclick="return remind(this);" href="<{ofunc type=url link="/shopcenter/delphsz/id/<{$cxinfo['id']}>/datatype/json"}>">删除此队列</a></div>
+                   <{/if}>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        subform('<{ofunc type=url link="/shopcenter/phsz"}>',$('#loginForm'));
+    });
+    
+    var gourl = '<{$siteurl}>/index.php?mid=<{$mid}>&ctrl=shopcenter&action=phsz';
+    $('.del_btn_div').click(function(){
+        window.location.href=gourl;
+    });
+
+
+</script>
+
+<{/block}>

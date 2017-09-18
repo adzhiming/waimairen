@@ -1,0 +1,266 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<{/block}>
+<{block name=controlname}>店铺列表<{/block}>
+<{block name=bodylist}>
+
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+
+	<div class="search">
+
+
+		<div class="search_content">
+
+			<form method="get" name="form1" action="<{ofunc type=url link="/adminpage/shop/module/adminshoplist"}>">
+			<input type="hidden" name="ctrl" value="adminpage">
+			<input type="hidden" name="action" value="shop">
+			<input type="hidden" name="module" value="adminshoplist">
+			<label>店铺名</label>
+			<input type="text" name="shopname" value="<{$shopname|default:''}>" class="form-control mar-right">
+			<label>用户名：</label>
+			<input type="text" name="username" value="<{$username|default:''}>" class="form-control mar-right">
+			<label>手机：</label>
+			<input type="text" name="phone" value="<{$phone|default:''}>" class="form-control">
+
+			<input type="submit" value="提交查询" class="button btn-prim">
+			</form>
+		</div>
+
+	</div>
+
+
+	<div class="tags">
+
+
+		<div id="tagscontent">
+
+			<div id="con_one_1">
+
+				<div class="table_td" style="margin-top:10px;">
+
+					<form method="post" action="" onsubmit="return remind();"  id="delform">
+
+						<table border="0" cellspacing="2" cellpadding="4" class="table-bordered table list" name="table" id="table">
+							<thead>
+							<tr>
+								<th width="60px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+								<th>店铺名称</th>
+								<th>店铺类型</th>
+<!--								<th>入驻资料</th>-->
+								<th>店铺管理员</th>
+								<!-- <th>设置店铺标签</th> -->
+								<th>营业</th>
+								<!-- <th>佣金/结算额</th> -->
+								<th>排序</th>
+								<th>有效时间</th>
+								<!--<th>配送设置</th> -->
+								<th>操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							<{load_data assign="list" table="shop" showpage="true"  where="is_pass='1' <{$where}>"  orderby=" sort asc "  }>
+							<{foreach from=$list['list'] item=items}>
+							<tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='ffffff';" bgcolor="#ffffff">
+								<td><input type="checkbox" name="id[]" value="<{$items['id']}>"></td>
+								<td><{$items['shopname']}></td>
+								<td>
+								<{if $items['is_waimai'] == 1}>
+								<img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/wm.png">
+								<{/if}>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<{if $items['is_yuding'] == 1}>
+								<img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/yd.png">
+								<{/if}>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<{if $items['is_tangshi'] == 1}>
+								<img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/ts.png"></td>
+								<{/if}>
+<!--								<td> <a onclick="showshopdetail('<{$items['id']}>','<{$items['shopname']}>');" href="#">查看详情</a></td>-->
+								<td>
+									<{load_data assign="userinfo" table="member" type="one" where="uid='<{$items['uid']}>'" fileds="username,shopcost,backacount" }>
+									<{$userinfo['username']}>
+								</td>
+								<!-- <td><a onclick="starttask('<{$items['id']}>','<{$items['shopname']}>');" href="#">设置</a> &nbsp;&nbsp;<a onclick="setps('<{$items['id']}>','<{$items['shopname']}>');" href="#">订单通知</a></td> -->
+								<td><{if $items['is_open'] == 1}>是<{else}>否<{/if}></td>
+								<!-- <td><a href="#" onclick="addcost(<{$items['uid']}>);">增</a><{if $items['yjin']=='0'}>默认<{$yjin}><{else}><{$items['yjin']}><{/if}>/<{$userinfo['shopcost']|default:'0'}><a onclick="setyjin('<{$items['id']}>','<{$items['shopname']}>','<{$items['yjin']}>','<{$yjin}>','<{$userinfo['backacount']|default:''}>');" href="#">设置</a></td> -->
+								<td><input type="text" name="pxinput" data="<{$items['id']}>" value="<{$items['sort']}>" style="width:30px;padding:0px;"></td>
+								<!-- <td><a href="#" onclick="doshow('<{$items['id']}>','<{intval(($items['endtime']-time())/86400)}>');"> <{if $items['endtime'] > 0}>    <{intval(($items['endtime']-time())/86400)}>    <{else}>设置 <{/if}></a>天</td> -->
+								<td><{intval(($items['endtime']-time())/86400)}>天</td>
+
+<!--								<td><a onclick="psset('<{$items['id']}>','<{$items['shopname']}>');" href="#">配送设置</a></td>-->
+
+								<td><a href="<{ofunc type=url link="/adminpage/shop/module/resetdefualt/shopid/<{$items['id']}>"}>" target="_blank"><input type="button" value="进入店铺后台" class="button btn-prim"></a></td>
+							</tr>
+							<{/foreach}>
+
+							</tbody>
+
+						</table>
+					</form>
+
+					<div class="page_newc">
+						<div class="select_page">
+
+						</div>
+						<div class="show_page marT20"><ul><{$list['pagecontent']}></ul></div>
+					</div>
+
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+</div>
+
+
+
+
+
+
+</div>
+<script>
+	var dialogs ;
+	function starttask(shopid,shopname)
+	{
+		dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=adminpage&action=shop&module=shopbiaoqian&id='+shopid,{height:'450px',width:'400px'},false);
+	}
+	function showshopdetail(shopid,shopname)
+	{
+		dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=adminpage&action=shop&module=showshopdetail&id='+shopid,{height:'650px',width:'800px'},false);
+		dialogs.title('查看'+shopname+'入驻资料');
+	}
+	function uploadsucess(linkurl){
+		dialogs.close();
+		window.location.reload();
+	}
+	function uploaderror(msg){
+		alert(msg);
+	}
+	function addcost(uid){
+
+		var	htmls = '<form method="post" id="subyjxx" action="#" style="text-align:center;"><table>';
+		htmls += '<tbody><tr>';
+		htmls += '<td height="50px">金额:</td>';
+		htmls += '<td> <input type="text" name="cost" value="" style="width:100px;"></td></tr>';
+
+		htmls += '<tr><td height="50px">类型:</td>';
+		htmls += '<td> <input type="radio" name="dotype" value="0">增加 <input type="radio" name="dotype" value="1">减少</td></tr>';
+
+		htmls += '<tr><td height="50px">原因:</td>';
+		htmls += '<td> <input type="text" name="reason" value="" style="width:150px;"> </tr>';
+
+		htmls += '</tbody></table> ';
+		htmls += '<input type="hidden" value="'+uid+'" name="uid"> ';
+		htmls += '<input type="button" value="确认提交" class="button" id="buttonsubyjcc" ></form>';
+		art.dialog({
+			id: 'testID4',
+			title:'编辑店铺余额',
+			content: htmls
+		});
+	}
+	$('#buttonsubyjcc').live('click',function(){
+		$.post('<{ofunc type=url link="/<{$mid}>/adminpage/order/module/adminpay/datatype/json"}>', $('#subyjxx').serialize() ,function (data, textStatus){
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg);
+				}else{
+					diaerror(data);
+				}
+			}
+		}, 'json');
+	});
+
+	function setyjin(shopid,shopname,myongjin,defaultyj,yinhang)
+	{
+		var mytj = myongjin==0?defaultyj:myongjin;
+		var	htmls = '<form method="post" id="subyj" action="#" style="text-align:center;"><table>';
+		htmls += '<tbody><tr>';
+		htmls += '<td height="50px">佣金比例:</td>';
+		htmls += '<td> <input type="text" name="yjin" value="'+mytj+'" style="width:100px;"></td></tr>';
+		htmls += '<td height="50px">提现账号:</td>';
+		htmls += '<td> <input type="text" name="backacount" value="'+yinhang+'" style="width:200px;"></td></tr>';
+
+		htmls += '</tbody></table> ';
+		htmls += '<input type="hidden" value="'+shopid+'" name="shopid"> ';
+		htmls += '<input type="button" value="确认提交" class="button" id="buttonsubyj" ></form>';
+		art.dialog({
+			id: 'testID4',
+			title:'设置'+shopname+'佣金',
+			content: htmls
+		});
+	}
+	$('#buttonsubyj').live('click',function(){
+		$.post('<{ofunc type=url link="/<{$mid}>/adminpage/shop/module/savesetshopyjin/datatype/json"}>', $('#subyj').serialize() ,function (data, textStatus){
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg);
+				}else{
+					diaerror(data);
+				}
+			}
+		}, 'json');
+	});
+	$("input[name='pxinput']").live("change", function() {
+		$.post('<{ofunc type=url link="/adminpage/shop/module/adminshoppx/datatype/json"}>', {'id':$(this).attr('data'),'pxid':$(this).val()},function (data, textStatus){
+			if(data.error == false){
+				diasucces(data.msg,newurl);
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg);
+				}else{
+					diaerror(data);
+				}
+			}
+		}, 'json');
+	});
+	function doshow(shopid,shoptian){
+		var	htmls = '<form method="post" id="doshwoform" action="#" style="text-align:center;"><table>';
+		htmls += '<tbody><tr>';
+		htmls += '<td height="50px">有效天数:</td>';
+		htmls += '<td> <input type="text" name="mysetclosetime" value="'+shoptian+'" style="width:100px;"></td></tr>';
+		htmls += '</tbody></table> ';
+		htmls += '<input type="hidden" value="'+shopid+'" name="shopid"> ';
+		htmls += '<input type="button" value="确认提交" class="button" id="dosetclosetime" ></form>';
+		art.dialog({
+			id: 'testID3',
+			title:'设置开店有效时间',
+			content: htmls
+		});
+	}
+	$('#dosetclosetime').live('click',function(){
+		$.post('<{ofunc type=url link="/adminpage/shop/module/shopactivetime/datatype/json"}>', $('#doshwoform').serialize() ,function (data, textStatus){
+			if(data.error == false){
+				diasucces(data.msg,'');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg);
+				}else{
+					diaerror(data);
+				}
+			}
+		}, 'json');
+	});
+	function setps(shopid,shopname)
+	{
+		dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=adminpage&action=shop&module=setnotice&shopid='+shopid,{height:'180px',width:'400px'},false);
+	}
+	function psset(shopid,shopname){
+		dialogs = art.dialog.open(siteurl+'/index.php?mid=<{$mid}>&ctrl=adminpage&action=area&module=setps&shopid='+shopid,{height:'300px',width:'600px'},false);
+	}
+</script>
+<!--newmain 结束-->
+<{/block}>

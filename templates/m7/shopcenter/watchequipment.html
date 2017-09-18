@@ -1,0 +1,115 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+	var mynomenu='staffmanage';
+        
+</script>
+<{/block}>
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/sweetalert.css" />
+<style>
+	.mar20{margin-top: 20px;}
+	.searchBtn {background: #27A9E3; cursor: pointer; display: inline-block;height: 28px;padding: 0 20px;border-radius: 3px;color: #fff; line-height: 28px;border: solid 1px #27A9E3; margin: 7px; font-size: 14px;float: right;}
+	a.searchBtn:link,a.searchBtn:visited {color:#fff;}
+	.dele{ cursor: pointer; position:absolute;right:-10px;top:0;font-size:18px;color:red; margin-top: -5px;}
+	.data_text{position:relative;display:inline-block;}
+	.select_option{ width: 100%;}
+</style>
+<{/block}>
+
+<{block name=bodylist}>
+<!--content right start-->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">员工管理</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/lineupmenu.html"}>
+        
+       <div class="cl"></div>
+        <form action="<{ofunc type=url link="/shopcenter/watchequipment"}>" method="post">
+            <ul class="staffsearch">
+                <li>
+                 <select name="stafftype" id="stafftype" class="form-control">
+                     <option value="" class="form-control">全部</option>
+                        <{foreach from=$catlist item=items}>
+                              <option value="<{$items['name']}>" ><{$items['name']}></option>
+                        <{/foreach}>
+                </select>
+                </li>
+                <li><input placeholder="输入姓名/设备号搜索" class="form-control" type="text" name="keywords" id="keywords" value="" /></li>
+                <li><input type="submit" value="提交查询" class="button" style="height:35px;"></li>
+            </ul>
+        </form>
+  
+    
+    <!--列表-->
+    <div class="mart20"  id="pingjia">
+        <form method="post" action="" onsubmit="return subform('<{ofunc type=url link="/shopcenter/watchequipment"}>',this);">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+               
+                <th width="10%">  姓名 </th>
+                <th width="10%"> 岗位 </th>
+          
+                <th width="10%">  设备号 </th>
+
+                <th width="15%"> 是否排号操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$list key=myid item=items}> 	        
+            <tr >
+
+                <td><{$items['name']}></td>
+                <td><{$items['applypost']}></td>
+               
+                <td>
+                
+                    <{$items['sn']}>
+                
+                </td>
+              
+                <td id="reload40">
+                   <input type="checkbox" name="is_rownumber" onclick="changerownumber('<{$items['aid']}>','<{$items['is_rownumber']}>')"  <{if $items['is_rownumber']==1}>checked<{/if}>>
+          
+                   
+                </td>
+            </tr>
+            <{/foreach}>
+            <!--<tr>-->
+                <!--<td align="right" style=" padding-right:50px;" colspan="8"> <div class="show_page"><ul><{$list['pagecontent']}></ul></div></td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+            
+       </form>
+        <div class="show_page mart10" style="font-size: 14px;"><ul><{$list['pagecontent']}></ul></div>
+    </div>
+
+    </div>
+
+
+
+</div>
+<script>
+    //改变员工是否有操作排号功能
+    function changerownumber(gid,is_support){
+        if(is_support == 0 ){
+            is_support = 1;
+        }else{
+            is_support = 0;
+        }
+       
+        var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/changerownumber/datatype/json"}>',{'id':gid,'is_support':is_support});
+        artsucces('更新成功');   
+    }
+</script>
+
+<{/block}>

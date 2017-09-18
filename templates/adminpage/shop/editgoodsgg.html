@@ -1,0 +1,128 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<{/block}>
+<{block name=controlname}><{if empty($gginfo)}>添加规格<{else}>编辑规格<{/if}><{/block}>
+<{block name=bodylist}>
+<div style="width:98%;overflow-y:auto;white-space:nowrap;">
+    <div class="tags">
+        <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/shop/module/savemaingg"}>"  >
+            <div class="mart15">
+                <table class="list tableList" name="table" id="table">
+                    <tbody>
+                    <input type="hidden" name="id" value="<{$gginfo['id']}>">
+                    <tr>
+                        <td class="left">规格名称</td>
+                        <td><input type="text" name="name" id="name" value="<{$gginfo['name']}>" class="skey form-control" ></td>
+                    </tr>
+                    <tr>
+                        <td class="left">排序ID</td>
+                        <td><input type="text" name="orderid" id="orderid" value="<{$gginfo['orderid']}>" class="skey form-control" ></td>
+                    </tr>
+                    <{if empty($gginfo)}>
+                    <tr>
+                        <td class="left">所属类型</td>
+                        <td>
+                            <select name="shoptype" class="form-control">
+                                <{foreach from=$shoptype key=mykey item=items}>
+                                <option value="<{$mykey}>" <{if $gginfo['shoptype'] == $mykey}>selected<{/if}>><{$items}></option>
+                                <{/foreach}>
+                            </select>
+                        </td>
+                    </tr>
+                    <{else}>
+                    <tr>
+                        <td class="left">所属类型</td>
+                        <td><input type="text" value="<{$shoptype[$gginfo['shoptype']]}>" class="skey form-control" disabled style="cursor: not-allowed"></td>
+                    </tr>
+                    <{/if}>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="确认提交" class="button btn-prim mart15"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <input type="hidden" name="subtype" value="1">
+            </form>
+        </div>
+        <{if !empty($gginfo)}>
+        <div id="tagscontent">
+            <div id="con_one_1">
+                <div class="table_td mart15" >
+                    <form method="post" action="" onsubmit="return remind();"  id="delform">
+                        <table class="list table table-bordered" name="table" id="table" >
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>规格值</th>
+                                <th>排序</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{foreach from=$ggdet item=items}>
+                            <tr class="s_out">
+                                <td><{$items['id']}></td>
+                                <td> <{$items['name']}> </td>
+                                <td> <{$items['orderid']}> </td>
+                                <td>
+                                    <a href="javascript:void(0);" onclick="doaddgg('<{$gginfo['id']}>','<{$items['id']}>','<{$items['orderid']}>','<{$items['name']}>');" class="fa fa-edit" title="编辑"></a>
+                                    <a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/shop/module/delgoodschildgg/id/<{$items['id']}>/datatype/json"}>" class="fa fa-trash" title="删除"></a>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="page_newc marT20">
+                        <div class="select_page">
+                            <a  href="javascript:void(0);"  onclick="doaddgg('<{$gginfo['id']}>',0,0,'');" class="button btn-prim">添加规格值</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <{/if}>
+    </div>
+</div>
+<div class="clear"></div>
+<script>
+
+    function doaddgg(parent_id,nowid,noworder,nowname)
+    {
+        var ttitle = nowname == ''?'添加规格值':'编辑'+nowname+'规格值';
+        var	htmls = '<form method="post" id="subyj" action="#" style="text-align:center;"><table class="tableAlert">';
+        htmls += '<tbody>';
+        htmls += '<tr><td height="50px">规格值:</td>';
+        htmls += '<td> <input type="text" name="name" value="'+nowname+'" style="width:100px;" class="form-control"></td></tr>';
+        htmls += '<tr><td height="50px">排序:</td>';
+        htmls += '<td> <input type="text" name="orderid" value="'+noworder+'" style="width:100px;" class="form-control"></td></tr>';
+        htmls += '</tbody></table> ';
+        htmls += '<input type="hidden" value="'+parent_id+'" name="parent_id"><input type="hidden" value="'+nowid+'" name="id"> ';
+        htmls += '<input type="button" value="确认提交" class="button btn-prim" id="buttonsubyj" ></form>';
+        art.dialog({
+            id: 'testID4',
+            title:ttitle,
+            content: htmls
+        });
+    }
+    $('#buttonsubyj').live('click',function(){
+        $.post('<{ofunc type=url link="/adminpage/shop/module/savechildgg/datatype/json"}>', $('#subyj').serialize() ,function (data, textStatus){
+            if(data.error == false){
+                diasucces('操作成功','');
+            }else{
+                if(data.error == true)
+                {
+                    diaerror(data.msg);
+                }else{
+                    diaerror(data);
+                }
+            }
+        }, 'json');
+    });
+
+
+</script>
+<{/block}>

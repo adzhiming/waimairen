@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>商品库管理后台</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/commom.css" />
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/shangjiaAdmin.css" />
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/sysimg/css.css" />
+    <link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.lightbox.css" />
+    <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.js" type="text/javascript" language="javascript"></script>
+    <style>
+        body{font-family:'Microsoft YaHei',Arial,Helvetica,sans-serif;background-color: #F5F5F6;}#showimg{overflow: hidden;}
+        .delkuimg{ cursor: pointer;color: red;} .header,.top{height:50px;}a b,#showimg ul li a{color: #000;}.ibox-content{min-height: inherit;overflow: hidden;margin-bottom: 0;}
+        .topLeft>ul{padding: 0;} .topLeft>ul li{width:80px;padding:0;margin:0;height:50px; line-height:50px;list-style: none;} strong{color: #2CA1DD;margin-left: 15px;}
+        #quicklinks{background-color: #fff;border: none;padding: 10px 0;color: #fff;border-top:1px solid #E7EAEC;font-size: 14px;} #quicklinks a{margin-left: 15px;color: #000;}
+        .ibox-content{padding: 40px 0 30px;}
+    </style>
+</head>
+<body>
+<!--<div style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: -1;background:url(<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/background.png); background-size:cover;"></div>-->
+<!---header start--->
+<div class="header" >
+    <div class="top" >
+        <div class="topLeft fl">
+            <ul>
+                <li><a href="/index.php/<{$mid}>/?ctrl=adminpage&action=shop&module=goodslibrary">商品管理</a></li>
+                <li><a  href="/index.php/<{$mid}>/?ctrl=adminpage&action=shop&module=swfupload">上传图库</a></li>
+                <li><a  style="color: #27A9E3;  font-size: 16px;  font-weight: bold;"  href="<{ofunc type=url link="/adminpage/shop/module/showimglist"}>">图库预览</a></li>
+            </ul>
+            <div class="cl"></div>
+        </div>
+
+        <div class="topRight fr">  <span style=" height:50px; line-height:50px;cursor: pointer;" class="username" onclick="openlink('<{ofunc type=url link="/adminpage/adminindex"}>');">返回后台管理<img src="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/usernameBg.png" /></span> </div>
+        <div class="cl"></div>
+        <div class="shangjiaTop" style=" top:-22px; margin-left:-150px;">
+            <div class="sjglaa" style=" width: 228px;  height: 70px; background: rgba(0, 0, 0, 0) url(<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/goodslibtopbg.png) no-repeat scroll 0 0;"> </div>
+        </div>
+    </div>
+</div>
+<!---header end--->
+<div class="content" style="margin-bottom:50px;width: 100%;">
+    <!---content right start--->
+    <div class="conWaiSet">
+        <!--<div class="shopSetTop" style="">-->
+        <!--<a href="<{ofunc type=url link="/adminpage/shop/module/showimglist"}>">	<span style="color: #000;  font-weight: bold;">普通模式</span></a>-->
+        <!--<a href="<{ofunc type=url link="/adminpage/shop/module/hshowimglist/page/<{$page}>"}>">	<span>幻灯模式</span></a>-->
+        <!--</div>-->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5 id="positionname">
+                    <a href="<{ofunc type=url link="/adminpage/shop/module/showimglist"}>">	<b>普通模式 / </b></a>
+                    <a href="<{ofunc type=url link="/adminpage/shop/module/hshowimglist/page/<{$page}>"}>">	<b>幻灯模式</b></a>
+                </h5>
+            </div>
+        </div>
+        <div  class="ibox-content clearfix">
+            <div id="showimg">
+                <ul>
+                    <{foreach from=$imglist item=items}>
+                    <li>
+                        <a rel="lightbox" href="<{$items['imageurl']}>" target="_blank"><img class="imgclass" src="<{$items['imageurl']}>" border="0" width="100" height="80"><br /><{$items['imagename']}></a>
+                        <br /><span imglujing="<{$items['imageurl']}>" class="delkuimg">删除</span>
+                    </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+            <{$pagecontent}>
+        </div>
+    </div>
+</div>
+<div class="cl"></div>
+<!---content right end--->
+
+<style>
+.delkuimg{ cursor: pointer;}
+</style>
+ <script>
+
+$('.delkuimg').click(function(){
+    if(confirm('确定删除该商品操作吗？')){
+	        var lujing = $(this).attr('imglujing');
+	
+		var mid = <{$mid}>;
+		var url = '/index.php/'+mid+'/?ctrl=adminpage&action=shop&module=delkuimg&datatype=json';
+		
+		$.ajax({         //script定义
+             url: url,
+			   type: 'post',
+            dataType: "json",
+            async:true,
+            data:{'imglujing':lujing},
+            success:function(content) { 
+			
+             if(content.error == true){ 
+                
+	              alert(content.msg);
+             }else{
+				window.location.reload();
+	         
+             }
+            },
+            error:function(){
+            
+            	alert('数据提交失败');
+            }
+   }); 
+
+    }  
+    
+    }); 
+    
+    		function openlink(newlinkes){
+			window.location.href=newlinkes;
+		}
+ </script>
+
+</body>
+</html>

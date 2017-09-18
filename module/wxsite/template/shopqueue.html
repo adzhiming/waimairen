@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>我要排队</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="/newstyle/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+    <style>
+  
+      .mui-radio input[type=radio]:before {font-size: 30px;}
+      .mui-radio input[type=radio] {top:3px;}
+        .table>thead>tr>th{border-bottom:1px solid #e7eaec;text-align: center;}
+        .table>tbody>tr>td{border-top:1px dashed #e7eaec;}
+        .table>tbody>tr>td,.table>thead>tr>th {line-height:1.42857;padding:8px;font-size: 13px; vertical-align:middle}
+        .table{border-top: 1px solid #ddd;border-bottom: 1px solid #ddd;text-align: center;border-spacing: 0; border-collapse: collapse;width: 100%;}
+        .reasonList{list-style: none;/*position: absolute;top: 39px;left: 0;*/width: 100%;display: none;background-color: #fff;z-index: 55;}
+        .reasonList li{padding: 10px 15px;}
+        input[type=text]{font-size: 14px; border: none!important;height:35px;margin-bottom: 0!important;}
+        .wid55{width:55px;}
+    </style>
+</head>
+<body>
+<div class="mui-content">
+    <div class="mui-table-view pad">
+        <div class="mui-table-view-cell">
+            <a >
+                <div class="cssBox">
+                    <img src="<{$shopinfo['shoplogo']}>" class="head_img">
+                    <div class="flex vertical marl10 mart10">
+                        <b><{$shopinfo['shopname']}></b>
+                        <div class="mui-h6 mui-ellipsis mart15"><i class="fa fa-map-marker font16 color_z"></i>  <{$shopinfo['address']}></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="mui-table-view" style="margin-top: 15px;">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>桌型</th>
+                <th>容纳</th>
+                <th>当前</th>
+                <th>等待</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<{foreach from=$tables item=table}>-->
+            <tr>
+                <td><{$table['dlname']}></td>
+                <td><{$table['contain']}></td>
+                <td><{$table['current_num']}></td>
+                <td class="color_z"><{$table['current_count']}></td>
+            </tr>
+            <!--<{/foreach}>-->
+            </tbody>
+        </table>
+    </div>
+    <form action="<{ofunc type=url link='/wxsite/shopqueuedetail'}>" method="post" onsubmit="return check()">
+        <div class="mui-table-view pad" style="margin-top: 15px;">
+<!--            <div class="mui-table-view-cell reasonShow">
+                <a class="mui-navigate-right">选择餐桌: <span class="color_b numShow" style="margin-left: 20px;"></span></a>
+            </div>-->
+        </div>
+<!--           <ul class="reasonList clearfix">
+            <{foreach from=$tables item=table}>
+                <li data-id="<{$table['id']}>"><{$table['dlname']}></li>
+            <{/foreach}>
+           </ul>-->
+ 
+          <ul class="mui-table-view pad">
+              <li class="cssBox mui-table-view-cell center">
+                  <div class="wid55">用餐人数:</div>
+                  <div class="flex"><input type="text" name="customer" class="customer" value="" placeholder="请输入人数"></div>
+              </li>
+              <li class="cssBox mui-table-view-cell center">
+                  <div class="wid55">手机号:</div>
+                  <div class="flex"> <input type="text" name="phone" class="phone" value="" placeholder="请输入手机号(可不填)"></div>
+              </li>
+           </ul>
+        <!--btn-->
+        <div class="mui-content-padded">
+            <input class="mui-btn-block mui-btn mui-btn-danger" type="submit"  value="取号"> 
+                        <input name="shopid" type="hidden" value="<{$shopid}>" />
+                        <input class='phsz_id' name="phsz_id" type="hidden" value="<{$phsz_id}>" />
+                        <input class='dl' name="dl_name" type="hidden" value="<{$table['dlname']}>" /> 
+        </div>
+      </form>
+
+</div>
+<script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+<script src="<{$siteurl}>/newstyle/js/mui.min.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/jweixin-1.0.0.js"></script>  
+<script type="text/javascript">
+
+    //    下拉
+    $('.reasonShow').on('touchstart',function(){
+        $('.reasonList').stop().slideToggle();
+    });
+
+    $('.reasonList li').on('touchstart',function(){
+        var i = $(this).text();
+        var id = $(this).attr('data-id');
+     
+        $('.phsz_id').val(id);
+        $('.dl').val(i);
+        $('.numShow').html(i);
+        $('.reasonList').slideUp();
+    });
+
+
+wx.config({
+    debug: false,
+    appId: '<{$signPackage['appId']}>',
+    timestamp: '<{$signPackage['timestamp']}>',
+    nonceStr: '<{$signPackage['nonceStr']}>',
+    signature: '<{$signPackage['signature']}>',
+    jsApiList: [
+      'checkJsApi',
+      'scanQRCode'
+    ]
+});
+
+// function getit(){
+//     var table = $('input:radio:checked').val();
+//     var sid   = <{$shopinfo['id']}>;
+//     if(!table){
+//         alert('请选择桌台！');
+//         return;
+//     }
+//     var url   = "/wxsite/shopqueuedetail/sid/"+sid+"/phsz_id/"+table;
+//     window.location.href="<{ofunc type=url link='"+url+"'}>";
+// }
+
+function check(){ 
+  var customer = $('.customer').val();
+  var table    = $('.numShow').html(); 
+  var phone    = $('.phone').val();
+  var mobile   = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+ 
+//  if(!table){
+//    alert('请选择桌台');
+//    return false;
+//  }
+  if(!customer){
+    alert('请输入人数');
+    return false;
+  }
+  if(customer<1){
+    alert('输入人数不正确!');
+    return false;
+  }
+  if(isNaN(customer)){
+   alert("请输入数字");
+   return false;
+  }
+  if(customer > 15){
+    alert("输入人数过大,请重新输入！");
+    return false;
+  }
+  
+}
+
+
+function saoma(){
+	wx.scanQRCode({
+	    needResult: 1, //为 1 时，扫码返回的结果
+	    scanType: ["qrCode"], //指定扫二维码
+	    success: function (res) {
+	        if (res.errMsg === "scanQRCode:ok"){
+	        	var result = res.resultStr;
+	                location.href = result;
+	                return;
+	        }
+	    }
+	});
+}
+var can_show = true;
+var catid = <{$typeid|default:0}>;
+var order = 0;
+var qsjid = 0;
+var typeid = <{$typeid|default:0}>;
+var myaddress = '<{$myaddress}>';
+var search_input = '<{$search_input|default:''}>';
+var shopshowtype  = '<{$shopshowtype|default:'0'}>';
+var checknext = false;
+var lat = '<{$lat|default:0}>';
+var lng = '<{$lng|default:0}>';
+var addressname = '<{$addressname|default:''}>';
+var is_loading = false;
+var html5_config = {'showheader':true,'showfooter':true,'bodyscller':true,'Canfresh':true,'CanloadMore':true,'titilename':'外卖频道'}; 
+
+$(function(){ 
+    <{if !empty($lng) && !empty($lat) &&  !empty($addressname)  }>
+		$('#showareainfo').text(addressname);
+ 		loading();
+   <{else}>   	
+	 	getLocation(); 
+ 	//	$('#loading').show();
+    <{/if}>
+  
+});
+function getLocation()
+  {
+  	
+  if (navigator.geolocation)
+    { 
+       navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+   else{$('#showareainfo').text("浏览器不支持定位");loading();}
+  }
+
+function showPosition(position)
+{ 
+
+ $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location='+position.coords.latitude+','+position.coords.longitude+'&output=json&pois=0&coordtype=wgs84ll'); 
+  // $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location=23.036989,114.3679&output=json&pois=0&coordtype=wgs84ll'); 
+}
+
+function showError(error)
+{
+	$('#showareainfo').text("定位失败");
+ switch(error.code) 
+  {
+  	
+  case error.PERMISSION_DENIED:
+    //x.innerHTML="User denied the request for Geolocation."
+  //  $('#showareainfo').text("User denied the request for Geolocation.");
+    break;
+  case error.POSITION_UNAVAILABLE:
+   // x.innerHTML="Location information is unavailable."
+    //$('#showareainfo').text("Location information is unavailable.");
+    break;
+  case error.TIMEOUT:
+  //  x.innerHTML="The request to get user location timed out."
+  //$('#showareainfo').text("The request to get user location timed out.");
+    break;
+  case error.UNKNOWN_ERROR:
+   // x.innerHTML="An unknown error occurred."
+   //  $('#showareainfo').text("An unknown error occurred.");
+    break;
+  }
+  
+  loading();
+} 
+
+//加载页面函数
+function loading(){
+ 	if(typeof html5_config == 'undefined'){
+		alert('获取失败');
+	}else{ 
+	    
+		if(html5_config.bodyscller == true){
+ 			 setTimeout(function(){  
+				$('#wrapper').show();    
+				 //addfresh();
+				 
+			 },500);
+		}
+	 //	$('#loading').hide();
+		//loaddata();
+		
+	}
+}
+</script>
+</body>
+</html>

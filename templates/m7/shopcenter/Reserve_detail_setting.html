@@ -1,0 +1,147 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<script>
+    var mynomenu='Reserve_detail_settig';
+</script>
+<style>
+    .img-size{width:25px; height:30px;padding-top: 5px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+</style>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">预订详情设置</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <!--<div class="shopSetTop">-->
+        
+        <!--</div>-->
+        <{include file="<{$tempdir}>/shopcenter/Reservemenu.html"}>
+        <!--<div class="cl"></div>-->
+        <form id="loginForm" method="post" action="<{ofunc type=url link="/shopcenter/Reserve_detail_settig_save/datatype/json"}>">
+        <div class="jutiSet">
+            
+<!--            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>提前点餐：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="radio" class="radio"   name="is_advance_order"   value="1" <{if $cxinfo['is_advance_order'] == 1}>checked<{/if}>/>开启
+                    <input type="radio" class="radio"  name="is_advance_order"   value="0" <{if $cxinfo['is_advance_order'] == 0}>checked<{/if}>/>关闭
+                </div>
+                <div class="cl"></div>
+            </div>-->
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>今日起即可预订：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="radio" class="radio"   name="is_reserve_today"   value="1" <{if $cxinfo['is_reserve_today'] == 1}>checked<{/if}>/>开启
+                    <input type="radio" class="radio" name="is_reserve_today"   value="0" <{if $cxinfo['is_reserve_today'] == 0}>checked<{/if}>/>关闭
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>可提前预订天数：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input placeholder="请填写数字，如10" type="text" style="width:100px; float:left;" id="can_reserve_day" name="can_reserve_day" value="<{$cxinfo['can_reserve_day']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span style="line-height:18px;">当天预订提前<br>时间(小时)：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input placeholder="请填写数字，如2" type="text" style="width:100px; float:left;" id="date_of_appointment" name="date_of_appointment" value="<{$cxinfo['date_of_appointment']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span style="line-height:18px;">超时未接单<br>自动取消订单（分钟）：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input placeholder="填数字,如40" type="text" style="width:100px; float:left;" id="auto_cancel_reserve" name="auto_cancel_reserve" value="<{$cxinfo['auto_cancel_reserve']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span style="line-height:18px;">超时未消费<br>自动取消订单（分钟）：</span>
+                </div>
+                <div class="dianpu_right">
+                    <input placeholder="填数字,如40" type="text" style="width:100px; float:left;" id="overtime_consumption" name="overtime_consumption" value="<{$cxinfo['overtime_consumption']}>"  class="form-control"/>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>温馨提示内容：</span>
+                </div>
+                <div class="dianpu_right">
+                    
+                    <textarea placeholder="在此处输入你的特殊要求" rows="3" class="form_textarea"   name="reserve_remarks" id="reserve_remarks" > <{$cxinfo['reserve_remarks']}></textarea>
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="serxuanze">
+                <div class="xuanze_left">
+                    <span>微信支付：</span>
+                </div>
+                <div class="dianpu_right" style="width:387px;">
+                    <input type="radio" class="radio"   name="is_wxpay"   value="1" <{if $cxinfo['is_wxpay'] == 1}>checked<{/if}>/>开启
+                    <input type="radio" class="radio"  name="is_wxpay"   value="0" <{if $cxinfo['is_wxpay'] == 0}>checked<{/if}>/>关闭
+                </div>
+                <div class="cl"></div>
+            </div>
+            
+            <div class="cl"></div>
+
+            <input name="action" type="hidden" value="ok" />
+            <input type="hidden" name="id" value="<{$cxinfo['id']}>">
+            <div class="serxuanze">
+                <div class="xuanze_left"></div>
+                <div class="line-size" style="text-align: center;width: 596px;">
+                    <div class="hc_login_btn_div btn-a btn-prim" >点击提交</div>
+                </div>
+                <div class="cl"></div>
+            </div>
+            <!--<div class="settijiao">-->
+
+                <!--<div class="cl"></div>-->
+            <!--</div>-->
+        </div>
+        </form>
+    </div>
+</div>
+<!---content right end--->
+<!---content right start--->
+
+<script type="text/javascript">
+    
+    $('.hc_login_btn_div').click(function(){
+        //$('#loginForm').submit();
+        //var id = '<{$cxinfo['id']}>';
+        subform("<{ofunc type=url link='/shopcenter/Reserve_detail_setting'}>",$('#loginForm'));
+    });
+
+
+</script>
+
+<{/block}>

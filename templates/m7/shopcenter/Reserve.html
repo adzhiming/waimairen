@@ -1,0 +1,79 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script>
+    var mynomenu = 'Reserve'; 
+</script>
+<{/block}>
+<{block name=bodylist}>
+<!---content right start--->
+
+<div class="conWaiSet">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5 id="positionname">可预订时间段列表</h5>
+        </div>
+    </div>
+    <div class="ibox-content clearfix">
+        <{include file="<{$tempdir}>/shopcenter/Reservemenu.html"}>
+        
+       <div class="cl"></div>
+       
+        <ul class="reserve_option">
+            <li> <a href="<{ofunc type=url link="/shopcenter/yudingtime_add"}>">新建可预订时间段</a></li>
+            <li><a href="<{ofunc type=url link="/shopcenter/yudingtime_batch_add"}>">批量新建</a></li>
+            <li><a href="<{ofunc type=url link="/shopcenter/tableslist"}>">桌台设置</a></li>
+        </ul>
+  
+    
+    <!---列表----->
+    <div class="mart20"  id="pingjia">
+        <form method="post" action="<{ofunc type=url link="/shopcenter/reserve_px_save/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/shopcenter/Reserve"}>',this);">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%">  排序 </th>
+                <th width="10%">  桌台区域 </th>
+                <th width="10%"> 桌台类型 </th>
+<!--                <th width="10%"> 需预付金额 </th>-->
+                <th width="10%">  可预订时间段 </th>
+
+                <th width="15%"> 操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$list key=myid item=items}> 	        
+            <tr >
+                <td>
+                    <input type="hidden" name="id[]" value="<{$items['id']}>">
+                    <input type="text" name="px[]" id="px[]" value="<{$items['px']}>"  class='skey form-control' style='width:50px;'/>
+                
+                </td>
+                <td><{$items['table_area']}></td>
+                <td><{$items['table_type']}>人桌</td>
+<!--                <td><{$items['bookpay']}></td>-->
+                <td><{$items['start_booktime']|date_format:"%H:%M"}> - <{$items['end_booktime']|date_format:"%H:%M"}></td>
+                <td id="reload40">
+                   <span><a href="<{ofunc type=url link="/shopcenter/reserve_order_add/reserve_id/<{$items['id']}>"}>">预订</a></span> /
+                   <span><a href="<{ofunc type=url link="/shopcenter/yudingtime_add/id/<{$items['id']}>"}>">修改</a></span> /
+                   <span><a onclick="return remind(this);" href="<{ofunc type=url link="/shopcenter/delreserve/id/<{$items['id']}>/datatype/json"}>">删除</a></span> 
+                   
+                </td>
+            </tr>
+            <{/foreach}>
+            <!--<tr>-->
+                <!--<td align="right" style=" padding-right:50px;" colspan="8"> <div class="show_page"><ul><{$list['pagecontent']}></ul></div></td>-->
+            <!--</tr>-->
+            </tbody>
+        </table>
+              <div style="margin-top: 10px;"><input type="submit" name="button" id="button" value="更新排序" class='button  btn-prim'></div>
+       </form>
+        <div class="show_page mart10" style="font-size: 14px;"><ul><{$list['pagecontent']}></ul></div>
+    </div>
+
+    </div>
+
+
+
+</div>
+
+<{/block}>

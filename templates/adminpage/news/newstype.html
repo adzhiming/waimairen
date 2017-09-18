@@ -1,0 +1,81 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=controlname}>新闻分类列表<{/block}>
+<{block name=bodylist}>
+
+
+<div class="tags">
+    <div id="tagscontent">
+        <div id="con_one_1">
+            <div class="table_td mart15">
+                <form method="post" action="" onsubmit="return remind();" id="delform">
+                    <table class="list table table-bordered" name="table" id="table">
+                        <thead>
+                        <tr>
+                            <th width="40px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+                            <th>新闻类型名称</th>
+                            <th>目录类型</th>
+                            <th>显示类型</th>
+                            <th>排序ID</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </form>
+                <div class="page_newc marT20">
+                    <div class="select_page"><a href="#" onclick="checkword(true);" class="color-f">全选</a> / <a href="#" onclick="checkword(false);" class="color-f">取消</a>
+                        <a onclick="return remindall(this);" href="<{ofunc type=url link="/adminpage/news/module/delnewstype/datatype/json"}>" class="button btn-prim">删除</a>
+                        <a href="<{ofunc type=url link="/adminpage/news/module/addnewstype"}>" class="button btn-prim">添加新闻分类</a>
+                    </div>
+                    <div class="show_page"><ul></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="trgoodlist" type="text/html">
+    <tr class="s_out">
+        <td><input type="checkbox" name="id[]" value="<^%=list.id%^>"></td>
+
+        <td><^%=htmlpre%^><^%=list.name%^></td>
+        <td><^% if (list.type == 1){%^>文章目录<^%}else{%^>分类<^%}%^></td>
+        <td><^% if (list.type == 1){%^><^% if (list.displaytype == 1){%^>文章独显<^%}else{%^>文章全显<^%}%^><^%}else{%^>无<^%}%^></td>
+        <td><^%=list.orderid%^></td>
+        <td>
+            <a href="<^%=editlink%^>" class="fa fa-edit" title="编辑"></a>
+            <a onclick="return remind(this);" href="<^%=dellink%^>" class="fa fa-trash" title="删除"></a>
+        </td>
+    </tr>
+</script>
+<script>
+    <{load_data assign="list" table="newstype"     orderby = "orderid desc" limit=100}>
+    var typelist = <{$list['list']|@json_encode}>;
+    var editlink = '<{ofunc type=url link="/adminpage/news/module/addnewstype/id/@id@"}>';
+    var dellink = '<{ofunc type=url link="/adminpage/news/module/delnewstype/id/@id@/datatype/json"}>';
+    $(function(){
+        huantr(typelist,0,0)
+        //   var htmls = template.render('trgoodlist', jsondata);
+        // $('#table').append(htmle);
+    });
+    function huantr(jsondata,parent_id,grade){
+        var htmlpre = '';
+        for(var c=0;c<grade;c++){
+            htmlpre +='&nbsp;&nbsp;&nbsp;&nbsp;';
+        }
+        for(var i=0;i<jsondata.length;i++){
+            if(jsondata[i].parent_id == parent_id){
+                var editlinks =editlink.replace('@id@', jsondata[i].id);
+                var dellinks = dellink.replace('@id@', jsondata[i].id);
+                var vac ={list:jsondata[i],htmlpre:htmlpre,editlink:editlinks,dellink:dellinks};
+                var htmls = template.render('trgoodlist', vac);
+                $('#table').append(htmls);
+                var nextgrade = Number(grade)+1;
+                huantr(jsondata,jsondata[i].id,nextgrade);
+
+            }
+        }
+
+    }
+</script>
+<{/block}>

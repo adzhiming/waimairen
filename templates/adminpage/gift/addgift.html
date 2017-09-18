@@ -1,0 +1,95 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script src="<{$siteurl}>/js/kindeditor/kindeditor.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+<{/block}>
+<{block name=controlname}>保存礼品<{/block}>
+<{block name=bodylist}>
+<{load_data assign="info" table="gift" type="one" where="id='<{$id}>'" fileds="*" }>
+<div class="tags">
+    <div id="tagscontent">
+        <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/gift/module/savegift"}>">
+        <div class="mart15">
+            <table class="list tableList" name="table" id="table" >
+                <tbody>
+                <tr>
+                    <td class="left">礼品标题</td>
+                    <td><input type="text" name="title" id="title" value="<{$info['title']}>" class="skey form-control"></td>
+                </tr>
+                <tr>
+                    <td class="left">所在分类</td>
+                    <td>
+                        <select name="typeid" class="skey form-control">
+                            <{load_data assign="gifttypelist" table="gifttype"  limit="100"   }>
+                            <{foreach from=$gifttypelist['list'] item=value}>
+                            <option value="<{$value['id']}>" <{if $value['id'] == $info['typeid'] }>selected<{/if}>><{$value['name']}></option>
+                            <{/foreach}>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left" valign="top">商品图片</td>
+                    <td>
+                        <img src="<{$info['img']}>" width=80px height=80px id="imgshow" <{if  empty($info['img'])}> style="display:none;"<{/if}>>
+                        <input type="hidden" name="img" id="img" value="<{$info['img']}>" >
+                        <span onclick="uploads();" class="button-1 btn-prim" style="margin-top: -20px;">上传图片</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">礼品市场价</td>
+                    <td><input type="text" name="market_cost" id="market_cost" value="<{$info['market_cost']}>" class="skey form-control" style="width:150px;" > 元</td>
+                </tr>
+                <tr>
+                    <td class="left">兑换所需积分</td>
+                    <td><input type="text" name="score" id="score" value="<{$info['score']}>" class="skey form-control" style="width:150px;" ></td>
+                </tr>
+                <tr>
+                    <td class="left">库存</td>
+                    <td><input type="text" name="stock" id="stock" value="<{$info['stock']}>" class="skey form-control" style="width:150px;" > 个</td>
+                </tr>
+                <tr>
+                    <td class="left">已兑换数量</td>
+                    <td><input type="text" name="sell_count" id="sell_count" value="<{$info['sell_count']}>" class="skey form-control" style="width:150px;" > 个</td>
+                </tr>
+                <tr>
+                    <td class="left">详细内容</td>
+                    <td>
+                        <div class='nop'><script>KE.show({id:'content',allowFileManager : true,imageUploadJson:'<{ofunc type=url link="/other/saveupload"}>',fileManagerJson:'<{ofunc type=url link="/other/saveupload"}>',items:['source','|', 'justifyleft', 'justifycenter', 'justifyright','justifyfull', 'insertorderedlist', 'insertunorderedlist', '|', 'fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold','italic', 'underline', 'removeformat', '|', 'image', 'advtable', 'hr','link', 'unlink']});</script><textarea name="content" id="content" style='width:550px; height:260px;'><{$info['content']}></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="确认提交" class="button btn-prim mart15"></td>
+                </tr>
+                <input type="hidden" name="uid" id="uid" value="<{$info['id']}>">
+                </tbody>
+            </table>
+        </div>
+
+        </form>
+    </div>
+</div>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script>
+    var dialogs ;
+    function uploads(){
+        dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucess"}>');
+        dialogs.title('上传图片');
+    }
+    function uploadsucess(flag,obj,linkurl){
+        if(flag == true){
+            alert(linkurl);
+            dialogs.close();
+            uploads();
+        }else{
+            dialogs.close();
+            $('#img').val(linkurl);
+            $('#imgshow').attr('src',linkurl);
+            $('#imgshow').show();
+        }
+    }
+
+
+</script>
+<!--newmain 结束-->
+<{/block}>

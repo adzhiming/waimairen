@@ -1,0 +1,108 @@
+
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<{/block}>
+<{block name=controlname}>私信列表<{/block}>
+<{block name=bodylist}>
+<div style="width:auto;overflow-x:hidden;overflow-y:auto">
+    <div class="tags">
+        <div id="tagscontent">
+            <div id="con_one_1">
+                <div class="table_td mart15" >
+                    <form method="post" action="" onsubmit="return remind();"  id="delform">
+                        <table class="list table table-bordered" name="table" id="table">
+                            <thead>
+                            <tr>
+                                <th width="40px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+                                <th>私信用户</th>
+                                <th>发送内容</th>
+                                <th>回复内容</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{load_data assign="list" table="pmes" showpage="true"  fileds="*"   }>
+                            <{foreach from=$list['list'] item=items}>
+                            <tr class="s_out">
+                                <td><input type="checkbox" name="id[]" value="<{$items['id']}>"></td>
+                                <td><{if $items['uid'] == 0}>系统信息<{else}><{$items['username']}><{/if}></td>
+                                <td>
+                                    <{if !empty($items['userimg'])}><div><img src="<{$items['userimg']}>"></div><{/if}>
+                                    <div><{$items['usercontent']|htmlspecialchars_decode}></div>
+                                    <div>时间：<{$items['creattime']|date_format:"%Y-%m-%d %H:%M:%S"}></div></td>
+                                <td>
+                                    <{if !empty($items['backcontent'])}>	<div><{$items['backcontent']|htmlspecialchars_decode}></div><{/if}>
+                                    <{if $items['backtime'] > 0}>		<div>时间：<{$items['backtime']|date_format:"%Y-%m-%d %H:%M:%S"}></div><{/if}>
+                                    <{if $items['backtime'] < 1 && $items['uid'] > 0}>
+                                    <div style="display: inline-block"><textarea id="textarea_<{$items['id']}>" class="form-control" style="width:200px;height:60px;"></textarea></div>
+                                    <div style="display: inline-block"><input type="button" value="提交回复" class="button-1 btn-prim" onclick="doupback(<{$items['id']}>);"></div>
+                                    <{/if}>
+                                </td>
+                                <td>
+                                    <a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/ask/module/delpmes/id/<{$items['id']}>/datatype/json"}>" class="fa fa-trash" title="删除"> </a>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="page_newc marT20">
+                        <div class="select_page"><a href="#" onclick="checkword(true);" class="color-f">全选</a> / <a href="#" onclick="checkword(false);" class="color-f">取消</a>
+                            <a onclick="return remindall(this);" href="<{ofunc type=url link="/adminpage/ask/module/delpmes/datatype/json"}>" class="button btn-prim">删除</a>
+                            <a onclick="addhtml();" href="#" class="button btn-prim">发系统私信</a>
+                        </div>
+                    </div>
+                    <div class="show_page"><ul><{$list['pagecontent']}></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="adddet" type="text/html">
+    <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/ask/module/savepme/datatype/json"}>" onsubmit="return subform('',this);">
+    <div><textarea name="message" class="form-control" style="width:300px;height:90px;"></textarea></div>
+    <div class="mart15"><input type="submit" value="提交保存" class="button btn-prim"></div>
+    </form>
+</script>
+<!--newmain 结束-->
+<script>
+    function addhtml(){
+        var html = template.render('adddet', {});
+        var dialog =  art.dialog({
+            id:'coslid',
+            title:'系统私信',
+            content: html
+        });
+    }
+    function doupback(gid){
+        var tijiaoinfo=  $('#textarea_'+gid).val();
+        if(tijiaoinfo == ''){
+            diaerror('回复数据不能为空');
+        }else{
+            var url = siteurl+'/index.php?ctrl=adminpage&action=ask&module=backpme&random=@random@&datatype=json';
+            $.ajax({
+                type: 'get',
+                async:false,
+                data:{message:tijiaoinfo,id:gid},
+                url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+                dataType: 'json',success: function(content) {
+                    if(content.error == false){
+                        diasucces('操作成功','');
+                    }else{
+                        if(content.error == true)
+                        {
+                            diaerror(content.msg);
+                        }else{
+                            diaerror(content);
+                        }
+                    }
+                },
+                error: function(content) {
+                    diaerror('数据获取失败');
+                }
+            });
+        }
+    }
+</script>
+<{/block}>

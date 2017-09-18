@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>在线预订</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/mui.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<{$siteurl}>/newstyle/css/style.css">
+    <style>
+        .orderList li:not(:first-child) {margin-top: 10px;}
+        .state_a{color: #009ff3;}
+    </style>
+</head>
+<body>
+<div class="mui-content marb50">
+    <!--tab-->
+    <ul class="yd_tab clearfix mui-row">
+        <a href="<{ofunc type=url link="/wxsite/shoppreonline"}>"><li class="mui-col-xs-6">现在预订</li></a>
+        <a href="<{ofunc type=url link="/wxsite/shoppreonlined"}>"><li class="mui-col-xs-6 active">已预订</li></a>
+    </ul>
+
+    <ul class="orderList">
+    <!--<{foreach from=$shoppreonlined item=order }>-->
+        <li class="mui-table-view">
+            <div class="mui-table-view-cell border-b">
+                <div class="cssBox justify mui-h5">
+                    <div><span class="color_black">订单号：</span><{$order['dno']}></div>
+                    <!--<{if $order['ydstatus'] == 0}>-->
+                    <div class="state_a">待商家确定</div>
+                    <!--<{/if}>-->
+                    <!--<{if $order['ydstatus'] == 1}>-->
+                    <div class="color_z">已确认</div>
+                    <!--<{/if}>-->
+                    <!--<{if $order['ydstatus'] == 2}>-->
+                    <div class="color_z">已消费</div>
+                    <!--<{/if}>-->
+                     <!--<{if $order['ydstatus'] == 3}>-->
+                     <div class="red">已取消</div>
+                    <!--<{/if}>-->           
+                     <!--<{if $order['ydstatus'] == 4}>-->
+                     <div class="red">消费中</div>
+                    <!--<{/if}>-->           
+                </div>
+            </div>
+            <div class="mui-table-view-cell mui-media">
+                <a class="mui-navigate-right" href="<{ofunc type=url link="/wxsite/ordershow/orderid/<{$order['id']}>"}>">
+                    <div class="mui-media-body">
+                         <p><span class="color_black">预订时间：</span><{$order['booktime']}></p>
+                        <p class="mui-ellipsis"><span class="color_black">支付金额：</span><{$order['allcost']}>元</p>
+                    </div>
+                </a>
+            </div>
+        </li>
+    <!--<{/foreach}>-->
+    </ul>
+</div>
+
+<!--底部导航-->
+<nav class="mui-bar mui-bar-tab">
+    <a class="mui-tab-item" href="<{ofunc type=url link="/wxsite/shoppreorder"}>">
+        <span class="mui-icon fa fa-home"></span>
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a class="mui-tab-item mui-active" href="<{ofunc type=url link="/wxsite/shoppreonline"}>">
+        <span class="mui-icon fa fa-comments"></span>
+        <span class="mui-tab-label">在线预订</span>
+    </a>
+    <a class="mui-tab-item" href="tel:18380384137">
+        <!--fa fa-cog 设置-->
+        <span class="mui-icon fa fa-phone"></span>
+        <span class="mui-tab-label">电话预订</span>
+    </a>
+    <a class="mui-tab-item" href="<{ofunc type=url link="/wxsite/shopbaidumap/position/<{$position}>/addr/<{$address}>"}>">
+        <!--fa fa-cog 设置-->
+        <span class="mui-icon fa fa-map-marker"></span>
+        <span class="mui-tab-label">商家导航</span>
+    </a>
+</nav>
+
+<script src="<{$siteurl}>/newstyle/js/jquery-1.12.2.min.js"></script>
+<script>
+
+    $('.mui-bar-tab a').on('touchstart',function(){
+        var i = $(this).index();
+        $(".mui-bar-tab a").removeClass('mui-active').eq(i).addClass('mui-active');
+    });
+
+</script>
+</body>
+</html>

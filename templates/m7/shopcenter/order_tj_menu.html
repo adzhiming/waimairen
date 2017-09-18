@@ -1,0 +1,12 @@
+<div class="ordertjmenu">
+    <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/shoptotal'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/shoptotal"}>');">订单统计</button>
+   <button class="btn-a btn-prim <{if $urlshort == 'shopcenter/goodsanalysis'}> onset<{/if}>" type="button" onclick="openlink('<{ofunc type=url link="/shopcenter/goodsanalysis"}>');">菜品分析</button>
+
+</div>
+<script>
+    $(function(){
+        $(".waimaiset .jbset").click(function(){
+            $(this).css('background','#ec7501').siblings().css('background','');
+        });
+    });
+</script>

@@ -1,0 +1,126 @@
+<{extends file="<{$tempdir}>/public/admin.html"}>
+<{block name=extendjs}>
+<{/block}>
+<{block name=controlname}>添加营销分享优惠券规则<{/block}>
+<{block name=bodylist}>
+<{load_data assign="info" table="juanrule" where="`id`=$id"  type="one"}>
+<div style="width:98%;overflow-y:auto;white-space:nowrap;">
+
+	<div class="tags">
+		<div id="tagscontent">
+			<form method="post" name="form1" action="<{ofunc type=url link="/adminpage/card/module/savemarketing/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/adminpage/card/module/juanmarketing"}>',this);">
+			<div class="mart15">
+				<table class="list tableList" name="table" id="table">
+					<tbody>
+					<tr>
+						<td class="left">名称</td>
+						<td><input type="text" name="name" id="name" value="<{$info['name']}>" class="skey form-control"></td>
+					</tr>
+					<tr class="show_1">
+						<td class="left">分享优惠券类型</td>
+						<td>
+							<select name="type" onchange="changetxt(this);" class="form-control">
+								<option   value="0">请选择优惠券类型</option>
+								<option <{if $info['type'] == 1  }> selected <{/if}>  value="1">充值送优惠券</option>
+								<option  <{if $info['type'] == 2  }> selected <{/if}> value="2">下单成功分享优惠券</option>
+								<option  <{if $info['type'] == 3  }> selected <{/if}>  value="3">推广优惠券</option>
+								<option  <{if $info['type'] == 4  }> selected <{/if}>  value="4">关注微信领取优惠券</option>
+								<select>
+						</td>
+					</tr>
+					<script>
+						$(function(){
+							var obj = 'select[name=type]';
+							changetxt(obj);
+						});
+						function changetxt(obj){
+							var findvalue = $(obj).find("option:selected").val();
+							var doobj = $(obj).find("option:selected");
+							if(findvalue == 3){
+								$("input[name=juannum]").val(1);
+								$("input[name=juannum]").attr("readonly","readonly");
+								$("#rechargeWhe").show();
+								$("#otherWhe").hide();
+								$("#haveone").show();
+							}else if(findvalue == 1){
+								$("input[name=juannum]").val('');
+								$("input[name=juannum]").removeAttr("readonly");
+								$("#otherWhe").show();
+								$("#rechargeWhe").hide();
+								$("#haveone").hide();
+							}else{
+								$("input[name=juannum]").val('<{$info['juannum']|default:''}>');
+								$("input[name=juannum]").removeAttr("readonly");
+								$("#otherWhe").hide();
+								$("#rechargeWhe").show();
+								$("#haveone").hide();
+							}
+
+						}
+					</script>
+					<tr id="rechargeWhe"   style="display:none;">
+						<td class="left">优惠券数量</td>
+						<td><input type="text" name="juannum" id="juannum" value="<{$info['juannum']}>" class="skey form-control" style="width:100px;" >
+							<span id="haveone" style="display:none;">推广优惠券默认只能为一张</span>
+						</td>
+					</tr>
+					<tr id="otherWhe">
+						<td class="left">充值赠送优惠券总金额</td>
+						<td>
+							<input type="text" name="juantotalcost" id="juantotalcost" value="<{$info['juantotalcost']}>" class="skey form-control" style="width:100px;" > 元
+							<span class="color-gg">（充值类型赠送优惠券总额和充值赠送列表的赠送优惠券总金额一致，下面的规则系统自动生成优惠券总金额的优惠券列表）</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="left">优惠券限制金额</td>
+						<td>
+							<input type="text" name="jiancostmin" id="jiancostmin" value="<{$info['jiancostmin']}>" class="skey form-control" style="width:100px;" > 至
+							<input type="text" name="jiancostmax" id="jiancostmax" value="<{$info['jiancostmax']}>" class="skey form-control" style="width:100px;" > 元
+							<span class="color-gg">（优惠券限制金额范围，如果填写一样，则限制金额为固定的）</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="left">优惠券优惠金额</td>
+						<td>
+							<input type="text" name="jiacostmin" id="jiacostmin" value="<{$info['jiacostmin']}>" class="skey form-control" style="width:100px;" > 至
+							<input type="text" name="jiacostmax" id="jiacostmax" value="<{$info['jiacostmax']}>" class="skey form-control" style="width:100px;" > 元
+							<span class="color-gg">（优惠券减金额范围，如果填写一样，则减的金额为固定的）</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="left">失效天数</td>
+						<td><input type="text" name="daynum" id="daynum" value="<{(($info['endtime']-$info['addtime'])/(24*60*60))|string_format:"%d"}>" class="skey form-control" style="width:100px;" ></td>
+					</tr>
+					<tr>
+						<td class="left">支持的支付方式</td>
+						<td>
+							<{assign var=paytypearr value=","|explode:$info['paytype']}>
+							<input type="checkbox" name="paytype[]"   value="1" <{if !empty($info) }>  <{if  in_array(1,$paytypearr ) }>checked<{/if}>  <{else}>checked<{/if}>  /> 货到付款
+							<input type="checkbox" name="paytype[]"   value="2"  <{if !empty($info) }> <{if  in_array(2,$paytypearr ) }>checked<{/if}>   <{else}>checked<{/if}>  class="marl30"/> 在线支付
+						</td>
+					</tr>
+					<tr>
+						<td class="left">是否启用</td>
+						<td>
+							<input type="radio" name="is_open"   value="1" <{if !empty($info) }>  <{if $info['is_open'] == 1 }>checked<{/if}>  <{else}>checked<{/if}>/> 开启
+							<input type="radio" name="is_open"   value="0" <{if $info['is_open'] == 0 }>checked<{/if}> class="marl30" /> 关闭
+						</td>
+					</tr>
+					<tr>
+						<td class="left">排序</td>
+						<td><input type="text" name="orderid" id="orderid" value="<{$info['orderid']}>" class="skey form-control" style="width:100px;" ></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><input type="submit" value="确认提交" class="button btn-prim"></td>
+					</tr>
+					<input type="hidden" name="id"   value="<{$info['id']}>">
+					</tbody>
+				</table>
+			</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+<{/block}>

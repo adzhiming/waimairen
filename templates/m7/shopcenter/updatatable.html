@@ -1,0 +1,74 @@
+<{extends file="<{$tempdir}>/public/shopcenter.html"}>
+<{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/sweetalert.min.js"></script>
+<script>
+    var mynomenu='basetables';
+</script>
+<{/block}>
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/css/sweetalert.css" />
+<{/block}>
+<{block name=bodylist}>
+
+ <div class="conWaiSet">
+        <div class="scol">
+               <div class="ibox-title">
+           			 <h5 id="positionname">新建桌台</h5>
+        	   </div>
+        	      <div class="ibox-content clearfix">
+            <form  id="theForm">
+       
+            <div class="hoverC">
+                <table class="mar20">
+               		 <tr><td>桌台名称</td>  <td>   <input  type="text"  value="<{$list.name}>"  name="table"  class="check" /></td></tr>
+                     <tr ><td >备注</td><td>	<textarea rows="6"   name="remark"  class="checks" > <{$list.remark}></textarea></td></tr>
+                
+                     <tr ><td ></td><td>	 <input type="button" value="更新"  class="searchBtn clicksupdate"  /></td></tr>
+                      <input name="id" value="<{$id}>" type="hidden" >
+                   
+               </table>
+              
+             
+                </form>
+	           
+           
+             
+                <!--end-->
+            </div>
+       	 </div>
+        </div>
+<script>
+var id = "<{$id}>";
+var sid = "<{$sid}>";
+$('.clicksupdate').click(function(){
+	var name = $('input[name="table"]').val();
+	var remark = $('.checks').val();
+	
+	if(name == ''){
+		alert('桌台名称不能为空');
+		return false;
+	}
+	
+
+	 var backinfo = ajaxback('<{ofunc type=url link="/shopcenter/updatatable/datatype/json"}>',{'name':name,'remark':remark,'id':id,'sid':sid});
+	 
+	  if(backinfo.flag == true)
+     {
+		  diaerror(backinfo.content);
+		  window.setTimeout("window.location.href='<{ofunc type=url link='/shopcenter/tableslist'}>'",1500); 
+     }else{
+         artsucces('更新失败');
+         //location.reload();
+         window.setTimeout("window.location.reload()",1000); 
+     }
+	 
+		
+	
+	
+});
+
+
+
+</script>
+<{/block}>
